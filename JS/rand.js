@@ -1,4 +1,4 @@
-// 1. Kho bài tiêu chuẩn siêu cân bằng từ 4-9 người
+// 1. Kho bài tiêu chuẩn siêu cân bằng từ 4-12 người
 const cardPresets = {
     4: ["Sói", "Tiên tri", "Phù thủy", "Dân làng"],
     5: ["Sói", "Tiên tri", "Phù thủy", "Dân làng 1", "Dân làng 2"],
@@ -16,9 +16,9 @@ let currentDeck = null;
 
 function rand() {
     let inputEl = document.getElementById("player_num");
-    let cardDiv = document.getElementById("card");
     let cardText = document.getElementById("card_text");
     let cardImg = document.getElementById("card_img");
+    let btn = document.getElementById("draw_btn"); // Lấy thêm nút bấm để tí xử lý ẩn/hiện
     let num = parseInt(inputEl.value);
 
     // Bước 1: Check xem có nhập đúng số người quy định không
@@ -27,7 +27,7 @@ function rand() {
         return;
     }
 
-    // Bước 2: Nếu là lượt bấm đầu tiên (currentDeck chưa có bài), khởi tạo bộ bài dựa theo số người nhập
+    // Bước 2: Khởi tạo bộ bài nếu là lượt đầu tiên
     if (currentDeck === null) {
         currentDeck = [...cardPresets[num]]; 
         inputEl.disabled = true; 
@@ -36,10 +36,13 @@ function rand() {
     // Bước 3: Kiểm tra xem hết bài chưa
     if (currentDeck.length === 0) {
         cardText.innerHTML = "Hết bài rồi!";
-        cardImg.style.display = "none"; // Ẩn ảnh đi khi hết bài
+        cardImg.style.display = "none"; 
         alert("Cả bàn đã bốc xong! F5 lại trang để làm ván mới nha.");
         return;
     }
+
+    // Vô hiệu hóa nút bấm tạm thời để không cho spam trong lúc đang xem bài
+    btn.disabled = true;
 
     // Bước 4: Thao tác bốc bài ngẫu nhiên và xóa khỏi mảng
     let randomIndex = Math.floor(Math.random() * currentDeck.length);
@@ -48,37 +51,45 @@ function rand() {
 
     // Bước 5: Logic kiểm tra tên quân bài để render đúng ảnh
     let imgName = "";
-    
-    if (pickedCard.includes("Tiên tri")) {
-        imgName = "img/1.png";
-    } else if (pickedCard.includes("Sói")) {
-        imgName = "img/2.png";
-    } else if (pickedCard.includes("hề")) {
-        imgName = "img/3.png";
-    } else if (pickedCard.includes("Thợ săn")) {
-        imgName = "img/4.png";
-    } else if (pickedCard.includes("Dân làng")) {
-        imgName = "img/5.png";
-    } else if (pickedCard.includes("Bảo vệ")) {
-        imgName = "img/6.png";
-    } else if (pickedCard.includes("tình yêu")) {
-        imgName = "img/7.png";
-    } else if (pickedCard.includes("Phù thủy")) {
-        imgName = "img/8.png";
-    }
+    if (pickedCard.includes("Tiên tri")) imgName = "img/1.png";
+    else if (pickedCard.includes("Sói")) imgName = "img/2.png";
+    else if (pickedCard.includes("hề")) imgName = "img/3.png";
+    else if (pickedCard.includes("Thợ săn")) imgName = "img/4.png";
+    else if (pickedCard.includes("Dân làng")) imgName = "img/5.png";
+    else if (pickedCard.includes("Bảo vệ")) imgName = "img/6.png";
+    else if (pickedCard.includes("tình yêu")) imgName = "img/7.png";
+    else if (pickedCard.includes("Phù thủy")) imgName = "img/8.png";
 
     // Bước 6: Hiển thị text và ảnh lên giao diện
     cardText.innerHTML = pickedCard;
-    
     if (imgName !== "") {
-        // Nếu các file ảnh 1.png, 2.png nằm chung thư mục với masoi.html thì để nguyên đường dẫn này.
-        // Nếu bạn để ảnh trong thư mục "images" thì sửa thành: `images/${imgName}`
         cardImg.src = imgName; 
-        cardImg.style.display = "block"; // Hiện ảnh lên
+        cardImg.style.display = "block"; 
     } else {
         cardImg.style.display = "none";
     }
 
-    // Log nhẹ check xem còn bao nhiêu lá chưa bốc
+    // ⏱️ Bước 7: Cơ chế đếm ngược 5 giây rồi ẩn bài
+    let timeLeft = 5;
+    btn.innerHTML = `Đang xem bài (${timeLeft}s)`;
+
+    let countdown = setInterval(() => {
+        timeLeft--;
+        if (timeLeft > 0) {
+            btn.innerHTML = `Đang xem bài (${timeLeft}s)`;
+        } else {
+            clearInterval(countdown);
+            
+            // Hết 5 giây: Giấu bài đi, reset giao diện thẻ bài về ban đầu
+            cardText.innerHTML = "Chưa bốc bài";
+            cardImg.style.display = "none";
+            cardImg.src = ""; // Xóa source ảnh cũ đi cho chắc
+
+            // Mở khóa lại nút bấm để người tiếp theo vào bốc
+            btn.disabled = false;
+            btn.innerHTML = "Nhận thẻ ngẫu nhiên";
+        }
+    }, 1000);
+
     console.log(`Bài còn lại trong chồng: ${currentDeck.length} lá.`);
 }
