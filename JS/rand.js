@@ -1,4 +1,4 @@
-// 1. Kho bài tiêu chuẩn siêu cân bằng từ 4-12 người
+// Kho bài giữ nguyên của bro
 const cardPresets = {
     4: ["Sói", "Tiên tri", "Phù thủy", "Dân làng"],
     5: ["Sói", "Tiên tri", "Phù thủy", "Dân làng 1", "Dân làng 2"],
@@ -11,45 +11,38 @@ const cardPresets = {
     12: ["Sói 1", "Sói 2", "Tiên tri", "Phù thủy", "Bảo vệ", "Thợ săn", "Dân làng 1", "Dân làng 2", "Dân làng 3", "Tên hề", "Thần tình yêu", "Sói 3"]
 };
 
-// Biến toàn cục để lưu bộ bài đang chơi của ván hiện tại
 let currentDeck = null; 
+let isLocking = false; // Biến cờ bảo vệ tránh user click spam lúc đang animation
 
 function rand() {
+    if (isLocking) return;
+
     let inputEl = document.getElementById("player_num");
     let cardText = document.getElementById("card_text");
     let cardImg = document.getElementById("card_img");
-    let btn = document.getElementById("draw_btn"); // Lấy thêm nút bấm để tí xử lý ẩn/hiện
     let num = parseInt(inputEl.value);
 
-    // Bước 1: Check xem có nhập đúng số người quy định không
     if (isNaN(num) || num < 4 || num > 12) {
         alert("Chỉ hỗ trợ từ 4 đến 12 player");
         return;
     }
 
-    // Bước 2: Khởi tạo bộ bài nếu là lượt đầu tiên
     if (currentDeck === null) {
         currentDeck = [...cardPresets[num]]; 
         inputEl.disabled = true; 
     }
 
-    // Bước 3: Kiểm tra xem hết bài chưa
     if (currentDeck.length === 0) {
-        cardText.innerHTML = "Hết bài rồi!";
-        cardImg.style.display = "none"; 
-        alert("Cả bàn đã bốc xong! F5 lại trang để làm ván mới nha.");
+        alert("Cả bàn đã bốc xong! Làm ván mới thì F5 lại trang nha bạn êi.");
         return;
     }
 
-    // Vô hiệu hóa nút bấm tạm thời để không cho spam trong lúc đang xem bài
-    btn.disabled = true;
-
-    // Bước 4: Thao tác bốc bài ngẫu nhiên và xóa khỏi mảng
+    // Bốc bài ngầm
     let randomIndex = Math.floor(Math.random() * currentDeck.length);
     let pickedCard = currentDeck[randomIndex];
     currentDeck.splice(randomIndex, 1); 
 
-    // Bước 5: Logic kiểm tra tên quân bài để render đúng ảnh
+    // Kiểm tra ảnh tương ứng
     let imgName = "";
     if (pickedCard.includes("Tiên tri")) imgName = "img/1.png";
     else if (pickedCard.includes("Sói")) imgName = "img/2.png";
@@ -60,7 +53,7 @@ function rand() {
     else if (pickedCard.includes("tình yêu")) imgName = "img/7.png";
     else if (pickedCard.includes("Phù thủy")) imgName = "img/8.png";
 
-    // Bước 6: Hiển thị text và ảnh lên giao diện
+    // Đổ data vào mặt trước (Lúc này card vẫn đang ẩn nên user chưa thấy gì đâu)
     cardText.innerHTML = pickedCard;
     if (imgName !== "") {
         cardImg.src = imgName; 
@@ -69,27 +62,39 @@ function rand() {
         cardImg.style.display = "none";
     }
 
-    // ⏱️ Bước 7: Cơ chế đếm ngược 5 giây rồi ẩn bài
-    let timeLeft = 5;
-    btn.innerHTML = `Đang xem bài (${timeLeft}s)`;
+    // HIỆN OVERLAY (Lá bài úp xuất hiện giữa màn hình)
+    document.getElementById("card_overlay").classList.add("active");
+}
 
-    let countdown = setInterval(() => {
-        timeLeft--;
-        if (timeLeft > 0) {
-            btn.innerHTML = `Đang xem bài (${timeLeft}s)`;
-        } else {
-            clearInterval(countdown);
-            
-            // Hết 5 giây: Giấu bài đi, reset giao diện thẻ bài về ban đầu
-            cardText.innerHTML = "Chưa bốc bài";
-            cardImg.style.display = "none";
-            cardImg.src = ""; // Xóa source ảnh cũ đi cho chắc
+// HÀM XỬ LÝ KHI USER CLICK VÀO LÁ BÀI LỚN ĐỂ LẬT
+function flipCard() {
+    let cardInner = document.getElementById("card_inner");
+    let overlay = document.getElementById("card_overlay");
+    
+    // Nếu bài đã lật rồi thì không cho click lật lại nữa
+    if (cardInner.classList.contains("flipped") || isLocking) return;
 
-            // Mở khóa lại nút bấm để người tiếp theo vào bốc
-            btn.disabled = false;
-            btn.innerHTML = "Nhận thẻ ngẫu nhiên";
-        }
-    }, 1000);
+    isLocking = true; // Khóa click bậy bạ
+    cardInner.classList.add("flipped"); // Kích hoạt hiệu ứng lật xoay 180 độ CSS
 
-    console.log(`Bài còn lại trong chồng: ${currentDeck.length} lá.`);
+    // Đợi lật bài xong (0.6s) rồi bắt đầu đếm ngược 5 giây giấu bài
+    setTimeout(() => {
+        let timeLeft = 3.5;
+        let countdown = setInterval(() => {
+            timeLeft--;
+            if (timeLeft <= 0) {
+                clearInterval(countdown);
+                
+                // Thu hồi overlay (ẩn đi)
+                overlay.classList.remove("active");
+
+                // Đợi overlay ẩn hẳn (0.4s) rồi mới reset trạng thái thẻ bài về mặt sau
+                setTimeout(() => {
+                    cardInner.classList.remove("flipped");
+                    isLocking = false; // Mở khóa cho người tiếp theo bốc
+                    console.log(`Bài còn lại: ${currentDeck.length} lá.`);
+                }, 400);
+            }
+        }, 1000);
+    }, 600);
 }

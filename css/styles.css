@@ -1,152 +1,273 @@
-/* ==========================================
-   1. RESET CƠ BẢN & ĐỊNH DẠNG CHUNG
-   ========================================== */
+/* css/styles.css */
+
+/* Reset và cài đặt font cơ bản */
 * {
-    box-sizing: border-box;
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-/* Nền tối huyền bí, căn giữa toàn bộ nội dung ra màn hình */
 body {
-    background: linear-gradient(135deg, #111a2e 0%, #050914 100%);
+    background: linear-gradient(135deg, #1e1e24 0%, #111115 100%);
+    color: #f5f5f7;
     min-height: 100vh;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
-    color: #f3f4f6;
+    justify-content: center;
+    padding: 20px;
 }
 
-/* ==========================================
-   2. KHUNG CHỨA CHÍNH (CONTAINER)
-   ========================================== */
+/* Container chính */
 .content {
     background: rgba(255, 255, 255, 0.05);
     backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px); /* Hỗ trợ Safari */
     border: 1px solid rgba(255, 255, 255, 0.1);
     padding: 30px;
-    border-radius: 16px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-    text-align: center;
+    border-radius: 20px;
     width: 100%;
-    max-width: 380px;
-}
-
-/* Tiêu đề chính */
-h1 {
-    font-size: 22px;
+    max-width: 450px;
+    text-align: center;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
     margin-bottom: 20px;
-    letter-spacing: 1px;
-    color: #e2e8f0;
-    text-transform: uppercase;
 }
 
-/* ==========================================
-   3. Ô NHẬP SỐ NGƯỜI (INPUT)
-   ========================================== */
-#player_num {
+h1 {
+    font-size: 1.8rem;
+    font-weight: 600;
+    margin-bottom: 20px;
+    background: linear-gradient(45deg, #ff7b00, #ffae00);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Ô nhập số lượng người chơi */
+input[type="number"] {
     width: 100%;
     padding: 12px;
-    border-radius: 8px;
-    border: 2px solid #334155;
-    background-color: #0f172a;
+    background: rgba(0, 0, 0, 0.3);
+    border: 2px solid #333;
+    border-radius: 10px;
     color: #fff;
-    font-size: 16px;
+    font-size: 1rem;
     text-align: center;
     outline: none;
     transition: all 0.3s ease;
-    margin-bottom: 20px;
-}
-
-/* Hiệu ứng khi nhấn vào ô nhập số người */
-#player_num:focus {
-    border-color: #6366f1;
-    box-shadow: 0 0 8px rgba(99, 102, 241, 0.5);
-}
-
-/* Trạng thái bị khóa sau khi đã chốt số người ván đó */
-#player_num:disabled {
-    background-color: #1e293b;
-    border-color: #1e293b;
-    color: #64748b;
-    cursor: not-allowed;
-}
-
-/* ==========================================
-   4. THẺ BÀI HIỂN THỊ CHỨC NĂNG (CARD)
-   ========================================== */
-.card {
-    width: 100%;
-    height: 340px; /* Tăng từ 260px lên 340px để có không gian cho ảnh to */
-    border: 2px dashed #475569;
-    border-radius: 12px;
     margin-bottom: 25px;
+}
+
+input[type="number"]:focus {
+    border-color: #ff7b00;
+    box-shadow: 0 0 10px rgba(255, 123, 0, 0.5);
+}
+
+/* Thẻ bài */
+.card {
+    background: radial-gradient(circle, #2e1a47 0%, #1a0f29 100%);
+    border: 3px solid #ffae00;
+    border-radius: 15px;
+    height: 320px;
     display: flex;
-    flex-direction: column; 
+    flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 15px; 
-    font-size: 26px; /* Tăng size chữ lên một tí cho cân xứng với ảnh */
-    font-weight: bold;
-    letter-spacing: 0.5px;
-    background-color: rgba(15, 23, 42, 0.6);
-    color: #94a3b8;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    padding: 20px; /* Tăng padding cho thoáng */
-    overflow: hidden; /* Giữ ảnh không bị tràn viền khi zoom */
+    margin-bottom: 25px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* Định dạng hình ảnh chức năng - PHÓNG TO HẾT CỠ */
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(255, 174, 0, 0.2);
+}
+
+/* Ảnh của chức năng bên trong thẻ bài */
 #card_img {
-    height: 260px; /* Khóa chết chiều cao 220px cho ảnh cực lớn và đều nhau */
-    width: auto;   /* Tự động co giãn chiều rộng theo tỷ lệ ảnh */
-    max-width: 100%;
-    object-fit: contain; 
-    border-radius: 8px;
-    transition: transform 0.3s ease;
+    width: 80%;
+    height: 70%;
+    object-fit: contain;
+    border-radius: 10px;
+    margin-bottom: 10px;
 }
 
-/* Hiệu ứng phát sáng lật kèo khi thẻ bài nhận diện đã được bốc */
-.card:not(:empty):not(:contains("Chưa bốc bài")):not(:contains("Hết bài rồi!")) {
-    border-style: solid;
-    border-color: #6366f1;
-    background: linear-gradient(145deg, #1e1b4b, #311042);
-    color: #f43f5e; 
-    box-shadow: 0 0 25px rgba(99, 102, 241, 0.5); /* Tăng độ sáng viền */
+/* Chữ hiển thị chức năng */
+#card_text {
+    font-size: 1.3rem;
+    font-weight: bold;
+    letter-spacing: 1px;
+    color: #ffae00;
 }
 
-/* Hiệu ứng zoom nhẹ tạo cảm giác 3D khi ảnh xuất hiện */
-.card:not(:empty) #card_img {
-    transform: scale(1.08); /* Tăng tỷ lệ zoom từ 1.05 lên 1.08 cho lực */
-}
-
-/* ==========================================
-   5. NÚT BẤM (BUTTON)
-   ========================================== */
+/* Nút bốc bài */
 button {
     width: 100%;
     padding: 14px;
+    background: linear-gradient(45deg, #ff7b00, #ffae00);
     border: none;
-    border-radius: 8px;
-    background: linear-gradient(90deg, #4f46e5 0%, #7c3aed 100%);
-    color: white;
-    font-size: 16px;
+    border-radius: 10px;
+    color: #000;
+    font-size: 1.1rem;
     font-weight: bold;
     cursor: pointer;
-    box-shadow: 0 4px 12px rgba(124, 58, 237, 0.3);
-    transition: all 0.2s ease;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(255, 123, 0, 0.4);
 }
 
-/* Hiệu ứng khi rà chuột vào nút */
 button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(124, 58, 237, 0.5);
+    transform: scale(1.02);
+    box-shadow: 0 6px 20px rgba(255, 123, 0, 0.6);
 }
 
-/* Hiệu ứng khi bấm click giữ chuột */
 button:active {
-    transform: translateY(1px);
+    transform: scale(0.98);
+}
+
+/* Thao tác với div top_index ở dưới cùng */
+.top_index {
+    max-width: 450px;
+    font-size: 0.9rem;
+    color: #aaa;
+    padding: 15px;
+}
+
+.card_history_container {
+    display: flex;
+    flex-wrap: wrap;       /* Tự động xuống dòng khi hết chỗ */
+    justify-content: center;
+    gap: 12px;             /* Khoảng cách giữa các lá bài */
+    margin-top: 15px;
+    padding: 10px;
+}
+
+/* Style riêng cho các lá bài nhỏ ở khu vực xem trước */
+.img_card_review {
+    width: 70px;           /* Cài kích thước vừa vặn như một lá bài thu nhỏ */
+    height: 100px;
+    object-fit: cover;
+    border-radius: 6px;
+    border: 2px solid #ffae00;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Hiệu ứng khi di chuột vào lá bài nhỏ */
+.img_card_review:hover {
+    transform: scale(1.1) translateY(-5px);
+    box-shadow: 0 5px 15px rgba(255, 174, 0, 0.4);
+}
+
+/* --- HỆ THỐNG LẬT BÀI 3D OVERLAY --- */
+
+/* Màn hình phủ đen mờ toàn màn hình */
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(8px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+}
+
+/* Khi có class .active thì mới hiện overlay */
+.overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* Khung chứa tạo môi trường 3D */
+.card_container_3d {
+    width: 280px;
+    height: 420px;
+    perspective: 1000px; /* Tạo độ sâu 3D */
+    cursor: pointer;
+}
+
+/* Khung xoay chứa 2 mặt của card */
+.card_inner {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+    will-change: transform;
+    transform: translate3d(0, 0, 0);
+}
+
+/* Khi lật bài, xoay khung inner 180 độ */
+.card_inner.flipped {
+    transform: rotateY(180deg);
+}
+
+/* Cài đặt chung cho cả 2 mặt */
+.card_face {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden; /* Giấu mặt phía sau khi lật */
+    border-radius: 20px;
+    border: 4px solid #ffae00;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    box-shadow: 0 10px 30px rgba(255, 174, 0, 0.3);
+
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden; /* Hỗ trợ Safari/iOS mượt hơn */
+    transform: translateZ(0);            /* Tạo một layer riêng trên GPU */
+}
+
+/* Thiết kế Mặt sau (Lúc chưa lật) */
+.card_back {
+    background: radial-gradient(circle, #1a0f29 0%, #0a0512 100%);
+}
+.card_back img {
+    width: 70%;
+    height: auto;
+    opacity: 0.8;
+    margin-bottom: 20px;
+}
+.card_back p {
+    color: #ffae00;
+    font-weight: bold;
+    font-size: 1.1rem;
+    animation: pulse 1.5s infinite; /* Hiệu ứng chữ nhấp nháy gọi mời */
+}
+
+/* Thiết kế Mặt trước (Hiện chức năng) */
+.card_front {
+    background: radial-gradient(circle, #2e1a47 0%, #1a0f29 100%);
+    transform: rotateY(180deg); /* Mặc định mặt này bị lộn ngược ra sau */
+}
+.card_front img {
+    width: 90%;
+    height: 65%;
+    object-fit: contain;
+    margin-bottom: 20px;
+    border-radius: 10px;
+}
+.card_front span {
+    font-size: 1.6rem;
+    font-weight: bold;
+    color: #ffae00;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+}
+
+/* Animation nhấp nháy cho chữ "Chạm để lật" */
+@keyframes pulse {
+    0% { opacity: 0.5; }
+    50% { opacity: 1; }
+    100% { opacity: 0.5; }
 }
