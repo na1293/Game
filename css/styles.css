@@ -1,0 +1,152 @@
+/* ==========================================
+   1. RESET CƠ BẢN & ĐỊNH DẠNG CHUNG
+   ========================================== */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Nền tối huyền bí, căn giữa toàn bộ nội dung ra màn hình */
+body {
+    background: linear-gradient(135deg, #111a2e 0%, #050914 100%);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #f3f4f6;
+}
+
+/* ==========================================
+   2. KHUNG CHỨA CHÍNH (CONTAINER)
+   ========================================== */
+.content {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px); /* Hỗ trợ Safari */
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 30px;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    text-align: center;
+    width: 100%;
+    max-width: 380px;
+}
+
+/* Tiêu đề chính */
+h1 {
+    font-size: 22px;
+    margin-bottom: 20px;
+    letter-spacing: 1px;
+    color: #e2e8f0;
+    text-transform: uppercase;
+}
+
+/* ==========================================
+   3. Ô NHẬP SỐ NGƯỜI (INPUT)
+   ========================================== */
+#player_num {
+    width: 100%;
+    padding: 12px;
+    border-radius: 8px;
+    border: 2px solid #334155;
+    background-color: #0f172a;
+    color: #fff;
+    font-size: 16px;
+    text-align: center;
+    outline: none;
+    transition: all 0.3s ease;
+    margin-bottom: 20px;
+}
+
+/* Hiệu ứng khi nhấn vào ô nhập số người */
+#player_num:focus {
+    border-color: #6366f1;
+    box-shadow: 0 0 8px rgba(99, 102, 241, 0.5);
+}
+
+/* Trạng thái bị khóa sau khi đã chốt số người ván đó */
+#player_num:disabled {
+    background-color: #1e293b;
+    border-color: #1e293b;
+    color: #64748b;
+    cursor: not-allowed;
+}
+
+/* ==========================================
+   4. THẺ BÀI HIỂN THỊ CHỨC NĂNG (CARD)
+   ========================================== */
+.card {
+    width: 100%;
+    height: 340px; /* Tăng từ 260px lên 340px để có không gian cho ảnh to */
+    border: 2px dashed #475569;
+    border-radius: 12px;
+    margin-bottom: 25px;
+    display: flex;
+    flex-direction: column; 
+    align-items: center;
+    justify-content: center;
+    gap: 15px; 
+    font-size: 26px; /* Tăng size chữ lên một tí cho cân xứng với ảnh */
+    font-weight: bold;
+    letter-spacing: 0.5px;
+    background-color: rgba(15, 23, 42, 0.6);
+    color: #94a3b8;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    padding: 20px; /* Tăng padding cho thoáng */
+    overflow: hidden; /* Giữ ảnh không bị tràn viền khi zoom */
+}
+
+/* Định dạng hình ảnh chức năng - PHÓNG TO HẾT CỠ */
+#card_img {
+    height: 260px; /* Khóa chết chiều cao 220px cho ảnh cực lớn và đều nhau */
+    width: auto;   /* Tự động co giãn chiều rộng theo tỷ lệ ảnh */
+    max-width: 100%;
+    object-fit: contain; 
+    border-radius: 8px;
+    transition: transform 0.3s ease;
+}
+
+/* Hiệu ứng phát sáng lật kèo khi thẻ bài nhận diện đã được bốc */
+.card:not(:empty):not(:contains("Chưa bốc bài")):not(:contains("Hết bài rồi!")) {
+    border-style: solid;
+    border-color: #6366f1;
+    background: linear-gradient(145deg, #1e1b4b, #311042);
+    color: #f43f5e; 
+    box-shadow: 0 0 25px rgba(99, 102, 241, 0.5); /* Tăng độ sáng viền */
+}
+
+/* Hiệu ứng zoom nhẹ tạo cảm giác 3D khi ảnh xuất hiện */
+.card:not(:empty) #card_img {
+    transform: scale(1.08); /* Tăng tỷ lệ zoom từ 1.05 lên 1.08 cho lực */
+}
+
+/* ==========================================
+   5. NÚT BẤM (BUTTON)
+   ========================================== */
+button {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 8px;
+    background: linear-gradient(90deg, #4f46e5 0%, #7c3aed 100%);
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(124, 58, 237, 0.3);
+    transition: all 0.2s ease;
+}
+
+/* Hiệu ứng khi rà chuột vào nút */
+button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(124, 58, 237, 0.5);
+}
+
+/* Hiệu ứng khi bấm click giữ chuột */
+button:active {
+    transform: translateY(1px);
+}
