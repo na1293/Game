@@ -44,14 +44,14 @@ function rand() {
 
     // Kiểm tra ảnh tương ứng
     let imgName = "";
-    if (pickedCard.includes("Tiên tri")) imgName = "img/1.png";
-    else if (pickedCard.includes("Sói")) imgName = "img/2.png";
-    else if (pickedCard.includes("hề")) imgName = "img/3.png";
-    else if (pickedCard.includes("Thợ săn")) imgName = "img/4.png";
-    else if (pickedCard.includes("Dân làng")) imgName = "img/5.png";
-    else if (pickedCard.includes("Bảo vệ")) imgName = "img/6.png";
-    else if (pickedCard.includes("tình yêu")) imgName = "img/7.png";
-    else if (pickedCard.includes("Phù thủy")) imgName = "img/8.png";
+    if (pickedCard.includes("Tiên tri")) imgName = "img/1.webp";
+    else if (pickedCard.includes("Sói")) imgName = "img/2.webp";
+    else if (pickedCard.includes("hề")) imgName = "img/3.webp";
+    else if (pickedCard.includes("Thợ săn")) imgName = "img/4.webp";
+    else if (pickedCard.includes("Dân làng")) imgName = "img/5.webp";
+    else if (pickedCard.includes("Bảo vệ")) imgName = "img/6.webp";
+    else if (pickedCard.includes("tình yêu")) imgName = "img/7.webp";
+    else if (pickedCard.includes("Phù thủy")) imgName = "img/8.webp";
 
     // Đổ data vào mặt trước (Lúc này card vẫn đang ẩn nên user chưa thấy gì đâu)
     cardText.innerHTML = pickedCard;
