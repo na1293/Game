@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nhận thẻ bài</title>
+    <script src="JS/rand.js"></script>
+    <script src="JS/check.js"></script>
+    <script src="JS/tarrot.js"></script>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div class="content">
+        <h1>Nhận thẻ bài của bạn</h1>
+        <input type="number" id="player_num" min="4" max="12" placeholder="Nhập từ 4-12 người (Không tính quản trò)">
+        <label for="lua-chon">Chọn bộ bài:</label>
+
+        <select id="lua-chon" name="lua-chon">
+            <option value="1">Bài ma sói</option>
+            <option value="2">Xem Tarrot</option>
+        </select>
+    </div>
+
+    <div class="content top_index">
+        <h1>Bốc bài tại đây</h1>
+        <div class="card_history_container">
+            <img src="img/9.webp" alt="Role Image" class="img_card_review" onclick="main()">
+            <img src="img/9.webp" alt="Role Image" class="img_card_review" onclick="main()">
+            <img src="img/9.webp" alt="Role Image" class="img_card_review" onclick="main()">
+            <img src="img/9.webp" alt="Role Image" class="img_card_review" onclick="main()">
+            <img src="img/9.webp" alt="Role Image" class="img_card_review" onclick="main()">
+            <img src="img/9.webp" alt="Role Image" class="img_card_review" onclick="main()">
+        </div>
+    </div>
+
+    <div id="card_overlay" class="overlay">
+        <div class="card_container_3d" onclick="flipCard()">
+            <div class="card_inner" id="card_inner">
+                <div class="card_face card_back">
+                    <img src="img/9.webp" alt="Card Back">
+                    <p>Chạm để lật bài</p>
+                </div>
+                <div class="card_face card_front">
+                    <img id="card_img" src="" alt="Role Image">
+                    <span id="card_text">Chưa bốc bài</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,51 +1,702 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nhận thẻ bài</title>
-    <script src="JS/rand.js"></script>
-    <script src="JS/check.js"></script>
-    <script src="JS/tarrot.js"></script>
-    <link rel="stylesheet" href="css/styles.css">
+    <title>Workspace Tập Trung v2.0</title>
+    <style>
+        /* --- GIAO DIỆN HIỆN ĐẠI / APPLE STYLE --- */
+        :root {
+            --primary-gradient: linear-gradient(135deg, #4299e1, #667eea);
+            --success-gradient: linear-gradient(135deg, #48bb78, #38a169);
+            --danger-gradient: linear-gradient(135deg, #f56565, #e53e3e);
+            --bg-color: #f7fafc;
+            --card-bg: #ffffff;
+            --text-color: #2d3748;
+            --text-muted: #718096;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            padding-bottom: 60px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 650px;
+            margin: 0 auto;
+            padding: 25px 15px;
+        }
+
+        /* Header phong cách Dashboard */
+        header {
+            background: var(--primary-gradient);
+            color: white;
+            padding: 30px 20px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.25);
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            margin-bottom: 8px;
+        }
+
+        #say {
+            font-style: italic;
+            font-size: 0.95rem;
+            opacity: 0.9;
+        }
+
+        hr {
+            border: none;
+            height: 1px;
+            background: rgba(255, 255, 255, 0.2);
+            margin: 15px 0;
+        }
+
+        #event_news {
+            font-size: 1rem;
+            font-weight: 500;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 10px 15px;
+            border-radius: 12px;
+            display: inline-block;
+        }
+
+        /* Các khối chức năng (Card) */
+        .pomodoro-timer {
+            background-color: var(--card-bg);
+            padding: 25px 20px;
+            border-radius: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
+            margin-bottom: 25px;
+            text-align: center;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            border: 1px solid rgba(0, 0, 0, 0.01);
+        }
+
+        .pomodoro-timer:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
+        }
+
+        .pomodoro-timer h2 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #1a202c;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        /* Số đồng hồ siêu to, dễ nhìn */
+        #timer-display, #countdown {
+            font-size: 3.5rem;
+            font-weight: 700;
+            color: #2b6cb0;
+            margin: 10px 0;
+            letter-spacing: -1px;
+        }
+
+        #countdown {
+            color: #e53e3e;
+            font-size: 2.5rem;
+        }
+
+        #time-conut {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+        }
+
+        /* To-do list styling */
+        .todo-container {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        input[type="text"], textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border-radius: 12px;
+            border: 1.5px solid #e2e8f0;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.2s;
+            background: #f8fafc;
+        }
+
+        input[type="text"]:focus, textarea:focus {
+            border-color: #667eea;
+            background: #fff;
+        }
+
+        #todo-list li {
+            background: #f8fafc;
+            padding: 12px 16px;
+            border-radius: 12px;
+            margin-bottom: 10px;
+            border: 1px solid #edf2f7;
+            transition: all 0.2s;
+        }
+
+        #todo-list li:hover {
+            background: #edf2f7;
+        }
+
+        /* Nút bấm thiết kế phẳng (Modern Flat Buttons) */
+        button {
+            padding: 12px 24px;
+            font-size: 1rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin: 5px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        #start-btn, #add-todo-btn, button[onclick*="localStorage.setItem"] {
+            background: var(--success-gradient);
+            color: white;
+        }
+
+        #reset-btn, button[onclick*="document.getElementById('quick-note').value"] {
+            background: #edf2f7;
+            color: #4a5568;
+            box-shadow: none;
+        }
+
+        button[onclick*="Xóa"], .del-btn-todo {
+            background: var(--danger-gradient) !important;
+            color: white;
+            padding: 6px 12px !important;
+            font-size: 0.85rem;
+        }
+
+        button:hover {
+            opacity: 0.9;
+            transform: scale(1.02);
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        /* Nút chế độ tối giản nổi ở góc */
+        #btn-sleep {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            z-index: 99;
+            background: #1a202c;
+            color: white;
+            border-radius: 30px;
+            padding: 12px 20px;
+            font-size: 0.9rem;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+        }
+
+        /* --- MÀN HÌNH TỐI GIẢN CHUẨN ĐỒNG HỒ APPLE (AOD) --- */
+        #AOD {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: #000000;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
+            z-index: 9999;
+        }
+
+        #countdown-container {
+            text-align: center;
+        }
+
+        #time-count-set {
+            font-size: 16vw;
+            font-weight: 700;
+            letter-spacing: -3px;
+            color: #fff;
+            line-height: 1;
+        }
+
+        #now-set {
+            font-size: 4vw;
+            font-weight: 400;
+            opacity: 0.6;
+            margin-top: 15px;
+            letter-spacing: 1px;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        ul {
+            list-style-position: inside;
+        }
+    </style>
 </head>
 <body>
-    <div class="content">
-        <h1>Nhận thẻ bài của bạn</h1>
-        <input type="number" id="player_num" min="4" max="12" placeholder="Nhập từ 4-12 người (Không tính quản trò)">
-        <label for="lua-chon">Chọn bộ bài:</label>
 
-        <select id="lua-chon" name="lua-chon">
-            <option value="1">Bài ma sói</option>
-            <option value="2">Xem Tarrot</option>
-        </select>
-    </div>
+    <button onclick="nghi_ngoi()" id="btn-sleep">⏱️ Chế độ tối giản</button>
 
-    <div class="content top_index">
-        <h1>Bốc bài tại đây</h1>
-        <div class="card_history_container">
-            <img src="img/9.webp" alt="Role Image" class="img_card_review" onclick="main()">
-            <img src="img/9.webp" alt="Role Image" class="img_card_review" onclick="main()">
-            <img src="img/9.webp" alt="Role Image" class="img_card_review" onclick="main()">
-            <img src="img/9.webp" alt="Role Image" class="img_card_review" onclick="main()">
-            <img src="img/9.webp" alt="Role Image" class="img_card_review" onclick="main()">
-            <img src="img/9.webp" alt="Role Image" class="img_card_review" onclick="main()">
+    <div id="AOD">
+        <div id="countdown-container">
+            <h1 id="time-count-set">00:00:00</h1>
+            <h1 id="now-set">00:00</h1>
         </div>
     </div>
 
-    <div id="card_overlay" class="overlay">
-        <div class="card_container_3d" onclick="flipCard()">
-            <div class="card_inner" id="card_inner">
-                <div class="card_face card_back">
-                    <img src="img/9.webp" alt="Card Back">
-                    <p>Chạm để lật bài</p>
-                </div>
-                <div class="card_face card_front">
-                    <img id="card_img" src="" alt="Role Image">
-                    <span id="card_text">Chưa bốc bài</span>
-                </div>
+    <div class="container" id="container">
+        <header>
+            <h1>Trạm Tập Trung Học Tập</h1>
+            <p id="say">Đang tải câu nói truyền cảm hứng...</p>
+            <hr>
+            <p id="event_news">Lịch học hôm nay</p>
+        </header>
+
+        <div class="pomodoro-timer">
+            <h2>⏱️ Đồng Hồ Pomodoro</h2>
+            <p id="timer-display">00:06</p>
+            <button id="start-btn">Bắt đầu học</button>
+            <button id="reset-btn">Đặt lại</button>
+        </div>
+
+        <div class="pomodoro-timer" style="text-align: left;">
+            <h2>Công cụ hỗ trợ học tập</h2>
+            <p>Dưới đây là các công cụ tiện ích giúp bạn học tập hiệu quả hơn:</p>
+            <ul style="margin-left: 10px; color: var(--text-muted); font-size: 0.95rem;">
+                <li style="margin-bottom: 5px;">Học Toán: <span><a href="https://gemini.google.com/gem/dbd119ed2d4f" target="_blank">Trợ lý học toán</a></span></li>
+                <li style="margin-bottom: 5px;">Hướng dẫn dùng AI: <span><a href="https://docs.google.com/document/d/1Q19QCakJFWLiZgT9zg6hW3A7eJHWcpEkHXazEq8CExI/edit?usp=sharing" target="_blank">Cách dùng AI Toán</a></span></li>
+                <li style="margin-bottom: 5px;">Làm đề: <span><a href="https://www.onluyen.vn/" target="_blank">Ôn luyện</a></span></li>
+                <li style="margin-bottom: 5px;">Đề thi Anh: <span><a href="https://prepedu.com/vi/blog/de-thi-thpt-quoc-gia-mon-anh" target="_blank">Đề thi THPTQG Anh</a></span></li>
+            </ul>
+        </div>
+
+        <div class="pomodoro-timer" style="text-align: left;">
+            <h2>💡 Mẹo học hiệu quả</h2>
+            <ul style="margin-left: 10px; color: var(--text-muted); font-size: 0.95rem;">
+                <li style="margin-bottom: 5px;">Học hết mình trong phiên <b>25 phút</b> (màn hình sẽ khóa sáng).</li>
+                <li style="margin-bottom: 5px;">Khi hết giờ, máy sẽ <b>rung 5 giây + kêu chuông</b> báo hiệu.</li>
+                <li style="margin-bottom: 5px;">Thoát Fullscreen lén lút khi chưa hết giờ sẽ bị nhắc nhở đó nhé!</li>
+            </ul>
+        </div>
+
+        <div class="pomodoro-timer">
+            <h2>📝 Nhiệm Vụ Trong Tuần</h2>
+            <div class="todo-container">
+                <input type="text" id="todo-input" placeholder="Thêm việc cần hoàn thành...">
+                <button id="add-todo-btn">Thêm</button>
+            </div>
+            <ul id="todo-list" style="list-style-type: none; text-align: left;"></ul>
+        </div>
+
+        <div class="pomodoro-timer">
+            <h2>🌤️ Thời Tiết Hiện Tại</h2>
+            <a class="weatherwidget-io" href="https://forecast7.com/en/21d03105d83/hanoi/" data-label_1="Ha Noi" data-label_2="Viet Nam" data-icons="Climacons Animated" data-theme="pure" data-basecolor="" >Ha Noi Viet Nam</a>
+        </div>
+        
+        <div class="pomodoro-timer">
+            <h2>Kỳ thi THPTQG năm 2027 sẽ diễn ra sau:</h2>
+            <h1 id="countdown">0 ngày</h1>
+            <strong id="time-conut">00 giờ 00 phút 00 giây</strong>
+        </div>
+
+        <div class="pomodoro-timer">
+            <h2 id="say-time" style="color: #4c51bf;">Chào bạn nhé</h2>
+            <p id="talk" style="color: var(--text-muted); font-size: 1rem;"></p>
+            <br>
+            <h3 id="say-now" style="font-weight: 500; font-size: 1.1rem;"></h3>
+        </div>
+
+        <div class="pomodoro-timer">
+            <h2>🧮 Hộp Công Cụ Tiện Ích</h2>
+            <input type="text" id="math-input" placeholder="Nhập biểu thức (Ví dụ: 2*5+8) rồi ấn Enter">
+            <p id="math-result" style="margin: 15px 0; font-weight: 600; color: #38a169; min-height: 24px;"></p>
+            <div style="display: flex; justify-content: center; gap: 10px;">
+                <button onclick="document.getElementById('math-result').textContent = '🎲 Kết quả xúc xắc: ' + (Math.floor(Math.random() * 6) + 1);" style="background: #edf2f7; color: #2d3748;">Tung xúc xắc</button>
+                <button onclick="document.getElementById('math-result').textContent = '🪙 Kết quả: ' + (Math.random() < 0.5 ? 'Mặt sấp' : 'Mặt ngửa');" style="background: #edf2f7; color: #2d3748;">Tung đồng xu</button>
             </div>
         </div>
+
+        <div class="pomodoro-timer">
+            <h2>💾 Ghi Chú Ý TƯỞNG Nhanh</h2>
+            <textarea id="quick-note" placeholder="Ý tưởng vụt sáng? Ghi lại đây để không bị quên..."></textarea>
+            <div style="margin-top: 10px;">
+                <button onclick="localStorage.setItem('quickNote', document.getElementById('quick-note').value); alert('Ghi chú đã lưu thành công! 🎉');">Lưu Lại</button>
+                <button onclick="document.getElementById('quick-note').value = localStorage.getItem('quickNote') || '';">Tải Lên Cũ</button>
+            </div>
+        </div>
+
+        <footer>
+            <p>© 2026 Không gian làm việc tối giản & tập trung cao độ</p>
+        </footer>
     </div>
+
+    <script>
+        let timerDisplay = document.getElementById("timer-display");
+        let startBtn = document.getElementById("start-btn");
+        let resetBtn = document.getElementById("reset-btn");
+        let say = document.getElementById("say");
+        let event_news = document.getElementById("event_news");
+
+        let timer;
+        let isRunning = false;
+        let timeLeft = 0.1 * 60; 
+        let sayst = [
+            "Học, học nữa, học mãi. - Hồ Chí Minh",
+            "Học không bao giờ là đủ. - Khuyết danh",
+            "Trí tuệ không phải sản phẩm của trường lớp, mà là kết quả của nỗ lực học hỏi suốt đời. - Albert Einstein",
+            "Con đường đến thành công là con đường của sự học tập, sự phát triển và không ngừng cố gắng. - Oprah Winfrey",
+            "Học là một hành trình, không phải là đích đến. - Khuyết danh",
+            "Học để biết, học để làm, học để chung sống, học để tự khẳng định mình. - UNESCO"
+        ];
+
+        let day_week = new Date().getDay();
+
+        if (day_week == 0 || day_week == 6) {
+            event_news.innerHTML = "Hôm nay là cuối tuần, hãy nghỉ ngơi và thư giãn nhé! ☕";
+        } else if (day_week == 1) {
+            event_news.innerHTML = "Hôm nay là Thứ Hai, bạn học Vật Lý, KTPL và HDTN nhé! 📚";
+        } else if (day_week == 2) {
+            event_news.innerHTML = "Hôm nay là Thứ Ba, bạn học Ngoại Ngữ, Tin Học và Toán ✨";
+        } else if (day_week == 3) {
+            event_news.innerHTML = "Hôm nay là Thứ Tư, sáng: Quốc Phòng, Thể chất - chiều: Văn, Anh và HDTN 🏃‍♂️";
+        } else if (day_week == 4) {
+            event_news.innerHTML = "Hôm nay là Thứ Năm, hãy cẩn thận môn GDDP, chuẩn bị môn Toán và Sử nhé! 🔥";
+        } else if (day_week == 5) {
+            event_news.innerHTML = "Hôm nay là Thứ Sáu, sắp cuối tuần rồi. Bạn có Địa Lý, Văn và sinh hoạt lớp 🎉";
+        }
+
+        function getRandom(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
+        document.getElementById("say").innerHTML = sayst[getRandom(0, 5)];
+
+        // 🔊 HÀM CHUÔNG BÁO DỒN DẬP + RUNG 5 GIÂY liên tục
+        function playAlarmSound() {
+            // 1. Kích hoạt rung liên tục 5 giây trên điện thoại
+            if ('vibrate' in navigator) {
+                navigator.vibrate(5000); 
+            }
+
+            // 2. Ép chuông kêu liên tục mỗi 0.5 giây một lần, lặp lại trong vòng 5 giây
+            let count = 0;
+            let bellInterval = setInterval(() => {
+                try {
+                    let audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                    let oscillator = audioCtx.createOscillator();
+                    let gainNode = audioCtx.createGain();
+                    
+                    oscillator.type = 'sine'; 
+                    oscillator.frequency.setValueAtTime(880, audioCtx.currentTime); // Tần số nốt Tink cao
+                    
+                    // Mỗi tiếng Tink kéo dài 0.3 giây rồi tắt nhanh để tạo nhịp dồn dập
+                    gainNode.gain.setValueAtTime(0.4, audioCtx.currentTime);
+                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+                    
+                    oscillator.connect(gainNode);
+                    gainNode.connect(audioCtx.destination);
+                    oscillator.start();
+                    oscillator.stop(audioCtx.currentTime + 0.3);
+                } catch (e) { 
+                    console.log("Trình duyệt chặn autoplay:", e); 
+                }
+
+                count++;
+                // Sau 10 lần kêu (tổng cộng 5 giây) thì tự động dừng bộ chuông này lại
+                if (count >= 10) {
+                    clearInterval(bellInterval);
+                }
+            }, 500); // 500ms (0.5 giây) kêu một phát tiếng Tink
+        }
+
+        // 🛡️ WAKE LOCK CHỐNG TẮT MÀN HÌNH TỰ ĐỘNG
+        let wakeLock = null;
+        async function requestWakeLock() {
+            try {
+                if ('wakeLock' in navigator) {
+                    wakeLock = await navigator.wakeLock.request('screen');
+                }
+            } catch (err) { console.log(err.message); }
+        }
+        function releaseWakeLock() {
+            if (wakeLock !== null) { wakeLock.release().then(() => { wakeLock = null; }); }
+        }
+
+        function formatTime(seconds) {
+            let minutes = Math.floor(seconds / 60);
+            let secondsLeft = seconds % 60;
+            return `${minutes < 10 ? '0' : ''}${minutes}:${secondsLeft < 10 ? '0' : ''}${secondsLeft}`;
+        }
+
+        function startTimer() {
+            if (isRunning) {
+                clearInterval(timer);
+                isRunning = false;
+                startBtn.textContent = "Bắt đầu học";
+                startBtn.style.background = "var(--success-gradient)";
+                releaseWakeLock();
+            } else {
+                requestWakeLock();
+                timer = setInterval(function() {
+                    timeLeft--;
+                    timerDisplay.textContent = formatTime(timeLeft);
+                    if (timeLeft === 0) {
+                        clearInterval(timer);
+                        playAlarmSound(); 
+                        setTimeout(() => { 
+                            resetTimer();
+                        }, 500);
+                    }
+                }, 1000);
+                isRunning = true;
+                startBtn.textContent = "Dừng lại";
+                startBtn.style.background = "var(--danger-gradient)";
+            }
+        }
+
+        function resetTimer() {
+            timeLeft = 25 * 60;
+            timerDisplay.textContent = formatTime(timeLeft);
+            if (isRunning) {
+                clearInterval(timer);
+                isRunning = false;
+                startBtn.textContent = "Bắt đầu học";
+                startBtn.style.background = "var(--success-gradient)";
+                releaseWakeLock();
+            }
+        }
+
+        startBtn.addEventListener("click", startTimer);
+        resetBtn.addEventListener("click", resetTimer);
+
+        // Đếm ngược mốc thời gian lớn
+        let targetDate = new Date('2027-06-12T00:00:00');
+        function updateCountdown() {
+            let now = new Date();
+            let timeDifference = targetDate - now;
+            let days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+            let hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            let minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
+            let seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
+
+            document.getElementById("countdown").innerHTML = days + " ngày";
+            document.getElementById("time-conut").innerHTML = hours + " giờ " + minutes + " phút " + seconds + " giây ";
+
+            if (timeDifference <= 0) {
+                clearInterval(interval);
+                document.getElementById("countdown").innerHTML = "Đã đến ngày trọng đại rồi! 🎉";
+            }
+        }
+        let interval = setInterval(updateCountdown, 1000);
+
+        function timesay() {
+            let now = new Date();
+            let hh = now.getHours();
+            let mm = now.getMinutes();
+            hh = hh < 10 ? '0' + hh : hh;
+            mm = mm < 10 ? '0' + mm : mm;
+
+            document.getElementById("say-now").innerHTML = "Giờ hệ thống: " + hh + ":" + mm;
+            document.getElementById("now-set").innerHTML = hh + ":" + mm;
+
+            if (hh >= 0 && hh <= 2) { 
+                document.getElementById("say-time").innerHTML = "Chào buổi đêm muộn 🦉";
+                document.getElementById("talk").innerHTML = "Giờ đã rất khuya rồi, hãy đi ngủ ngay để bảo vệ làn da và sức khỏe!";
+            } else if (hh >= 3 && hh <= 4) {
+                document.getElementById("say-time").innerHTML = "Bạn nên nghỉ ngơi ngay 🛌";
+                document.getElementById("talk").innerHTML = "Muộn lắm rồi, dừng học và lên giường đi ngủ thôi bạn ơi!";
+            } else if (hh >= 5 && hh <= 6) {
+                document.getElementById("say-time").innerHTML = "Chào ngày mới sớm 🌅";
+                document.getElementById("talk").innerHTML = "Dậy sớm quá ta! Sắp sửa năng lượng đón ngày mới nào.";
+            } else if (hh >= 7 && hh <= 9) {
+                document.getElementById("say-time").innerHTML = "Chào buổi sáng tốt lành ☀️";
+                document.getElementById("talk").innerHTML = "Tranh thủ giải quyết các bài tập khó nhằn lúc não tỉnh táo nhất nhé!";
+            } else if (hh >= 10 && hh <= 12) {
+                document.getElementById("say-time").innerHTML = "Chào buổi trưa 🌤️";
+                document.getElementById("talk").innerHTML = "Nạp năng lượng ăn trưa rồi nghỉ ngơi xíu lấy sức chiều học tiếp.";
+            } else if (hh >= 13 && hh <= 15) {
+                document.getElementById("say-time").innerHTML = "Chào buổi chiều đầu ☀️";
+                document.getElementById("talk").innerHTML = "Giữ vững sự tập trung, đừng buồn ngủ nha.";
+            } else if (hh >= 16 && hh <= 17) {
+                document.getElementById("say-time").innerHTML = "Chào chiều muộn 🌆";
+                document.getElementById("talk").innerHTML = "Đứng dậy vươn vai, uống chút nước hoặc ăn nhẹ tí đồ ngọt đi nào.";
+            } else if (hh >= 18 && hh <= 19) {
+                document.getElementById("say-time").innerHTML = "Chào buổi tối 🌌";
+                document.getElementById("talk").innerHTML = "Giờ cơm tối sum họp gia đình đây rồi. Ăn ngon miệng nhé!";
+            } else if (hh >= 20 && hh <= 22) {
+                document.getElementById("say-time").innerHTML = "Thời gian vàng để học 🌙";
+                document.getElementById("talk").innerHTML = "Bật nhạc nhẹ tập trung và giải quyết hết đống To-do list thôi!";
+            } else if (hh == 23) {
+                document.getElementById("say-time").innerHTML = "Sắp đến giờ ngủ 💤";
+                document.getElementById("talk").innerHTML = "Uống canxi, tắt thiết bị điện tử dần để chuẩn bị ngủ sớm tăng chiều cao nào!";
+            }
+        }
+        timesay();
+        setInterval(timesay, 1000);
+
+        let countdownInterval;
+        function nghi_ngoi() {
+            let settime = prompt("Bạn muốn học/nghỉ ở chế độ tối giản bao nhiêu phút?");
+            if (!settime) return;
+            let timeInMs = parseFloat(settime) * 60 * 1000; 
+            let endTime = Date.now() + timeInMs; 
+
+            if (!(settime > 65 || settime <= 0)) {
+                if (!isNaN(timeInMs) && timeInMs > 0) {
+                    alert(`Đã thiết lập! Gặp lại bạn sau ${settime} phút.`);
+                    document.getElementById("AOD").style.color = "#fff";
+                    document.getElementById("AOD").style.display = "flex";
+                    document.getElementById("container").style.display = "none";
+                    requestWakeLock();
+
+                    if (countdownInterval) clearInterval(countdownInterval);
+
+                    countdownInterval = setInterval(() => {
+                        let remainingTime = endTime - Date.now();
+                        if (remainingTime <= 0) {
+                            clearInterval(countdownInterval);
+                            document.getElementById("AOD").style.display = "none";
+                            document.getElementById("container").style.display = "block";
+                            playAlarmSound();
+                            setTimeout(() => { 
+                                releaseWakeLock();
+                            }, 500);
+                        } else {
+                            let h = Math.floor(remainingTime / 3600000);
+                            let m = Math.floor((remainingTime % 3600000) / 60000);
+                            let s = Math.ceil((remainingTime % 60000) / 1000);
+                            document.getElementById("time-count-set").innerHTML = `${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
+                        }
+                    }, 1000);
+                } else { alert("Vui lòng nhập số hợp lệ!"); }
+            } else { alert("Thời gian không hợp lý (1 đến 65 phút)!"); }
+        }
+
+        // Kiểm tra phạt khi thoát Fullscreen giữa chừng
+        function check() {
+            if (timeLeft > 0 && timeLeft < 25 * 60) {
+                alert("Ơ kìa? Bạn chưa học xong cơ mà, định lén lướt mạng xã hội đúng không? Tập trung lại ngay! 😤");
+            }
+        }
+        document.addEventListener('fullscreenchange', () => { if (!document.fullscreenElement) check(); });
+        document.addEventListener('webkitfullscreenchange', () => { if (!document.webkitFullscreenElement) check(); });
+        document.addEventListener('mozfullscreenchange', () => { if (!document.mozFullScreenElement) check(); });
+        document.addEventListener('msfullscreenchange', () => { if (!document.msFullscreenElement) check(); });
+
+        document.addEventListener('visibilitychange', () => {
+            if (document.visibilityState === 'visible' && isRunning) requestWakeLock();
+        });
+
+        // Widget Thời tiết tự chạy
+        !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src='https://weatherwidget.io/js/widget.min.js';fjs.parentNode.insertBefore(js,fjs);}}(document,'script','weatherwidget-io-js');
+    </script>
+
+    <script>
+        const input = document.getElementById('todo-input');
+        const btn = document.getElementById('add-todo-btn');
+        const list = document.getElementById('todo-list');
+
+        let todos = JSON.parse(localStorage.getItem('todos')) || [];
+        renderTodos();
+
+        btn.addEventListener('click', addTodo);
+        input.addEventListener('keypress', e => { if (e.key === 'Enter') addTodo(); });
+
+        function addTodo() {
+            const text = input.value.trim();
+            if (!text) return;
+            if (todos.length >= 15) {
+                alert('Tối đa 15 việc thôi, nhiều quá làm không xuể đâu nè!');
+                input.value = '';
+                return;
+            }
+            todos.push({ text, done: false });
+            saveTodos();
+            renderTodos();
+            input.value = '';
+        }
+
+        function renderTodos() {
+            list.innerHTML = '';
+            todos.forEach((todo, index) => {
+                const li = document.createElement('li');
+                li.style.display = 'flex';
+                li.style.alignItems = 'center';
+                li.style.justifyContent = 'space-between';
+
+                const span = document.createElement('span');
+                span.textContent = todo.text;
+                span.style.flex = '1';
+                span.style.cursor = 'pointer';
+                if (todo.done) {
+                    span.style.textDecoration = 'line-through';
+                    span.style.opacity = '0.5';
+                }
+
+                const delBtn = document.createElement('button');
+                delBtn.textContent = 'Xóa';
+                delBtn.className = 'del-btn-todo';
+
+                span.onclick = () => {
+                    todo.done = !todo.done;
+                    saveTodos();
+                    renderTodos();
+                };
+
+                delBtn.onclick = (e) => {
+                    e.stopPropagation();
+                    todos.splice(index, 1);
+                    saveTodos();
+                    renderTodos();
+                };
+
+                li.appendChild(span);
+                li.appendChild(delBtn);
+                list.appendChild(li);
+            });
+        }
+
+        function saveTodos() { localStorage.setItem('todos', JSON.stringify(todos)); }
+
+        // Logic Nhập phép tính toán học nhanh
+        document.getElementById('math-input').addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                let expression = event.target.value;
+                try {
+                    let result = eval(expression);
+                    document.getElementById('math-result').textContent = `👉 Kết quả tính toán: ${result}`;
+                } catch (e) {
+                    document.getElementById('math-result').textContent = '❌ Công thức toán không hợp lệ!';
+                }
+            }
+        });
+    </script>
 </body>
 </html>
