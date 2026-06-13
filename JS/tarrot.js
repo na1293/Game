@@ -1,0 +1,3 @@
+function tarrot_view() {
+    
+}
