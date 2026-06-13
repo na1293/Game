@@ -1,7 +1,8 @@
 const CACHE_NAME = 'hoc-app-v1';
 const ASSETS = [
-  './hoc.html',
-  './manifest.json'
+  'index.html',
+  'manifest.json',
+  'css/styles.css'
 ];
 
 // Cài đặt Service Worker và lưu tài nguyên vào bộ nhớ cache

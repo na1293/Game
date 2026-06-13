@@ -1,0 +1,30 @@
+html, body {
+    /* ✅ Đã sửa: Cho phép vuốt trượt lên xuống thoải mái, nhưng vẫn chặn zoom to nhỏ */
+    touch-action: pan-y; 
+    
+    /* Mấy dòng chặn copy bên dưới giữ nguyên nha */
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-touch-callout: none;
+    
+    /* ✅ Đã sửa: Bỏ cái 'overflow: hidden' cũ đi nếu app của bồ có nội dung dài cần cuộn */
+    width: 100%;
+    /* overflow: hidden; <- XÓA HOẶC COMMENT DÒNG NÀY ĐI BỒ NHÉ */
+}
+
+/* --- ĐIỀU CHỈNH NGOẠI LỆ (GÓC NHÌN THỰC TẾ) --- */
+
+/* Nếu trong app có ô Nhập liệu (Input, Textarea), BẮT BUỘC phải cho người dùng copy/paste/gõ chữ bồ nhé! */
+input, textarea, [contenteditable="true"] {
+    -webkit-user-select: text;
+    -ms-user-select: text;
+    user-select: text;
+    touch-action: auto; /* Cho phép zoom/cuộn riêng trong vùng nhập liệu nếu cần */
+}
+
+/* Loại bỏ cái bóng mờ màu xanh xấu xí khi bấm vào các nút trên điện thoại */
+button, a, input, select {
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    -webkit-tap-highlight-color: transparent;
+}
