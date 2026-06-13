@@ -3,7 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="manifest" href="./manifest.json">
+    <meta name="apple-mobile-web-app-capable" content="yes">
     <title>Workspace Tập Trung v2.0</title>
+
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+            // Sử dụng đường dẫn tương đối chuẩn cho GitHub Pages
+            navigator.serviceWorker.register('sw.js')
+                .then(reg => console.log('PWA đã sẵn sàng trên GitHub Pages! ✅ Scope:', reg.scope))
+                .catch(err => console.log('Thất bại rồi bồ ơi ❌ Lỗi:', err));
+            });
+        }
+    </script>
     <style>
         /* --- GIAO DIỆN HIỆN ĐẠI / APPLE STYLE --- */
         :root {
@@ -297,6 +310,7 @@
                 <li style="margin-bottom: 5px;">Hướng dẫn dùng AI: <span><a href="https://docs.google.com/document/d/1Q19QCakJFWLiZgT9zg6hW3A7eJHWcpEkHXazEq8CExI/edit?usp=sharing" target="_blank">Cách dùng AI Toán</a></span></li>
                 <li style="margin-bottom: 5px;">Làm đề: <span><a href="https://www.onluyen.vn/" target="_blank">Ôn luyện</a></span></li>
                 <li style="margin-bottom: 5px;">Đề thi Anh: <span><a href="https://prepedu.com/vi/blog/de-thi-thpt-quoc-gia-mon-anh" target="_blank">Đề thi THPTQG Anh</a></span></li>
+                <li style="margin-bottom: 5px;">Đóng góp, đề xuất tính năng: <span><a href="https://forms.gle/94MXKLxuDs5PWRxLA" target="_blank">Bắt đầu đóng góp</a></span></li>
             </ul>
         </div>
 
