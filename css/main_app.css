@@ -253,3 +253,33 @@ footer {
 ul {
     list-style-position: inside;
 }
+
+.select_ui {
+    width: 100%;
+    padding: 12px 40px 12px 16px; /* Tăng padding-right lên 40px để né cái mũi tên ra, không bị đè chữ */
+    border-radius: 12px;
+    border: 1.5px solid #e2e8f0;
+    font-size: 1rem;
+    outline: none;
+    transition: all 0.2s ease-in-out;
+    background: #f8fafc;
+    box-sizing: border-box;
+    cursor: pointer; /* Thêm con trỏ bàn tay nhìn cho đúng chất click chọn */
+
+    /* Tuyệt chiêu: Xóa sạch bách cái mũi tên mặc định xấu xí của hệ điều hành */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+
+    /* Tự chèn một cái mũi tên SVG thanh mảnh, hiện đại vào bên phải */
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'></polyline></svg>");
+    background-repeat: no-repeat;
+    background-position: right 16px center; /* Căn lề phải 16px, ở giữa theo chiều dọc */
+    background-size: 16px;
+}
+
+.select_ui:focus {
+    border-color: #6366f1;
+    background-color: #ffffff; /* Giữ nguyên hình nền svg nhưng đổi màu nền select sang trắng */
+    box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+}

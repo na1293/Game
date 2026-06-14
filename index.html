@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="css/app.css">
     <link rel="stylesheet" href="css/main_app.css">
     <script src="JS/learn_app.js" defer></script>
+    <script src="JS/search.js" defer></script>
     <script src="JS/sayst.js"></script>
     <script>
         if ('serviceWorker' in navigator) {
@@ -45,6 +46,23 @@
             <h2>Kỳ thi THPTQG năm 2027 sẽ diễn ra sau:</h2>
             <h1 id="countdown">0 ngày</h1>
             <strong id="time-conut">00 giờ 00 phút 00 giây</strong>
+        </div>
+
+        <div class="pomodoro-timer">
+            <h1>Tìm kiếm nội dung</h1>
+            <p>Mỗi 45 lượt tìm kiếm của bạn bằng Ecosia là 1 cái cây được trồng</p>
+            <div class="todo-container">
+                <input type="text" id="search-input" placeholder="Tìm kiếm nội dung...">
+                <button id="search-btn">Tìm kiếm</button>
+            </div>
+            <select id="search-tool" class="select_ui">
+                <option value="google.com">Nhấn vào đây để chọn công cụ tìm kiếm</option>
+                <option value="google.com">Google</option>
+                <option value="bing.com">Bing</option>
+                <option value="coccoc.com">Cốc Cốc - Made in Vietnam</option>
+                <option value="ecosia.org">Ecosia - Tìm kiếm và bảo vệ Môi trường</option>
+                <option value="duckduckgo.com">DuckDuckGo - Tìm kiếm riêng tư</option>
+            </select>
         </div>
 
         <div class="pomodoro-timer">
