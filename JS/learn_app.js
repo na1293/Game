@@ -11,6 +11,10 @@ let sayst = cau_noi_hay; // Tải câu nói từ file sayst.js vào biến sayst
 
 let day_week = new Date().getDay();
 
+let alarmAudio = new Audio("Music/audley_fergine-warning-alarm.mp3");
+
+let btnSleep = document.getElementById("btn-sleep");
+
 if (day_week == 0 || day_week == 6) {
     event_news.innerHTML = "Hôm nay là cuối tuần, hãy nghỉ ngơi và thư giãn nhé! ☕";
 } else if (day_week == 1) {
@@ -30,30 +34,25 @@ document.getElementById("say").innerHTML = sayst[getRandom(0, sayst.length - 1)]
 
 // 🔊 HÀM BÁO THỨC PHÁT NHẠC TỪ FILE + RUNG 5 GIÂY
 function playAlarmSound() {
-    // 1. Kích hoạt rung liên tục 5 giây trên điện thoại
+    // 1. Kích hoạt rung (Chỉ chạy trên Android, iOS sẽ tự bỏ qua không lỗi)
     if ('vibrate' in navigator) {
         navigator.vibrate(5000); 
     }
 
-    // 2. Phát file âm thanh từ đường dẫn được yêu cầu
+    // 2. Phát âm thanh đã được unlock sẵn
     try {
-        let alarmAudio = new Audio("Music/audley_fergine-warning-alarm.mp3");
-        
-        // Bạn có thể bật vòng lặp nếu muốn nhạc chạy liên tục cho đến khi tắt
-        // alarmAudio.loop = true; 
-
         alarmAudio.play().catch(e => {
-            console.log("Trình duyệt chặn phát âm thanh tự động (Autoplay):", e);
+            console.log("iOS vẫn chặn phát âm thanh:", e);
         });
 
-        // Nếu bạn muốn nhạc tự động tắt sau 5 giây (khớp với thời gian rung):
+        // Tự động tắt sau 5 giây cho đồng bộ
         setTimeout(() => {
             alarmAudio.pause();
-            alarmAudio.currentTime = 0; // Reset nhạc về giây đầu tiên
+            alarmAudio.currentTime = 0; 
         }, 5000);
 
     } catch (e) {
-        console.log("Không thể tải hoặc phát file âm thanh:", e);
+        console.log("Không thể phát file âm thanh:", e);
     }
 }
 
@@ -82,9 +81,23 @@ function startTimer() {
         isRunning = false;
         startBtn.textContent = "Bắt đầu học";
         startBtn.style.background = "var(--success-gradient)";
+        
+        // HIỆN lại nút Chế độ tối giản khi dừng học
+        if (btnSleep) btnSleep.style.display = "inline-block"; 
+        
         releaseWakeLock();
     } else {
+        // MẸO CHO IOS: "Mồi" âm thanh ngay khi bấm nút để unlock autoplay
+        alarmAudio.play().then(() => {
+            alarmAudio.pause();
+            alarmAudio.currentTime = 0;
+        }).catch(e => console.log("Unlock audio lỗi:", e));
+
         requestWakeLock();
+        
+        // ẨN nút Chế độ tối giản đi khi bắt đầu học
+        if (btnSleep) btnSleep.style.display = "none"; 
+
         timer = setInterval(function() {
             timeLeft--;
             timerDisplay.textContent = formatTime(timeLeft);
@@ -112,6 +125,7 @@ function resetTimer() {
         startBtn.style.background = "var(--success-gradient)";
         releaseWakeLock();
     }
+    if (btnSleep) btnSleep.style.display = "inline-block"; 
 }
 
 startBtn.addEventListener("click", startTimer);
@@ -184,8 +198,19 @@ setInterval(timesay, 1000);
 
 let countdownInterval;
 function nghi_ngoi() {
+    // 🔥 ÁP DỤNG TƯƠNG TỰ: Tắt volume và phát thử trước khi prompt() hiện ra
+    alarmAudio.volume = 0;
+    alarmAudio.play().then(() => {
+        setTimeout(() => {
+            alarmAudio.pause();
+            alarmAudio.currentTime = 0;
+            alarmAudio.volume = 1; // Trả lại volume cho Android/iOS kêu lúc hết giờ
+        }, 50);
+    }).catch(e => console.log("Unlock audio lỗi ở chế độ tối giản:", e));
+
     let settime = prompt("Bạn muốn học/nghỉ ở chế độ tối giản bao nhiêu phút?");
     if (!settime) return;
+    
     let timeInMs = parseFloat(settime) * 60 * 1000; 
     let endTime = Date.now() + timeInMs; 
 
@@ -203,16 +228,22 @@ function nghi_ngoi() {
                 let remainingTime = endTime - Date.now();
                 if (remainingTime <= 0) {
                     clearInterval(countdownInterval);
-                    document.getElementById("AOD").style.display = "none";
-                    document.getElementById("container").style.display = "block";
+                    document.getElementById("time-count-set").innerHTML = "00:00:00"; 
+                    
+                    // Đảm bảo chắc chắn volume bằng 1 trước khi nổ chuông
+                    alarmAudio.volume = 1; 
                     playAlarmSound();
+                    
                     setTimeout(() => { 
+                        document.getElementById("AOD").style.display = "none";
+                        document.getElementById("container").style.display = "block";
                         releaseWakeLock();
-                    }, 500);
+                    }, 5000); 
+                    
                 } else {
                     let h = Math.floor(remainingTime / 3600000);
                     let m = Math.floor((remainingTime % 3600000) / 60000);
-                    let s = Math.ceil((remainingTime % 60000) / 1000);
+                    let s = Math.floor((remainingTime % 60000) / 1000); 
                     document.getElementById("time-count-set").innerHTML = `${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
                 }
             }, 1000);
