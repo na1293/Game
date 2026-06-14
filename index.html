@@ -12,18 +12,22 @@
     <script src="JS/learn_app.js" defer></script>
     <script src="JS/search.js" defer></script>
     <script src="JS/sayst.js"></script>
-    <script>
-        if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-            navigator.searchWith = navigator.serviceWorker.register('/sw.js')
-            .then((reg) => {
-                console.log('SW đã sẵn sàng chạy ngầm!');
-
-                reg.update(); 
-            });
+<script>
+    if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        // MẸO: Thêm ?v=3 hoặc ?t=Date.now() để ép trình duyệt kiểm tra file sw.js mới trên server
+        navigator.searchWith = navigator.serviceWorker.register('/sw.js?v=3')
+        .then((reg) => {
+            console.log('SW đã sẵn sàng chạy ngầm!');
+            
+            // Chủ động kích hoạt kiểm tra bản mới ngay khi mở app
+            reg.update(); 
+        }).catch((err) => {
+            console.error('Đăng ký SW thất bại rồi bro:', err);
         });
-        }
-    </script>
+    });
+    }
+</script>
 </head>
 <body>
 
@@ -48,6 +52,8 @@
             <h2>Kỳ thi THPTQG năm 2027 sẽ diễn ra sau:</h2>
             <h1 id="countdown">0 ngày</h1>
             <strong id="time-conut">00 giờ 00 phút 00 giây</strong>
+            <hr>
+            <button onclick="location.reload()">Tải lại</button>
         </div>
 
         <div class="pomodoro-timer">
