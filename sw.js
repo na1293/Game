@@ -1,27 +1,29 @@
-const CACHE_NAME = 'hoc-app-v1';
+const CACHE_NAME = 'hoc-app-v3'; // Mỗi lần đổi UI thì đổi tên ver ở đây
 const ASSETS = [
   'index.html',
   'manifest.json',
   'css/app.css'
 ];
 
-// Cài đặt Service Worker và lưu tài nguyên vào bộ nhớ cache
+// Cài đặt và nạp cache mới (chạy ngầm, user không hề biết)
 self.addEventListener('install', (e) => {
   e.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
       return cache.addAll(ASSETS);
     })
   );
+  // KHÔNG dùng self.skipWaiting() ở đây nhé!
 });
 
-// Kích hoạt và xóa cache cũ nếu có update
+// Kích hoạt và dọn dẹp cache cũ
 self.addEventListener('activate', (e) => {
   e.waitUntil(
     caches.keys().then((keys) => {
       return Promise.all(
         keys.map((key) => {
           if (key !== CACHE_NAME) {
-            return caches.delete(key);
+            console.log('Đã dọn dẹp cache cũ vứt vào sọt rác: ', key);
+            return caches.delete(key); // Xóa sạch ver cũ
           }
         })
       );
@@ -29,7 +31,7 @@ self.addEventListener('activate', (e) => {
   );
 });
 
-// Bắt các yêu cầu mạng để phản hồi từ cache nếu đang offline
+// Phản hồi từ cache
 self.addEventListener('fetch', (e) => {
   e.respondWith(
     caches.match(e.request).then((cachedResponse) => {

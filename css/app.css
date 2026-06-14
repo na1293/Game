@@ -28,3 +28,38 @@ button, a, input, select {
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
     -webkit-tap-highlight-color: transparent;
 }
+
+.update-toast {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: #222;
+  color: #fff;
+  padding: 15px 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  z-index: 9999;
+  font-family: sans-serif;
+  transition: all 0.3s ease;
+}
+.update-toast button {
+  background: #00adb5;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+}
+.update-toast button:hover {
+  background: #00fff5;
+  color: #222;
+}
+.hidden {
+  display: flex !important;
+  opacity: 0;
+  transform: translateY(20px);
+}
