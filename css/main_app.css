@@ -123,7 +123,7 @@ hr {
     margin-bottom: 15px;
 }
 
-input[type="text"], textarea {
+input, textarea {
     width: 100%;
     padding: 12px 16px;
     border-radius: 12px;

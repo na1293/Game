@@ -6,12 +6,14 @@
     <link rel="manifest" href="./manifest.json">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <link rel="manifest" href="manifest.json">
-    <title>Workspace Tập Trung v2.0</title>
+    <title>Workspace Tập Trung v3.0</title>
     <link rel="stylesheet" href="css/app.css">
     <link rel="stylesheet" href="css/main_app.css">
     <script src="JS/learn_app.js" defer></script>
     <script src="JS/search.js" defer></script>
     <script src="JS/sayst.js"></script>
+    <script src="JS/birthday.js"></script>
+    <script src="JS/btday-fr.js" defer></script>
 <script>
     if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
@@ -30,7 +32,6 @@
 </script>
 </head>
 <body>
-
     <button onclick="nghi_ngoi()" id="btn-sleep">⏱️ Chế độ tối giản</button>
 
     <div id="AOD">
@@ -49,7 +50,7 @@
         </header>
 
         <div class="pomodoro-timer">
-            <h2>Kỳ thi THPTQG năm 2027 sẽ diễn ra sau:</h2>
+            <h2>Kỳ thi THPTQG năm 2027 sẽ bắt đầu sau:</h2>
             <h1 id="countdown">0 ngày</h1>
             <strong id="time-conut">00 giờ 00 phút 00 giây</strong>
             <hr>
@@ -64,9 +65,8 @@
                 <button id="search-btn">Tìm kiếm</button>
             </div>
             <select id="search-tool" class="select_ui">
-                <option value="example.com">Nhấn vào đây để chọn công cụ tìm kiếm</option>
-                <option value="google.com">Google</option>
-                <option value="bing.com">Bing</option>
+                <option value="google.com">Google - Tìm kiếm toàn cầu</option>
+                <option value="bing.com">Bing - Tìm kiếm cơ bản</option>
                 <option value="coccoc.com">Cốc Cốc - Made in Vietnam</option>
                 <option value="ecosia.org">Ecosia - Tìm kiếm và bảo vệ Môi trường</option>
                 <option value="duckduckgo.com">DuckDuckGo - Tìm kiếm riêng tư</option>
@@ -108,6 +108,30 @@
             </ul>
         </div>
 
+        <div class="pomodoro-timer input-birthdate" style="text-align: left;">
+            <h2>Nhập ngày tháng năm sinh bạn</h2>
+            <div class="todo-container">
+                <input type="date" id="birthdate">
+                <button id="btn-submit-birthdate">Xác nhận</button>
+            </div>
+        </div>
+
+        <div class="pomodoro-timer count-birthdate">
+            <h2>Sinh nhật bạn:</h2>
+            <h1 id="countdown-birthdate">0 ngày</h1>
+            <strong id="time-conut-birthdate">00 giờ 00 phút 00 giây</strong>
+        </div>
+
+        <div class="pomodoro-timer">
+            <h2>🎂 Sinh nhật sắp tới</h2>
+            <div class="todo-container">
+                <input type="text" id="nameInput" placeholder="Tên...">
+                <input type="date" id="dateInput">
+                <button id="addBtn">Thêm</button>
+            </div>
+            <ul id="birthdayListContainer" style="list-style: none; padding: 0;"></ul>
+        </div>
+
         <div class="pomodoro-timer">
             <h2>📝 Nhiệm Vụ Trong Tuần</h2>
             <div class="todo-container">
@@ -120,16 +144,6 @@
         <div class="pomodoro-timer">
             <h2>🌤️ Thời Tiết Hiện Tại</h2>
             <a class="weatherwidget-io" href="https://forecast7.com/en/21d03105d83/hanoi/" data-label_1="Ha Noi" data-label_2="Viet Nam" data-icons="Climacons Animated" data-theme="pure" data-basecolor="" >Ha Noi Viet Nam</a>
-        </div>
-
-        <div class="pomodoro-timer">
-            <h2>🧮 Hộp Công Cụ Tiện Ích</h2>
-            <input type="text" id="math-input" placeholder="Nhập biểu thức (Ví dụ: 2*5+8) rồi ấn Enter">
-            <p id="math-result" style="margin: 15px 0; font-weight: 600; color: #38a169; min-height: 24px;"></p>
-            <div style="display: flex; justify-content: center; gap: 10px;">
-                <button onclick="document.getElementById('math-result').textContent = '🎲 Kết quả xúc xắc: ' + (Math.floor(Math.random() * 6) + 1);" style="background: #edf2f7; color: #2d3748;">Tung xúc xắc</button>
-                <button onclick="document.getElementById('math-result').textContent = '🪙 Kết quả: ' + (Math.random() < 0.5 ? 'Mặt sấp' : 'Mặt ngửa');" style="background: #edf2f7; color: #2d3748;">Tung đồng xu</button>
-            </div>
         </div>
 
         <div class="pomodoro-timer">
@@ -212,19 +226,6 @@
         }
 
         function saveTodos() { localStorage.setItem('todos', JSON.stringify(todos)); }
-
-        // Logic Nhập phép tính toán học nhanh
-        document.getElementById('math-input').addEventListener('keypress', function(event) {
-            if (event.key === 'Enter') {
-                let expression = event.target.value;
-                try {
-                    let result = eval(expression);
-                    document.getElementById('math-result').textContent = `👉 Kết quả tính toán: ${result}`;
-                } catch (e) {
-                    document.getElementById('math-result').textContent = '❌ Công thức toán không hợp lệ!';
-                }
-            }
-        });
     </script>
 </body>
 </html>

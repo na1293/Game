@@ -1,46 +1,79 @@
-const CACHE_NAME = 'hoc-app-v3'; // Mỗi lần đổi UI thì đổi số ở đây và đổi cả đuôi ?v= ở index.html nhé!
+let currentTimeout = null;
+let targetEndTime = null;
 
-// GOM ĐỦ HÀNG: Phải có mặt toàn bộ file cốt lõi của app
-const ASSETS = [
-  'index.html',
-  'manifest.json',
-  'css/app.css',
-  'css/main_app.css',     // Bổ sung file này
-  'JS/learn_app.js',      // Bổ sung file này
-  'JS/search.js',         // Bổ sung file này
-  'JS/sayst.js'           // Bổ sung file này
-];
+self.addEventListener('message', (event) => {
+  if (event.data.type === 'START_POMODORO') {
+    targetEndTime = event.data.endTime;
+    const delay = targetEndTime - Date.now();
 
-// Cài đặt và nạp cache mới
-self.addEventListener('install', (e) => {
-  e.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => {
-      return cache.addAll(ASSETS);
-    })
-  );
+    if (currentTimeout) clearTimeout(currentTimeout);
+
+    if (delay > 0) {
+      if (event.waitUntil) {
+        event.waitUntil(
+          new Promise((resolve) => {
+            currentTimeout = setTimeout(() => {
+              triggerAlarm();
+              resolve();
+            }, delay);
+          })
+        );
+      } else {
+        currentTimeout = setTimeout(triggerAlarm, delay);
+      }
+    }
+  }
+
+  if (event.data.type === 'STOP_POMODORO') {
+    if (currentTimeout) clearTimeout(currentTimeout);
+    currentTimeout = null;
+    targetEndTime = null;
+  }
 });
 
-// Kích hoạt và dọn dẹp cache cũ khi đóng app vào lại
-self.addEventListener('activate', (e) => {
-  e.waitUntil(
-    caches.keys().then((keys) => {
-      return Promise.all(
-        keys.map((key) => {
-          if (key !== CACHE_NAME) {
-            console.log('Đã dọn dẹp cache cũ vứt vào sọt rác: ', key);
-            return caches.delete(key); 
-          }
-        })
-      );
-    })
-  );
-});
+// Hàm kích hoạt thông báo đẩy khi hết giờ
+function triggerAlarm() {
+  self.registration.showNotification('Hết giờ học rồi 🎉', {
+    body: 'Đứng dậy vươn vai, uống nước xíu rồi nghỉ ngơi nào! Bấm vào đây để nghe nhạc chuông.',
+    icon: 'images/icon-192x192.png',
+    vibrate: [500, 200, 500, 200, 500], // Rung cực mạnh trên Android
+    tag: 'pomodoro-alarm',
+    requireInteraction: true,
+    actions: [
+      { action: 'stop-alarm', title: '🔕 Tắt Chuông & Nghỉ Ngơi' }
+    ]
+  });
 
-// Phản hồi từ cache
-self.addEventListener('fetch', (e) => {
-  e.respondWith(
-    caches.match(e.request).then((cachedResponse) => {
-      return cachedResponse || fetch(e.request);
+  // Bắn tín hiệu thời gian thực nếu tab vẫn còn đang mở ngầm (Chưa bị freeze sâu)
+  self.clients.matchAll({ type: 'window', includeUncontrolled: true }).then((clients) => {
+    clients.forEach((client) => {
+      client.postMessage({ type: 'ALARM_TRIGGER' });
+    });
+  });
+  
+  currentTimeout = null;
+  targetEndTime = null;
+}
+
+// LẮNG NGHE SỰ KIỆN CLICK THÔNG BÁO MÀN HÌNH KHÓA (Cứu cánh nhạc chuông cho iOS & Android)
+self.addEventListener('notificationclick', (event) => {
+  event.notification.close(); 
+
+  event.waitUntil(
+    self.clients.matchAll({ type: 'window', includeUncontrolled: true }).then((windowClients) => {
+      // Tìm xem tab ứng dụng có đang mở ngầm không để kéo nó lên
+      for (let client of windowClients) {
+        if ('focus' in client) {
+          return client.focus().then(() => {
+            // Sau khi focus thành công (Đã có tương tác user), ra lệnh cho tab FORCE phát nhạc chuông ngay
+            client.postMessage({ type: 'ALARM_TRIGGER_FORCE' });
+          });
+        }
+      }
+      // Nếu ứng dụng đã bị tắt hẳn trước đó, tiến hành mở lại trang chủ
+      if (self.clients.openWindow) {
+        return self.clients.openWindow('/');
+      }
     })
   );
 });

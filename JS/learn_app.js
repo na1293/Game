@@ -8,12 +8,17 @@ let timer;
 let isRunning = false;
 let timeLeft = 0.1 * 60; 
 let sayst = cau_noi_hay; // Tải câu nói từ file sayst.js vào biến sayst để sử dụng trong app.js
+let endTime; // Mốc thời gian kết thúc
 
 let day_week = new Date().getDay();
 
 let alarmAudio = new Audio("Music/audley_fergine-warning-alarm.mp3");
 
 let btnSleep = document.getElementById("btn-sleep");
+
+if ('Notification' in window && Notification.permission !== 'granted') {
+    Notification.requestPermission();
+}
 
 if (day_week == 0 || day_week == 6) {
     event_news.innerHTML = "Hôm nay là cuối tuần, hãy nghỉ ngơi và thư giãn nhé! ☕";
@@ -76,37 +81,51 @@ function formatTime(seconds) {
 }
 
 function startTimer() {
+    // Lấy lại DOM ngay tại thời điểm bấm để đảm bảo không bao giờ bị null
+
     if (isRunning) {
         clearInterval(timer);
         isRunning = false;
         startBtn.textContent = "Bắt đầu học";
-        startBtn.style.background = "var(--success-gradient)";
-        
-        // HIỆN lại nút Chế độ tối giản khi dừng học
-        if (btnSleep) btnSleep.style.display = "inline-block"; 
-        
+        startBtn.style.background = "var(--primary-gradient)";
+    
+
+        if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
+            navigator.serviceWorker.controller.postMessage({ type: 'STOP_POMODORO' });
+        }
         releaseWakeLock();
     } else {
-        // MẸO CHO IOS: "Mồi" âm thanh ngay khi bấm nút để unlock autoplay
         alarmAudio.play().then(() => {
             alarmAudio.pause();
             alarmAudio.currentTime = 0;
         }).catch(e => console.log("Unlock audio lỗi:", e));
 
         requestWakeLock();
-        
-        // ẨN nút Chế độ tối giản đi khi bắt đầu học
         if (btnSleep) btnSleep.style.display = "none"; 
 
+
+        endTime = Date.now() + timeLeft * 1000;
+
+        if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
+            navigator.serviceWorker.controller.postMessage({
+                type: 'START_POMODORO',
+                endTime: endTime
+            });
+        }
+
         timer = setInterval(function() {
-            timeLeft--;
-            timerDisplay.textContent = formatTime(timeLeft);
-            if (timeLeft === 0) {
+            let remainingTimeMs = endTime - Date.now();
+            timeLeft = Math.ceil(remainingTimeMs / 1000);
+
+            if (timeLeft <= 0) {
                 clearInterval(timer);
+                timeLeft = 0;
+                timerDisplay.textContent = formatTime(timeLeft)
+
                 playAlarmSound(); 
-                setTimeout(() => { 
-                    resetTimer();
-                }, 500);
+                setTimeout(() => { resetTimer(); }, 500);
+            } else {
+                timerDisplay.textContent = formatTime(timeLeft);
             }
         }, 1000);
         isRunning = true;
@@ -126,6 +145,11 @@ function resetTimer() {
         releaseWakeLock();
     }
     if (btnSleep) btnSleep.style.display = "inline-block"; 
+
+    // HỦY ĐẾM NGẦM KHI BẤM RESET
+    if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
+        navigator.serviceWorker.controller.postMessage({ type: 'STOP_POMODORO' });
+    }
 }
 
 startBtn.addEventListener("click", startTimer);
@@ -198,13 +222,12 @@ setInterval(timesay, 1000);
 
 let countdownInterval;
 function nghi_ngoi() {
-    // 🔥 ÁP DỤNG TƯƠNG TỰ: Tắt volume và phát thử trước khi prompt() hiện ra
-    alarmAudio.volume = 0;
+    alarmAudio.volume = 0.01;
     alarmAudio.play().then(() => {
         setTimeout(() => {
             alarmAudio.pause();
             alarmAudio.currentTime = 0;
-            alarmAudio.volume = 1; // Trả lại volume cho Android/iOS kêu lúc hết giờ
+            alarmAudio.volume = 1; 
         }, 50);
     }).catch(e => console.log("Unlock audio lỗi ở chế độ tối giản:", e));
 
@@ -222,6 +245,13 @@ function nghi_ngoi() {
             document.getElementById("container").style.display = "none";
             requestWakeLock();
 
+            if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
+                navigator.serviceWorker.controller.postMessage({
+                    type: 'START_POMODORO',
+                    endTime: endTime
+                });
+            }
+
             if (countdownInterval) clearInterval(countdownInterval);
 
             countdownInterval = setInterval(() => {
@@ -229,8 +259,7 @@ function nghi_ngoi() {
                 if (remainingTime <= 0) {
                     clearInterval(countdownInterval);
                     document.getElementById("time-count-set").innerHTML = "00:00:00"; 
-                    
-                    // Đảm bảo chắc chắn volume bằng 1 trước khi nổ chuông
+
                     alarmAudio.volume = 1; 
                     playAlarmSound();
                     
@@ -250,7 +279,6 @@ function nghi_ngoi() {
         } else { alert("Vui lòng nhập số hợp lệ!"); }
     } else { alert("Thời gian không hợp lý (1 đến 65 phút)!"); }
 }
-
 // Kiểm tra phạt khi thoát Fullscreen giữa chừng
 function check() {
     if (timeLeft > 0 && timeLeft < 25 * 60) {
@@ -268,3 +296,60 @@ document.addEventListener('visibilitychange', () => {
 
 // Widget Thời tiết tự chạy
 !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src='https://weatherwidget.io/js/widget.min.js';fjs.parentNode.insertBefore(js,fjs);}}(document,'script','weatherwidget-io-js');
+
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.addEventListener('message', (event) => {
+    // Trường hợp 1: Hết giờ khi tab vẫn còn thức ngầm (Android thường xuyên giữ được luồng này)
+    if (event.data.type === 'ALARM_TRIGGER') {
+      console.log("Nhận lệnh nổ chuông từ Service Worker!");
+      playAlarmSound();
+    }
+    
+    // Trường hợp 2: Ép nổ chuông khi user click thông báo màn hình khóa (Cứu cánh tuyệt đối cho iOS)
+    if (event.data.type === 'ALARM_TRIGGER_FORCE') {
+      console.log("User đã click Notification! Phá vỡ rào cản bảo mật, nổ chuông!");
+      
+      // Đưa đồng hồ giao diện về 00:00
+      timeLeft = 0;
+      timerDisplay.textContent = formatTime(timeLeft);
+      
+      // Phát chuông báo thức lập tức
+      playAlarmSound();
+      setTimeout(() => { resetTimer(); }, 500);
+    }
+  });
+}
+
+// ==========================================
+// LOGIC CÁCH 4: TÍNH TOÁN BÙ KHI USER QUAY LẠI APP
+// ==========================================
+document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible' && isRunning) {
+        requestWakeLock(); // Xin lại quyền sáng màn hình cho thiết bị di động
+        
+        let remainingTimeMs = endTime - Date.now();
+        
+        if (remainingTimeMs <= 0) {
+            // Đồng hồ đã hết giờ trong lúc bạn đang lơ đãng ở tab tra cứu dữ liệu khác!
+            clearInterval(timer);
+            
+            // Tính số phút bạn đã học vượt/học lố
+            let overdueSeconds = Math.abs(Math.ceil(remainingTimeMs / 1000));
+            let overdueMinutes = (overdueSeconds / 60).toFixed(1); 
+            
+            timeLeft = 0;
+            timerDisplay.textContent = formatTime(timeLeft);
+            
+            // Hiện thông báo khích lệ chuẩn gu tập trung cao độ
+            alert(`🎉 Bạn đã học chăm chỉ vượt ${overdueMinutes} phút rồi đó! Đứng dậy đi chơi thôi!`);
+            
+            // Đồng thời kích hoạt nhạc chuông báo thức giải tỏa áp lực
+            playAlarmSound();
+            setTimeout(() => { resetTimer(); }, 500);
+        } else {
+            // Thời gian vẫn còn, cập nhật lại biến chạy để đồng hồ khớp từng mili-giây, không bị lệch
+            timeLeft = Math.ceil(remainingTimeMs / 1000);
+            timerDisplay.textContent = formatTime(timeLeft);
+        }
+    }
+});
