@@ -14,6 +14,7 @@
     <script src="JS/sayst.js"></script>
     <script src="JS/birthday.js"></script>
     <script src="JS/btday-fr.js" defer></script>
+    <script src="JS/getData.js"></script>
 <script>
     if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
@@ -131,6 +132,21 @@
                 <button id="addBtn">Thêm</button>
             </div>
             <ul id="birthdayListContainer" style="list-style: none; padding: 0;"></ul>
+        </div>
+
+        <div class="pomodoro-timer" style="text-align: left;">
+            <h2>📢 Bản Tin Lớp Học</h2>
+            <hr>
+            <div class="news-container">
+                <h3 id="news-title" style="color: #4c51bf; margin-top: 5px;">Đang tải tiêu đề...</h3>
+                <p id="news-content" style="font-size: 0.95rem; line-height: 1.5; color: #2d3748; background: #f7fafc; padding: 10px; border-radius: 8px;">Đang tải nội dung bản tin...</p>
+                <div style="font-size: 0.85rem; color: #718096; display: flex; justify-content: space-between; margin-top: 10px;">
+                    <span id="news-author">Tác giả: --</span>
+                    <span id="news-date">Ngày đăng: --</span>
+                </div>
+            </div>
+            <button onclick="getNewsData()" style="margin-top: 15px; width: 100%;">Cập nhật bản tin</button>
+            <button onclick="window.open('https://khaosat.me/survey/6a302090a838d1cf4ff591e1')" style="margin-top: 15px; width: 100%;">Đăng bài</button>
         </div>
 
         <div class="pomodoro-timer">
