@@ -1,0 +1,89 @@
+/* --- CSS PHÂN LOẠI DANH MỤC DASHBOARD --- */
+.tools-dashboard {
+    text-align: left !important;
+    padding: 24px !important;
+}
+
+.tools-dashboard .subtitle {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    margin-bottom: 24px;
+}
+
+/* Định dạng từng cụm nhóm */
+.tool-group {
+    margin-bottom: 24px;
+}
+
+.tool-group:last-child {
+    margin-bottom: 0; /* Bỏ margin thừa ở nhóm cuối */
+}
+
+/* Tiêu đề nhóm (Học tập, Giải trí, Tiện ích) */
+.tool-group h3 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text-color);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px dashed rgba(113, 128, 150, 0.2); /* Đường gạch nhẹ phân vùng */
+    padding-bottom: 6px;
+}
+
+.tool-group h3 .group-icon {
+    margin-right: 6px;
+}
+
+/* Hệ thống hiển thị dạng lưới 2 cột */
+.link-grid-ui {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    list-style: none !important;
+    padding-left: 0 !important;
+}
+
+.link-grid-ui li {
+    margin: 0 !important;
+}
+
+/* Thẻ link liên kết */
+.link-grid-ui li a {
+    display: flex;
+    align-items: center;
+    padding: 10px 12px;
+    background: var(--bg-color, #f7fafc);
+    color: var(--text-color, #2d3748) !important;
+    text-decoration: none;
+    font-size: 0.88rem;
+    font-weight: 500;
+    border-radius: 8px;
+    border: 1px solid rgba(0, 0, 0, 0.02);
+    transition: all 0.2s ease-in-out;
+}
+
+.link-grid-ui li a .icon {
+    margin-right: 6px;
+    font-size: 1rem;
+    transition: transform 0.2s ease;
+}
+
+/* Hiệu ứng tương tác Hover */
+.link-grid-ui li a:hover {
+    background: var(--card-bg, #ffffff);
+    border-color: #4299e1;
+    box-shadow: 0 4px 12px rgba(66, 153, 225, 0.1);
+    transform: translateY(-1.5px);
+}
+
+.link-grid-ui li a:hover .icon {
+    transform: scale(1.2);
+}
+
+/* Tự động co về 1 cột trên màn hình điện thoại nhỏ */
+@media (max-width: 440px) {
+    .link-grid-ui {
+        grid-template-columns: 1fr;
+    }
+}

@@ -9,12 +9,15 @@
     <title>Workspace Tập Trung v3.0</title>
     <link rel="stylesheet" href="css/app.css">
     <link rel="stylesheet" href="css/main_app.css">
+    <link rel="stylesheet" href="css/moon.css">
     <script src="JS/learn_app.js" defer></script>
     <script src="JS/search.js" defer></script>
     <script src="JS/sayst.js"></script>
     <script src="JS/birthday.js"></script>
     <script src="JS/btday-fr.js" defer></script>
     <script src="JS/getData.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lunar-javascript/lunar.js"></script>
+    <script src="JS/moon.js" defer></script>
 <script>
     if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
@@ -50,7 +53,48 @@
             <p id="event_news">Lịch học hôm nay</p>
         </header>
 
-        <div class="pomodoro-timer">
+        <div class="pomodoro-timer tools-dashboard">
+            <h2>Công cụ thông minh</h2>
+            <p class="subtitle">Hệ sinh thái hỗ trợ học tập và quản lý cuộc sống của bạn:</p>
+            
+            <div class="tool-group">
+                <h3><span class="group-icon">📚</span> Học tập bứt phá</h3>
+                <ul class="link-grid-ui">
+                    <li><a href="#countdown-thptqg"><span class="icon">🎯</span> Đếm ngược THPTQG</a></li>
+                    <li><a href="#search-engine-tool"><span class="icon">🔍</span> Công cụ tìm kiếm</a></li>
+                    <li><a href="#pomodoro-timer-tool"><span class="icon">⏱️</span> Đồng hồ Pomodoro</a></li>
+                    <li><a href="#learing-tool"><span class="icon">📖</span> Công cụ học tập</a></li>
+                </ul>
+            </div>
+
+            <div class="tool-group">
+                <h3><span class="group-icon">🎮</span> Giải trí & Chill</h3>
+                <ul class="link-grid-ui">
+                    <li><a href="#cute-mess"><span class="icon">💬</span> Lời nhắc dễ thương</a></li>
+                    <li><a href="#new-feed"><span class="icon">📰</span> Tin tức mới nhất</a></li>
+                </ul>
+            </div>
+
+            <div class="tool-group">
+                <h3><span class="group-icon">⚙️</span> Tiện ích hằng ngày</h3>
+                <ul class="link-grid-ui">
+                    <li><a href="#to-do-list-tool"><span class="icon">✅</span> Việc cần làm</a></li>
+                    <li><a href="#moon-cal"><span class="icon">🌙</span> Lịch âm hôm nay</a></li>
+                    <li><a href="#birthday-section"><span class="icon">🎂</span> Sinh nhật sắp tới</a></li>
+                    <li><a href="#weather-tool"><span class="icon">☀️</span> Thời tiết hiện tại</a></li>
+                    <li><a href="#quick-note-tool"><span class="icon">📝</span> Ghi chú nhanh</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="pomodoro-timer" id="moon-cal">
+            <h2>Lịch âm</h2>
+            <h1 id="lunar-display-moondate">Ngày 1</h1>
+            <strong id="lunar-display-moondate-month">Tháng 1</strong>
+            <strong id="lunar-display-moondate-year">Năm 2000</strong>
+        </div>
+
+        <div class="pomodoro-timer" id="countdown-thptqg">
             <h2>Kỳ thi THPTQG năm 2027 sẽ bắt đầu sau:</h2>
             <h1 id="countdown">0 ngày</h1>
             <strong id="time-conut">00 giờ 00 phút 00 giây</strong>
@@ -58,7 +102,7 @@
             <button onclick="location.reload()">Tải lại</button>
         </div>
 
-        <div class="pomodoro-timer">
+        <div class="pomodoro-timer" id="search-engine-tool">
             <h1>Tìm kiếm nội dung</h1>
             <p>Mỗi 45 lượt tìm kiếm của bạn bằng Ecosia là 1 cái cây được trồng</p>
             <div class="todo-container">
@@ -74,21 +118,21 @@
             </select>
         </div>
 
-        <div class="pomodoro-timer">
+        <div class="pomodoro-timer" id="pomodoro-timer-tool">
             <h2>⏱️ Đồng Hồ Pomodoro</h2>
             <p id="timer-display">00:06</p>
             <button id="start-btn">Bắt đầu học</button>
             <button id="reset-btn">Đặt lại</button>
         </div>
 
-        <div class="pomodoro-timer">
+        <div class="pomodoro-timer" id="cute-mess">
             <h2 id="say-time" style="color: #4c51bf;">Chào bạn nhé</h2>
             <p id="talk" style="color: var(--text-muted); font-size: 1rem;"></p>
             <br>
             <h3 id="say-now" style="font-weight: 500; font-size: 1.1rem;"></h3>
         </div>
 
-        <div class="pomodoro-timer" style="text-align: left;">
+        <div class="pomodoro-timer" style="text-align: left;" id="learing-tool">
             <h2>Công cụ hỗ trợ học tập</h2>
             <p>Dưới đây là các công cụ tiện ích giúp bạn học tập hiệu quả hơn:</p>
             <ul style="margin-left: 10px; color: var(--text-muted); font-size: 0.95rem;">
@@ -100,7 +144,7 @@
             </ul>
         </div>
 
-        <div class="pomodoro-timer" style="text-align: left;">
+        <div class="pomodoro-timer" style="text-align: left;" id="learing-tip">
             <h2>💡 Mẹo học hiệu quả</h2>
             <ul style="margin-left: 10px; color: var(--text-muted); font-size: 0.95rem;">
                 <li style="margin-bottom: 5px;">Học hết mình trong phiên <b>25 phút</b> (màn hình sẽ khóa sáng).</li>
@@ -109,32 +153,35 @@
             </ul>
         </div>
 
-        <div class="pomodoro-timer input-birthdate" style="text-align: left;">
-            <h2>Nhập ngày tháng năm sinh bạn</h2>
-            <div class="todo-container">
-                <input type="date" id="birthdate">
-                <button id="btn-submit-birthdate">Xác nhận</button>
+        <section id="birthday-section">
+            <div class="pomodoro-timer input-birthdate" style="text-align: left;">
+                <h2>Nhập ngày tháng năm sinh bạn</h2>
+                <div class="todo-container">
+                    <input type="date" id="birthdate">
+                    <button id="btn-submit-birthdate">Xác nhận</button>
+                </div>
             </div>
-        </div>
 
-        <div class="pomodoro-timer count-birthdate">
-            <h2>Sinh nhật bạn:</h2>
-            <h1 id="countdown-birthdate">0 ngày</h1>
-            <strong id="time-conut-birthdate">00 giờ 00 phút 00 giây</strong>
-        </div>
-
-        <div class="pomodoro-timer">
-            <h2>🎂 Sinh nhật sắp tới</h2>
-            <input type="text" id="nameInput" placeholder="Tên bạn thân/ người thân/ crush/ idol...">
-            <p>---</p>
-            <div class="todo-container">
-                <input type="date" id="dateInput">
-                <button id="addBtn">Thêm</button>
+            <div class="pomodoro-timer count-birthdate">
+                <h2>Sinh nhật bạn:</h2>
+                <h1 id="countdown-birthdate">0 ngày</h1>
+                <strong id="time-conut-birthdate">00 giờ 00 phút 00 giây</strong>
             </div>
-            <ul id="birthdayListContainer" style="list-style: none; padding: 0;"></ul>
-        </div>
 
-        <div class="pomodoro-timer" style="text-align: left;">
+            <div class="pomodoro-timer">
+                <h2>🎂 Sinh nhật sắp tới</h2>
+                <input type="text" id="nameInput" placeholder="Tên bạn thân/ người thân/ crush/ idol...">
+                <p>---</p>
+                <div class="todo-container">
+                    <input type="date" id="dateInput">
+                    <button id="addBtn">Thêm</button>
+                </div>
+                <ul id="birthdayListContainer" style="list-style: none; padding: 0;"></ul>
+            </div>
+
+        </section>
+
+        <div class="pomodoro-timer" style="text-align: left;" id="new-feed">
             <h2>📢 Bản Tin Lớp Học</h2>
             <hr>
             <div class="news-container">
@@ -148,7 +195,7 @@
             <button onclick="window.open('https://khaosat.me/survey/6a302090a838d1cf4ff591e1')" style="margin-top: 15px; width: 100%;">Đăng bài</button>
         </div>
 
-        <div class="pomodoro-timer">
+        <div class="pomodoro-timer" id="to-do-list-tool">
             <h2>📝 Nhiệm Vụ Trong Tuần</h2>
             <div class="todo-container">
                 <input type="text" id="todo-input" placeholder="Thêm việc cần hoàn thành...">
@@ -157,12 +204,12 @@
             <ul id="todo-list" style="list-style-type: none; text-align: left;"></ul>
         </div>
 
-        <div class="pomodoro-timer">
+        <div class="pomodoro-timer" id="weather-tool">
             <h2>🌤️ Thời Tiết Hiện Tại</h2>
             <a class="weatherwidget-io" href="https://forecast7.com/en/21d03105d83/hanoi/" data-label_1="Ha Noi" data-label_2="Viet Nam" data-icons="Climacons Animated" data-theme="pure" data-basecolor="" >Ha Noi Viet Nam</a>
         </div>
 
-        <div class="pomodoro-timer">
+        <div class="pomodoro-timer" id="quick-note-tool" style="text-align: left;">
             <h2>💾 Ghi Chú Ý TƯỞNG Nhanh</h2>
             <textarea id="quick-note" placeholder="Ý tưởng vụt sáng? Ghi lại đây để không bị quên..."></textarea>
             <div style="margin-top: 10px;">

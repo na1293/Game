@@ -1,3 +1,7 @@
+html {
+    scroll-behavior: smooth; 
+}
+
 :root {
     --primary-gradient: linear-gradient(135deg, #4299e1, #667eea);
     --success-gradient: linear-gradient(135deg, #48bb78, #38a169);

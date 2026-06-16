@@ -214,7 +214,7 @@ function timesay() {
         document.getElementById("talk").innerHTML = "Bật nhạc nhẹ tập trung và giải quyết hết đống To-do list thôi!";
     } else if (hh == 23) {
         document.getElementById("say-time").innerHTML = "Sắp đến giờ ngủ 💤";
-        document.getElementById("talk").innerHTML = "Uống canxi, tắt thiết bị điện tử dần để chuẩn bị ngủ sớm tăng chiều cao nào!";
+        document.getElementById("talk").innerHTML = "Tắt thiết bị điện tử dần để chuẩn bị ngủ sớm tăng chiều cao nào!";
     }
 }
 timesay();
