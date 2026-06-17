@@ -72,7 +72,7 @@
             <div class="tool-group">
                 <h3><span class="group-icon">🎮</span> Giải trí & Chill</h3>
                 <ul class="link-grid-ui">
-                    <li><a href="#cute-mess"><span class="icon">💬</span> Lời nhắc dễ thương</a></li>
+                    <li><a href="#cute-mess"><span class="icon">💬</span> Lời nhắc từ hệ thống</a></li>
                     <li><a href="#new-feed"><span class="icon">📰</span> Tin tức mới nhất</a></li>
                 </ul>
             </div>
@@ -84,9 +84,15 @@
                     <li><a href="#moon-cal"><span class="icon">🌙</span> Lịch âm hôm nay</a></li>
                     <li><a href="#birthday-section"><span class="icon">🎂</span> Sinh nhật sắp tới</a></li>
                     <li><a href="#weather-tool"><span class="icon">☀️</span> Thời tiết hiện tại</a></li>
-                    <li><a href="#quick-note-tool"><span class="icon">📝</span> Ghi chú nhanh</a></li>
                 </ul>
             </div>
+        </div>
+
+        <div class="pomodoro-timer" id="pomodoro-timer-tool">
+            <h2>⏱️ Đồng Hồ Pomodoro</h2>
+            <p id="timer-display">00:06</p>
+            <button id="start-btn">Bắt đầu học</button>
+            <button id="reset-btn">Đặt lại</button>
         </div>
 
         <div class="pomodoro-timer" id="countdown-thptqg">
@@ -105,19 +111,21 @@
                 <button id="search-btn">Tìm kiếm</button>
             </div>
             <select id="search-tool" class="select_ui">
+                <option value="startpage.com">Startpage (Nên chọn) - Tìm kiếm chính xác cao và bảo mật cao</option>
                 <option value="google.com">Google - Tìm kiếm toàn cầu</option>
-                <option value="bing.com">Bing - Tìm kiếm cơ bản</option>
                 <option value="coccoc.com">Cốc Cốc - Made in Vietnam</option>
                 <option value="ecosia.org">Ecosia - Tìm kiếm và bảo vệ Môi trường</option>
-                <option value="duckduckgo.com">DuckDuckGo - Tìm kiếm riêng tư</option>
+                <option value="duckduckgo.com">DuckDuckGo - Tìm kiếm riêng tư và bảo mật</option>
             </select>
         </div>
 
-        <div class="pomodoro-timer" id="pomodoro-timer-tool">
-            <h2>⏱️ Đồng Hồ Pomodoro</h2>
-            <p id="timer-display">00:06</p>
-            <button id="start-btn">Bắt đầu học</button>
-            <button id="reset-btn">Đặt lại</button>
+        <div class="pomodoro-timer">
+            <h2>Chọn trình tìm kiếm nào?</h2>
+            <div class="can-le">
+                <p>Nếu bạn lo ngại việc Google liên tục <span class="highlight">theo dõi hành vi</span> — từ vị trí, từ khóa đến thói quen sinh hoạt của mình — thì <span class="highlight">Startpage</span> chính là giải pháp thay thế tốt nhất hiện nay.</p>
+                <p>Về bản chất, Startpage sử dụng chính hệ thống của Google nên mang lại chất lượng tìm kiếm chính xác <span class="highlight">tương đương</span>. Điểm khác biệt vượt trội là Startpage bảo mật thông tin cá nhân, đồng thời trả về kết quả <span class="highlight">trung lập và khách quan hơn</span>.</p>
+                <p>Ngoài ra, nếu bạn muốn bảo vệ môi trường, bạn có thể cân nhắc <span class="highlight">Ecosia</span>. Cứ mỗi <span class="highlight">45 lượt tìm kiếm</span> trung bình thì số tiền từ quảng cáo sẽ đủ cho Ecosia trích 80%-100% lợi nhuận <span class="highlight">trồng 1 cái cây</span>.</p>
+            </div>
         </div>
 
         <div class="pomodoro-timer" id="moon-cal">
@@ -144,15 +152,6 @@
                 <li style="margin-bottom: 5px;">Đề thi Anh: <span><a href="https://prepedu.com/vi/blog/de-thi-thpt-quoc-gia-mon-anh" target="_blank">Đề thi THPTQG Anh</a></span></li>
                 <li style="margin-bottom: 5px;">Đóng góp, đề xuất tính năng: <span><a href="https://khaosat.me/survey/6a2e1bae5d1e1843c8ef7545" target="_blank">Bắt đầu đóng góp</a></span></li>
                 <li style="margin-bottom: 5px;">Học tiếng Anh: <a href="https://quizlet.com/vn/1187779427/on-luyen-tieng-anh-flash-cards/?i=45dhif&x=1jqt">Thẻ từ vựng tiếng Anh</a></li>
-            </ul>
-        </div>
-
-        <div class="pomodoro-timer" style="text-align: left;" id="learing-tip">
-            <h2>💡 Mẹo học hiệu quả</h2>
-            <ul style="margin-left: 10px; color: var(--text-muted); font-size: 0.95rem;">
-                <li style="margin-bottom: 5px;">Học hết mình trong phiên <b>25 phút</b> (màn hình sẽ khóa sáng).</li>
-                <li style="margin-bottom: 5px;">Khi hết giờ, máy sẽ <b>rung 5 giây + kêu chuông</b> báo hiệu.</li>
-                <li style="margin-bottom: 5px;">Thoát Fullscreen lén lút khi chưa hết giờ sẽ bị nhắc nhở đó nhé!</li>
             </ul>
         </div>
 
@@ -210,15 +209,6 @@
         <div class="pomodoro-timer" id="weather-tool">
             <h2>🌤️ Thời Tiết Hiện Tại</h2>
             <a class="weatherwidget-io" href="https://forecast7.com/en/21d03105d83/hanoi/" data-label_1="Ha Noi" data-label_2="Viet Nam" data-icons="Climacons Animated" data-theme="pure" data-basecolor="" >Ha Noi Viet Nam</a>
-        </div>
-
-        <div class="pomodoro-timer" id="quick-note-tool" style="text-align: left;">
-            <h2>💾 Ghi Chú Ý TƯỞNG Nhanh</h2>
-            <textarea id="quick-note" placeholder="Ý tưởng vụt sáng? Ghi lại đây để không bị quên..."></textarea>
-            <div style="margin-top: 10px;">
-                <button onclick="localStorage.setItem('quickNote', document.getElementById('quick-note').value); alert('Ghi chú đã lưu thành công! 🎉');">Lưu Lại</button>
-                <button onclick="document.getElementById('quick-note').value = localStorage.getItem('quickNote') || '';">Tải Lên Cũ</button>
-            </div>
         </div>
 
         <footer>
