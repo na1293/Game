@@ -20,6 +20,7 @@
     <script src="JS/getData.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/lunar-javascript/lunar.js"></script>
     <script src="JS/moon.js" defer></script>
+    <script src="JS/data_read_brth.js" defer></script>
 <script>
     if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
@@ -178,6 +179,11 @@
                     <input type="date" id="dateInput">
                     <button id="addBtn">Thêm</button>
                 </div>
+                <div class="todo-container">
+                    <button id="import_data_brth">Nhập dữ liệu</button>
+                    <button id="export_data_brth">Xuất dữ liệu</button>
+                </div>
+                
                 <ul id="birthdayListContainer" style="list-style: none; padding: 0;"></ul>
             </div>
 
