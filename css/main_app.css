@@ -51,12 +51,6 @@ header h1 {
     margin-bottom: 8px;
 }
 
-#say {
-    font-style: italic;
-    font-size: 0.95rem;
-    opacity: 0.9;
-}
-
 hr {
     border: none;
     height: 1px;

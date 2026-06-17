@@ -10,7 +10,9 @@
     <link rel="stylesheet" href="css/app.css">
     <link rel="stylesheet" href="css/main_app.css">
     <link rel="stylesheet" href="css/moon.css">
+    <link rel="stylesheet" href="css/update.css">
     <script src="JS/learn_app.js" defer></script>
+    <script src="JS/notification.js" defer></script>
     <script src="JS/search.js" defer></script>
     <script src="JS/sayst.js"></script>
     <script src="JS/birthday.js"></script>
@@ -29,7 +31,7 @@
             // Chủ động kích hoạt kiểm tra bản mới ngay khi mở app
             reg.update(); 
         }).catch((err) => {
-            console.error('Đăng ký SW thất bại rồi bro:', err);
+            console.error('Đăng ký SW thất bại rồi:', err);
         });
     });
     }
@@ -48,9 +50,9 @@
     <div class="container" id="container">
         <header>
             <h1>Trạm Tập Trung Học Tập</h1>
-            <p id="say">Đang tải câu nói truyền cảm hứng...</p>
+            <h3 id="say">Đang tải câu nói truyền cảm hứng...</h3>
             <hr>
-            <p id="event_news">Lịch học hôm nay</p>
+            <strong id="event_news">Lịch học hôm nay</strong>
         </header>
 
         <div class="pomodoro-timer tools-dashboard">
@@ -87,13 +89,6 @@
             </div>
         </div>
 
-        <div class="pomodoro-timer" id="moon-cal">
-            <h2>Lịch âm</h2>
-            <h1 id="lunar-display-moondate">Ngày 1</h1>
-            <strong id="lunar-display-moondate-month">Tháng 1</strong>
-            <strong id="lunar-display-moondate-year">Năm 2000</strong>
-        </div>
-
         <div class="pomodoro-timer" id="countdown-thptqg">
             <h2>Kỳ thi THPTQG năm 2027 sẽ bắt đầu sau:</h2>
             <h1 id="countdown">0 ngày</h1>
@@ -125,6 +120,13 @@
             <button id="reset-btn">Đặt lại</button>
         </div>
 
+        <div class="pomodoro-timer" id="moon-cal">
+            <h2>Lịch âm</h2>
+            <h1 id="lunar-display-moondate">Ngày 1</h1>
+            <strong id="lunar-display-moondate-month">Tháng 1</strong>
+            <strong id="lunar-display-moondate-year">Năm 2000</strong>
+        </div>
+
         <div class="pomodoro-timer" id="cute-mess">
             <h2 id="say-time" style="color: #4c51bf;">Chào bạn nhé</h2>
             <p id="talk" style="color: var(--text-muted); font-size: 1rem;"></p>
@@ -141,6 +143,7 @@
                 <li style="margin-bottom: 5px;">Làm đề: <span><a href="https://www.onluyen.vn/" target="_blank">Ôn luyện</a></span></li>
                 <li style="margin-bottom: 5px;">Đề thi Anh: <span><a href="https://prepedu.com/vi/blog/de-thi-thpt-quoc-gia-mon-anh" target="_blank">Đề thi THPTQG Anh</a></span></li>
                 <li style="margin-bottom: 5px;">Đóng góp, đề xuất tính năng: <span><a href="https://khaosat.me/survey/6a2e1bae5d1e1843c8ef7545" target="_blank">Bắt đầu đóng góp</a></span></li>
+                <li style="margin-bottom: 5px;">Học tiếng Anh: <a href="https://quizlet.com/vn/1187779427/on-luyen-tieng-anh-flash-cards/?i=45dhif&x=1jqt">Thẻ từ vựng tiếng Anh</a></li>
             </ul>
         </div>
 
