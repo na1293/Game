@@ -1,73 +1,80 @@
 // === Chuyên phụ trách đọc và xuất data === //
 
+// Sinh nhật
 let export_data_brth = document.getElementById("export_data_brth");
 let import_data_brth = document.getElementById("import_data_brth");
 
-// === 1. XỬ LÝ EXPORT (TẢI FILE .JSON VỀ MÁY) ===
-export_data_brth.addEventListener("click", () => {
-    const localData = localStorage.getItem("myBirthdays");
+// Todo-list
+let export_btn_todo = document.getElementById("export-btn-todo");
+let import_btn_todo = document.getElementById("import-btn-todo");
+
+
+// ==========================================
+// THỦ THUẬT DÙNG CHUNG (TỐI ƯU CODE)
+// ==========================================
+
+// 1. Hàm Export dùng chung
+
+/* 
+storageKey: Tên ngăn chứa dữ liệu
+defaultFileName: Tên
+emptyAlertMessage: Mẫu tin nhắn
+*/
+
+function exportLocalStorage(storageKey, defaultFileName, emptyAlertMessage) {
+    const localData = localStorage.getItem(storageKey);
     
     if (!localData || JSON.parse(localData).length === 0) {
-        alert("Chưa có dữ liệu sinh nhật nào để xuất file hết á! 😗");
+        alert(emptyAlertMessage);
         return;
     }
     
-    // Tạo một Blob chứa dữ liệu JSON (định dạng đẹp với thụt lề 2 dấu cách)
     const formattedJson = JSON.stringify(JSON.parse(localData), null, 2);
     const blob = new Blob([formattedJson], { type: "application/json" });
-    
-    // Tạo link ảo để download file
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = "my_birthdays_backup.json"; // Tên file khi tải về
+    a.download = defaultFileName;
     
-    // Kích hoạt click ẩn để tải xuống và dọn dẹp bộ nhớ
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
-});
+}
 
-// === 2. XỬ LÝ IMPORT (BẤM CHỌN FILE .JSON TỪ MÁY) ===
-import_data_brth.addEventListener("click", () => {
-    // Tạo một thẻ input file "vô hình" để mở cửa sổ chọn file
+// 2. Hàm Import dùng chung
+function importLocalStorage(storageKey, compareKeys = []) {
     const fileInput = document.createElement("input");
     fileInput.type = "file";
-    fileInput.accept = ".json"; // Chỉ cho phép chọn file .json nha ba
+    fileInput.accept = ".json";
 
-    // Lắng nghe sự kiện khi user đã chọn file xong
     fileInput.addEventListener("change", (event) => {
         const file = event.target.files[0];
-        if (!file) return; // User không chọn gì mà tắt đi
+        if (!file) return;
 
         const reader = new FileReader();
         
-        // Khi đọc file hoàn tất thì xử lý logic dữ liệu
         reader.onload = (e) => {
             try {
                 const fileContent = e.target.result;
                 let importedList = JSON.parse(fileContent);
                 
-                // Kiểm tra định dạng mảng (Array)
                 if (!Array.isArray(importedList)) {
                     throw new Error("Cấu trúc file JSON phải là một danh sách");
                 }
 
-                // Lấy data cũ từ Local
-                let currentLocalData = localStorage.getItem("myBirthdays");
+                let currentLocalData = localStorage.getItem(storageKey);
                 let currentList = currentLocalData ? JSON.parse(currentLocalData) : [];
 
-                // Chỉ lấy tối đa 20 phần tử đầu tiên từ file import đúng yêu cầu
+                // Chỉ lấy tối đa 20 phần tử đầu tiên từ file import
                 let slicedImportedList = importedList.slice(0, 20);
-
                 let countAdded = 0;
 
-                // Kiểm tra trùng khớp
                 slicedImportedList.forEach(newItem => {
-                    const isDuplicate = currentList.some(
-                        oldItem => oldItem.name === newItem.name && oldItem.date === newItem.date
-                    );
+                    // Check trùng dựa trên các trường truyền vào (ví dụ: name, date hoặc text)
+                    const isDuplicate = currentList.some(oldItem => {
+                        return compareKeys.every(key => oldItem[key] === newItem[key]);
+                    });
 
                     if (!isDuplicate) {
                         currentList.push(newItem);
@@ -75,13 +82,12 @@ import_data_brth.addEventListener("click", () => {
                     }
                 });
 
-                // Cập nhật lại LocalStorage
                 if (countAdded > 0) {
-                    localStorage.setItem("myBirthdays", JSON.stringify(currentList));
+                    localStorage.setItem(storageKey, JSON.stringify(currentList));
                     alert(`Nhập thành công!`);
                     window.location.reload();
                 } else {
-                    alert("Lỗi trùng lặp file. Có vẻ bạn đã tải file tương tự.");
+                    alert("Lỗi trùng lặp dữ liệu hoặc không có gì mới để thêm.");
                 }
 
             } catch (error) {
@@ -89,10 +95,31 @@ import_data_brth.addEventListener("click", () => {
             }
         };
 
-        // Kích hoạt đọc file dưới dạng text
         reader.readAsText(file);
     });
 
-    // Kích hoạt click để mở hộp thoại chọn file của hệ điều hành
     fileInput.click();
+}
+
+
+// ==========================================
+// GÁN SỰ KIỆN KÍCH HOẠT
+// ==========================================
+
+// --- MÔN SINH NHẬT ---
+export_data_brth.addEventListener("click", () => {
+    exportLocalStorage("myBirthdays", "my_birthdays_backup.json", "Không có dữ liệu sinh nhật");
+});
+
+import_data_brth.addEventListener("click", () => {
+    // Check trùng dựa trên cả 'name' và 'date'
+    importLocalStorage("myBirthdays", ["name", "date"]); 
+});
+
+export_btn_todo.addEventListener("click", () => {
+    exportLocalStorage("todos", "my_todos_backup.json", "To-do list trống");
+});
+
+import_btn_todo.addEventListener("click", () => {
+    importLocalStorage("todos", ["text"]); 
 });

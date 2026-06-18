@@ -33,34 +33,3 @@ button, a, input, select {
     margin-right: 20px;
 }
 
-.can-le {
-    background-color: var(--card-bg); /* Ăn theo màu trắng của App */
-    padding: 25px 20px;
-    border-radius: 20px; /* Bo góc 20px đồng bộ với các card khác */
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
-    margin-bottom: 25px;
-    border: 1px solid rgba(0, 0, 0, 0.01);
-    text-align: justify; /* Căn lề đều 2 bên thẳng tắp */
-}
-
-/* Định dạng khoảng cách giữa các đoạn văn */
-.can-le p {
-    margin-bottom: 15px;
-    font-size: 0.95rem;
-    line-height: 1.6;
-    color: var(--text-color);
-}
-
-/* Đoạn cuối cùng không cần khoảng cách dưới */
-.can-le p:last-child {
-    margin-bottom: 0;
-}
-
-/* Hiệu ứng đánh dòng màu vàng (Highlight) mềm mại, không chói mắt */
-.can-le .highlight {
-    background-color: #fef08a; /* Màu vàng pastel hiện đại */
-    padding: 2px 6px;
-    border-radius: 6px; /* Bo nhẹ góc của nét highlight nhìn cho mượt */
-    font-weight: 600;
-    color: #1a202c;
-}
