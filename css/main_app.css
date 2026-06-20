@@ -191,10 +191,8 @@ button:active {
 }
 
 /* Nút chế độ tối giản nổi ở góc */
-#btn-sleep {
+#btn-sleep, #move-home {
     position: fixed;
-    bottom: 25px;
-    right: 25px;
     z-index: 99;
     background: #1a202c;
     color: white;
@@ -202,6 +200,25 @@ button:active {
     padding: 12px 20px;
     font-size: 0.9rem;
     box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+}
+
+#btn-sleep {
+    bottom: 25px;
+    right: 25px;
+}
+
+#move-home{   
+    bottom: 75px;
+    right: 60px;
+
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s, visibility 0.3s;
+}
+
+#move-home.show {
+    opacity: 1;
+    visibility: visible;
 }
 
 /* --- MÀN HÌNH TỐI GIẢN CHUẨN ĐỒNG HỒ APPLE (AOD) --- */

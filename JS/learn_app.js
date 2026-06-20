@@ -117,14 +117,28 @@ function startTimer() {
             let remainingTimeMs = endTime - Date.now();
             timeLeft = Math.ceil(remainingTimeMs / 1000);
 
-            if (timeLeft <= 0) {
-                clearInterval(timer);
-                timeLeft = 0;
-                timerDisplay.textContent = formatTime(timeLeft)
+        if (timeLeft <= 0) {
+            clearInterval(timer);
+            timeLeft = 0;
+            timerDisplay.textContent = formatTime(timeLeft);
 
-                playAlarmSound(); 
-                setTimeout(() => { resetTimer(); }, 500);
+            // 🍅 TỰ ĐỘNG CỘNG CÀ CHUA KHI HẾT 25 PHÚT
+            console.log("🎯 Đã hoàn thành 25 phút học tập! Tự động cộng 1 quả cà chua.");
+            if (typeof tomato_now === "function") {
+                tomato_now(); 
             } else {
+                // Dự phòng nếu không gọi được hàm bên file tomato_month.js
+                let count = parseInt(localStorage.getItem('tomato_count')) || 0;
+                count += 1;
+                localStorage.setItem('tomato_count', count);
+                if(typeof tomato_count_backend !== 'undefined') tomato_count_backend = count;
+                const displayElement = document.getElementById("tomato-count");
+                if (displayElement) displayElement.innerHTML = `${count}/10`;
+            }
+
+            playAlarmSound(); 
+            setTimeout(() => { resetTimer(); }, 500);
+        } else {
                 timerDisplay.textContent = formatTime(timeLeft);
             }
         }, 1000);
@@ -299,16 +313,14 @@ document.addEventListener('visibilitychange', () => {
 
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.addEventListener('message', (event) => {
-    // Trường hợp 1: Hết giờ khi tab vẫn còn thức ngầm (Android thường xuyên giữ được luồng này)
+    // Trường hợp 1: Hết giờ khi tab vẫn còn thức ngầm
     if (event.data.type === 'ALARM_TRIGGER') {
       console.log("Nhận lệnh nổ chuông từ Service Worker!");
       playAlarmSound();
     }
     
-    // Trường hợp 2: Ép nổ chuông khi user click thông báo màn hình khóa (Cứu cánh tuyệt đối cho iOS)
+    // Trường hợp 2: Ép nổ chuông khi user click thông báo màn hình khóa
     if (event.data.type === 'ALARM_TRIGGER_FORCE') {
-      console.log("User đã click Notification! Phá vỡ rào cản bảo mật, nổ chuông!");
-      
       // Đưa đồng hồ giao diện về 00:00
       timeLeft = 0;
       timerDisplay.textContent = formatTime(timeLeft);
@@ -330,20 +342,21 @@ document.addEventListener('visibilitychange', () => {
         let remainingTimeMs = endTime - Date.now();
         
         if (remainingTimeMs <= 0) {
-            // Đồng hồ đã hết giờ trong lúc bạn đang lơ đãng ở tab tra cứu dữ liệu khác!
+           
             clearInterval(timer);
             
-            // Tính số phút bạn đã học vượt/học lố
             let overdueSeconds = Math.abs(Math.ceil(remainingTimeMs / 1000));
             let overdueMinutes = (overdueSeconds / 60).toFixed(1); 
             
             timeLeft = 0;
             timerDisplay.textContent = formatTime(timeLeft);
             
-            // Hiện thông báo khích lệ chuẩn gu tập trung cao độ
-            alert(`🎉 Bạn đã học chăm chỉ vượt ${overdueMinutes} phút rồi đó! Đứng dậy đi chơi thôi!`);
-            
-            // Đồng thời kích hoạt nhạc chuông báo thức giải tỏa áp lực
+            if (overdueMinutes >= 90) {
+                alert(`Có vẻ bạn đã bỏ lỡ đồng hồ suốt ${overdueMinutes}`)
+            } else {
+                alert(`Bạn đã học chăm chỉ vượt ${overdueMinutes} phút rồi đó!`);
+            }
+
             playAlarmSound();
             setTimeout(() => { resetTimer(); }, 500);
         } else {
@@ -353,3 +366,27 @@ document.addEventListener('visibilitychange', () => {
         }
     }
 });
+
+function moveHome() {
+    const myButton = document.getElementById('move-home');
+
+    // Theo dõi sự kiện cuộn trang
+    window.addEventListener('scroll', () => {
+        // Nếu cuộn quá 500px thì hiện nút, ngược lại thì ẩn
+        if (window.scrollY > 500) {
+            myButton.classList.add('show');
+        } else {
+            myButton.classList.remove('show');
+        }
+    });
+
+    // Chức năng cuộn mượt lên trên khi bấm vào nút
+    myButton.addEventListener('click', () => {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    });
+}
+
+moveHome()

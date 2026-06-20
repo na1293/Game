@@ -53,4 +53,9 @@ let cau_noi_hay = [
     "Nếu muốn ngồi ở nơi không ai ngồi được, thì phải chịu được những cảm giác không ai chịu được. - Sơn Tùng M-TP (Đã sửa lại)",
     "Dù có bị từ chối 100 lần, tôi vẫn sẽ tiếp tục thử lần thứ 101. Tôi chưa bao giờ từ bỏ ước mơ diễn xuất, ngay cả trong những lúc khó khăn nhất. - Byeon Woo Seok (Nam diễn viên Hàn Quốc từng bị từ chối 100 lần suốt 9 năm trước khi nổi tiếng)",
     "Bạn không cần phải hoàn hảo để được yêu thương. Chỉ cần là chính mình, với tất cả những khiếm khuyết, bạn đã là một phiên bản tuyệt vời nhất rồi - IU (Nữ hoàng K-pop)",
+    "Người duy nhất tôi cần phải vượt qua chính là bản thân tôi của ngày hôm qua. - G-Dragon",
+    "Tôi đã làm được, bạn cũng có thể làm được. - H'Hen Niê",
+    "Tôi luôn muốn thể hiện những khía cạnh khác nhau của bản thân. - Kim Bum",
+    "Phát ngôn ra một lời nói rất dễ, nhưng biết khi nào cần im lặng để lắng nghe, để thấu hiểu và để không gây tổn thương cho người khác lại là bài học lớn nhất của một đời người. - Ernest Hemingway",
+    "Tuổi tác thật sự của một con người không đo bằng số năm họ sống trên đời, mà đo bằng ngọn lửa nhiệt huyết và lý tưởng trong trái tim họ. - Gabriel García Márquez"
 ];
