@@ -202,20 +202,27 @@ button:active {
     box-shadow: 0 10px 20px rgba(0,0,0,0.15);
 }
 
-#btn-sleep {
-    bottom: 25px;
-    right: 25px;
+/* Vẫn giữ nguyên độ cao để 2 nút thẳng hàng ngang */
+#btn-sleep, #move-home {
+    position: fixed; 
+    bottom: 25px;    
 }
 
-#move-home{   
-    bottom: 75px;
-    right: 60px;
+/* Nút Sleep chuyển sang bên TRÁI */
+#btn-sleep {
+    left: 25px;
+}
+
+/* Nút Home chuyển sang bên PHẢI */
+#move-home {   
+    right: 25px; /* Đổi thành right để qua bên phải */
 
     opacity: 0;
     visibility: hidden;
     transition: opacity 0.3s, visibility 0.3s;
 }
 
+/* Hiện nút Home khi có class .show */
 #move-home.show {
     opacity: 1;
     visibility: visible;
