@@ -390,3 +390,10 @@ function moveHome() {
 }
 
 moveHome()
+
+console.log(
+  '%c⚠ CẢNH BÁO QUAN TRỌNG!\n%cBạn không nên vào đây để chỉnh sửa hệ thống vì mục đích ứng dụng là tốt cho bạn. Việc chỉnh sửa có thể dẫn đến sai lệch kết quả cuối năm.\n\n%cBạn có thể tham khảo ToS.', 
+  'color: red; font-size: 30px; font-weight: bold;', // Style dòng tiêu đề
+  'color: red; font-size: 16px;',                   // Style dòng nội dung chính
+  'color: gray; font-size: 12px; font-style: italic; text-decoration: underline;' // Style dòng ToS
+);

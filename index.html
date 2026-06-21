@@ -67,10 +67,10 @@
                 <h3><span class="group-icon">📚</span> Học tập bứt phá</h3>
                 <ul class="link-grid-ui">
                     <li><a href="#pomodoro-timer-tool"><span class="icon">⏱️</span> Đồng hồ Pomodoro</a></li>
+                    <li><a href="#pomodoro-happy"><span class="icon">🍅</span>Trồng cà chua</a></li>
                     <li><a href="#countdown-thptqg"><span class="icon">🎯</span> Đếm ngược THPTQG</a></li>
                     <li><a href="#search-engine-tool"><span class="icon">🔍</span> Công cụ tìm kiếm</a></li>
                     <li><a href="#learing-tool"><span class="icon">📖</span> Công cụ học tập</a></li>
-                    <li><a href="#pomodoro-happy"><span class="icon">🍅</span>Xem cà chua</a></li>
                 </ul>
             </div>
 
@@ -112,7 +112,7 @@
                         
             <div class="pomodoro-timer" id="pomodoro-happy">
                 <h2>Bạn đã hái được bao cà chua?</h2>
-                <h1 id="tomato-count" style="color: tomato; font-size: 4vw; margin-bottom: 5px;">0/10</h1>
+                <h1 id="tomato-count" style="color: tomato; font-size: clamp(2.5rem, 12vw, 8rem); font-size: clamp(2.5rem, 10vmax, 7rem); margin-bottom: 5px; text-align: center; line-height: 1.1;">0/10</h1>
                 
                 <div style="margin-bottom: 15px; font-size: 0.95rem; color: #4a5568; line-height: 1.5;">
                     <div>🍅 Giá hôm nay: <strong style="color: #e53e3e;"><span id="tomato-price-display">Đang tải...</span></strong></div>
@@ -120,6 +120,7 @@
                 </div>
 
                 <button id="sell-anytime-btn" onclick="sellTomatoesAnytime()" style="background: var(--success-gradient); margin-top: 10px;">Bán cà chua lấy xu 💰</button>
+                <button onclick="alert('Chứ mỗi 25p học liên tục (Mà không thoát app) thì bạn sẽ nhận 1 cà chua.')">Cách lấy cà chua</button>
             </div>
 
             <div class="pomodoro-timer" id="search-engine-tool">

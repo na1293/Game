@@ -57,5 +57,19 @@ let cau_noi_hay = [
     "Tôi đã làm được, bạn cũng có thể làm được. - H'Hen Niê",
     "Tôi luôn muốn thể hiện những khía cạnh khác nhau của bản thân. - Kim Bum",
     "Phát ngôn ra một lời nói rất dễ, nhưng biết khi nào cần im lặng để lắng nghe, để thấu hiểu và để không gây tổn thương cho người khác lại là bài học lớn nhất của một đời người. - Ernest Hemingway",
-    "Tuổi tác thật sự của một con người không đo bằng số năm họ sống trên đời, mà đo bằng ngọn lửa nhiệt huyết và lý tưởng trong trái tim họ. - Gabriel García Márquez"
+    "Tuổi tác thật sự của một con người không đo bằng số năm họ sống trên đời, mà đo bằng ngọn lửa nhiệt huyết và lý tưởng trong trái tim họ. - Gabriel García Márquez",
+    "Cách tốt nhất để bắt đầu là ngừng nói và hãy bắt tay vào làm - Walt Disney",
+    "Bạn không cần phải giỏi mới được bắt đầu, nhưng bạn phải bắt đầu thì mới giỏi được. - Zig Ziglar",
+    "Cuộc sống không phải là chờ đợi cơn bão đi qua, mà là học cách nhảy múa trong mưa - Vivian Greene",
+    "Trưởng thành là khi ta nhận ra, thế giới này không xoay quanh mình, và cũng chẳng có ai thực sự đứng đợi ta ở cuối con đường - Ai đó",
+    "Dù có chuyện gì xảy ra đi chăng nữa, tôi vẫn luôn tin rằng bản thân mình đã làm hết sức có thể. Nếu kết quả không như ý, thì ít nhất tôi cũng không có gì phải hối tiếc vì đã không buông bỏ - Lee Dong-wook",
+    "Hãy cứ chậm lại một chút. Thế giới này vận hành quá nhanh, nhưng điều đó không có nghĩa là bạn cũng phải vội vã đánh mất bản thân mình. - Lee Dong-wook",
+    "Việc chăm sóc bản thân không chỉ là vẻ bề ngoài, đó là cách bạn tôn trọng chính hành trình mình đang đi. - Kim Bum",
+    "Hạnh phúc không phải là thứ bạn phải đạt được. Bạn có thể cảm thấy hạnh phúc ngay trong quá trình tiến đến mục tiêu của mình - Kim Nam Joon (RM của BTS)",
+    "Khi bạn gặp phải khó khăn, hãy biến nó thành động lực. Đừng bao giờ chọn con đường dễ dàng nhất, hãy chọn con đường giúp bạn học hỏi được nhiều nhất. - Elon Musk",
+    "FACT: Một ngày não bộ của bạn tạo ra khoảng 70.000 suy nghĩ. Nếu bạn dùng suy nghĩ đó để làm việc thay vì chỉ lo âu, bạn đã có thể làm được khối việc rồi!",
+    "Your best is enough - Corgi",
+    "Hãy tự viết lên câu nói của bạn - App Học Tập",
+    "Hãy nói theo cách riêng của bạn - Viettel",
+    
 ];
