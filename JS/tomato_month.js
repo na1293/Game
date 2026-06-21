@@ -27,7 +27,7 @@ function updateTomatoUI() {
     if (coinsDisplay) coinsDisplay.innerText = `${currentCoins} xu`;
 }
 
-// 🌟 Hàm lấy giá mới nhất từ Server công khai ban đầu
+// 🌟 Hàm lấy giá mới nhất từ Server
 async function fetchLatestPriceFromServer() {
     try {
         const sheetRes = await fetch(URL_TOMATO_SCRIPT);
@@ -36,7 +36,7 @@ async function fetchLatestPriceFromServer() {
             tomatoPrice = parseInt(sheetData.gia_ca_chua);
             console.log(`🔄 Đồng bộ giá từ Server thành công: ${tomatoPrice} xu`);
         } else {
-            tomatoPrice = 0; // Giá dự phòng nếu server lỗi cấu trúc dữ liệu
+            tomatoPrice = 12; // Giá dự phòng nếu server lỗi cấu trúc dữ liệu
         }
     } catch (e) {
         console.warn("⚠️ Không kết nối được server, dùng dữ liệu dự phòng:", e);
@@ -46,22 +46,41 @@ async function fetchLatestPriceFromServer() {
     updateTomatoUI();
 }
 
-// 💰 Bán bất cứ lúc nào
+// 💰 Bán bất cứ lúc nào (Đã thắt chặt bảo mật - Kiểm tra giá tươi lần 2)
 async function sellTomatoesAnytime() {
     if (tomato_count_backend <= 0) {
         alert("🍅 Bạn chưa có quả cà chua nào trong kho để bán hết á sốp!");
         return;
     }
 
-    // Nếu lúc bấm nút mà vì lý do nào đó vẫn đang tải, bắt hệ thống đợi fetch xong
-    if (tomatoPrice === null) {
-        const priceDisplay = document.getElementById("tomato-price-display");
-        if (priceDisplay) priceDisplay.innerHTML = "Đang kiểm tra giá...";
-        await fetchLatestPriceFromServer();
+    // 1. Lấy tham chiếu đến nút bấm
+    const sellBtn = document.getElementById("sell-anytime-btn");
+    
+    // 2. Vô hiệu hóa nút (Ẩn tính năng click) và báo trạng thái
+    if (sellBtn) {
+        sellBtn.disabled = true;
+        sellBtn.innerText = "⏳ Đang check giá...";
+        sellBtn.style.opacity = "0.6";
+        sellBtn.style.cursor = "not-allowed";
+    }
+
+    // 3. Thực hiện fetch giá tươi lần 2 từ server
+    await fetchLatestPriceFromServer();
+    
+    // 4. Mở lại nút (Hiện lại) sau khi đã có giá
+    if (sellBtn) {
+        sellBtn.disabled = false;
+        sellBtn.innerText = "Bán cà chua lấy xu 💰";
+        sellBtn.style.opacity = "1";
+        sellBtn.style.cursor = "pointer";
     }
     
-    const confirmSell = confirm(`Bạn đang có ${tomato_count_backend} quả cà chua. Bạn có muốn bán với giá ${tomatoPrice} xu/quả không?`);
-    if (!confirmSell) return;
+    // 5. Hiện Pop-up xác nhận sau khi giá đã chuẩn
+    const confirmSell = confirm(`Giá thị trường cập nhật ngay lúc này là: ${tomatoPrice} xu/quả.\nBạn đang có ${tomato_count_backend} quả cà chua. Bạn có muốn bán không?`);
+    if (!confirmSell) {
+        updateTomatoUI();
+        return;
+    }
 
     let coins = parseInt(localStorage.getItem('user_coins')) || 0;
     const totalEarnings = tomato_count_backend * tomatoPrice;
@@ -79,7 +98,6 @@ async function sellTomatoesAnytime() {
 // 1. Đồng bộ thời gian server quốc tế + Tự động Fetch giá ngay lập tức khi load trang
 async function initTomatoSystem() {
     try {
-        // Đồng bộ thời gian thực chống đổi giờ máy user
         const timeRes = await fetch('https://worldtimeapi.org/api/ip');
         const timeData = await timeRes.json();
         timeOffset = new Date(timeData.datetime).getTime() - Date.now();
@@ -88,7 +106,7 @@ async function initTomatoSystem() {
         console.warn("⚠️ Lỗi đồng bộ thời gian:", e);
     }
 
-    // Tự động chạy fetch giá luôn không cần đợi trigger gì hết
+    // Tự động chạy fetch giá luôn khi tải trang lần 1
     await fetchLatestPriceFromServer();
     checkMonthlyReset();
 }
@@ -225,8 +243,6 @@ function executeAdminCommand(command) {
             tomato_count_backend = value;
             localStorage.setItem('tomato_count', tomato_count_backend);
             updateTomatoUI();
-            
-            console.log("⚡ Admin Mode: Cập nhật số lượng thành công!");
             return true;
         }
     }
@@ -235,10 +251,7 @@ function executeAdminCommand(command) {
 
 // Khởi chạy hệ thống lắng nghe
 document.addEventListener('DOMContentLoaded', () => {
-    // Gọi updateUI trước để lấy tạm số lượng cà chua và số xu cũ trong localStorage ra màn hình
     updateTomatoUI();
-    
-    // Kích hoạt tiến trình đồng bộ ngầm với Server
     initTomatoSystem();
 
     const searchInput = document.getElementById('search-input');
