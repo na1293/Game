@@ -1,4 +1,4 @@
-const URL_TOMATO_SCRIPT = "https://script.google.com/macros/s/AKfycbwa228QiCr-lyJXIQPfDPReAg--8plwRT0EM8KJwvNFLK1iw6BGbI1M0TmDy2wyDyY3/exec";
+const URL_TOMATO_SCRIPT = "https://calm-wildflower-6232.namhai456n.workers.dev/";
 
 let tomato_count_backend = parseInt(localStorage.getItem('tomato_count')) || 0;
 let lastClickTime = 0;
@@ -36,7 +36,7 @@ async function fetchLatestPriceFromServer() {
             tomatoPrice = parseInt(sheetData.gia_ca_chua);
             console.log(`🔄 Đồng bộ giá từ Server thành công: ${tomatoPrice} xu`);
         } else {
-            tomatoPrice = 12; // Giá dự phòng nếu server lỗi cấu trúc dữ liệu
+            tomatoPrice = 0; // Giá dự phòng nếu server lỗi cấu trúc dữ liệu
         }
     } catch (e) {
         console.warn("⚠️ Không kết nối được server, dùng dữ liệu dự phòng:", e);

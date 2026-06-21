@@ -1,8 +1,7 @@
-const URL_NEWS_SCRIPT = "https://script.google.com/macros/s/AKfycbwa228QiCr-lyJXIQPfDPReAg--8plwRT0EM8KJwvNFLK1iw6BGbI1M0TmDy2wyDyY3/exec";
+const URL_NEWS_SCRIPT = "https://calm-wildflower-6232.namhai456n.workers.dev/";
 
 async function getNewsData() {
     try {
-        
         const response = await fetch(URL_NEWS_SCRIPT);
         if (!response.ok) {
             throw new Error(`Lỗi kết nối Server: ${response.status}`);
