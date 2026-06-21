@@ -6,7 +6,7 @@ let event_news = document.getElementById("event_news");
 
 let timer;
 let isRunning = false;
-let timeLeft = 0.1 * 60; 
+let timeLeft = 25 * 60; 
 let sayst = cau_noi_hay; // Tải câu nói từ file sayst.js vào biến sayst để sử dụng trong app.js
 let endTime; // Mốc thời gian kết thúc
 
