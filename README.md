@@ -1,1 +1,11 @@
-"# Game" 
+# Giới thiệu các file:
+- birthday.js: Đếm ngược sinh nhật bạn
+- btday-fr.js: Đếm ngược sinh nhật bạn bè dạng to-do
+- data_read_brth.js: Xuất và đọc dữ liệu chung dạng JSON
+- learn_app.js: Xử lý logic chính
+- getData.js: Lấy dữ liệu từ máy chủ
+- music.js: Xử lý sự kiện nhạc
+- moon.js: Xử lý sự kiện lịch âm
+- sayst.js: Những câu nói
+- search.js: Xử lý search
+- tomato_month.js: Phần game hóa lấy dữ liệu giá cà chua, nhận/ bán cà chua và update UI cà chua

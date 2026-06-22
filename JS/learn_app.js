@@ -44,6 +44,9 @@ function playAlarmSound() {
         navigator.vibrate(5000); 
     }
 
+    // không bị ảnh hưởng bởi các lệnh hạ volume ẩn trước đó.
+    alarmAudio.volume = 1.0; 
+
     // 2. Phát âm thanh đã được unlock sẵn
     try {
         alarmAudio.play().catch(e => {
@@ -125,7 +128,8 @@ function startTimer() {
             // 🍅 TỰ ĐỘNG CỘNG CÀ CHUA KHI HẾT 25 PHÚT
             console.log("🎯 Đã hoàn thành 25 phút học tập! Tự động cộng 1 quả cà chua.");
             if (typeof tomato_now === "function") {
-                tomato_now(); 
+                stopsound(); // Dừng âm thanh
+                tomato_now(); // Thưởng cà chua
             } else {
                 // Dự phòng nếu không gọi được hàm bên file tomato_month.js
                 let count = parseInt(localStorage.getItem('tomato_count')) || 0;
@@ -245,54 +249,87 @@ function nghi_ngoi() {
         }, 50);
     }).catch(e => console.log("Unlock audio lỗi ở chế độ tối giản:", e));
 
-    let settime = prompt("Bạn muốn học/nghỉ ở chế độ tối giản bao nhiêu phút?");
+    let settime = prompt("Bạn muốn học/nghỉ ở chế độ tối giản bao nhiêu phút?\nBạn có thể đặt giờ học từ 25-50 phút để nhận cà chua\n\nNgoài ra, việc nghỉ ngơi từ 5-15p cũng rất tốt (Miễn là không sử dụng thiết bị điện tử)");
     if (!settime) return;
+
+    let minutesStudied = parseFloat(settime);
+    if (isNaN(minutesStudied) || minutesStudied <= 0) {
+        alert("Vui lòng nhập số phút hợp lệ!");
+        return;
+    }
+
+    // ⛔ KIỂM TRA CHỐNG TREO MÁY NGAY TỪ ĐẦU
+    if (minutesStudied >= 240) {
+        alert("Hệ thống phát hiện thời gian quá dài (treo máy)! Phiên này sẽ KHÔNG được tính cà chua.");
+    } else if (minutesStudied >= 25) {
+        alert("Chế độ học trồng cà chua! Hãy tập trung cao độ để nhận 1 🍅 khi hết giờ.");
+    } else {
+        alert("Thời gian học ngắn quá (< 25 phút), chế độ tối giản này sẽ không tính cà chua nhé!");
+    }
     
-    let timeInMs = parseFloat(settime) * 60 * 1000; 
+    let timeInMs = minutesStudied * 60 * 1000; 
     let endTime = Date.now() + timeInMs; 
 
-    if (!(settime > 65 || settime <= 0)) {
-        if (!isNaN(timeInMs) && timeInMs > 0) {
-            alert(`Đã thiết lập! Gặp lại bạn sau ${settime} phút.`);
-            document.getElementById("AOD").style.color = "#fff";
-            document.getElementById("AOD").style.display = "flex";
-            document.getElementById("container").style.display = "none";
-            requestWakeLock();
+    if (minutesStudied > 0 && minutesStudied <= 600) { 
+        alert(`Đã thiết lập! Gặp lại bạn sau ${settime} phút.`);
+        playsoundsth();
+        document.getElementById("AOD").style.color = "#fff";
+        document.getElementById("AOD").style.display = "flex";
+        document.getElementById("container").style.display = "none";
+        requestWakeLock();
 
-            if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
-                navigator.serviceWorker.controller.postMessage({
-                    type: 'START_POMODORO',
-                    endTime: endTime
-                });
-            }
+        if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
+            navigator.serviceWorker.controller.postMessage({
+                type: 'START_POMODORO',
+                endTime: endTime
+            });
+        }
 
-            if (countdownInterval) clearInterval(countdownInterval);
+        if (countdownInterval) clearInterval(countdownInterval);
 
-            countdownInterval = setInterval(() => {
-                let remainingTime = endTime - Date.now();
-                if (remainingTime <= 0) {
-                    clearInterval(countdownInterval);
-                    document.getElementById("time-count-set").innerHTML = "00:00:00"; 
+        countdownInterval = setInterval(() => {
+            let remainingTime = endTime - Date.now();
+            if (remainingTime <= 0) {
+                clearInterval(countdownInterval);
+                document.getElementById("time-count-set").innerHTML = "00:00:00"; 
 
-                    alarmAudio.volume = 1; 
-                    playAlarmSound();
-                    
-                    setTimeout(() => { 
-                        document.getElementById("AOD").style.display = "none";
-                        document.getElementById("container").style.display = "block";
-                        releaseWakeLock();
-                    }, 5000); 
-                    
-                } else {
-                    let h = Math.floor(remainingTime / 3600000);
-                    let m = Math.floor((remainingTime % 3600000) / 60000);
-                    let s = Math.floor((remainingTime % 60000) / 1000); 
-                    document.getElementById("time-count-set").innerHTML = `${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
+                alarmAudio.volume = 1; 
+                playAlarmSound();
+
+                // Chỉ nhận đúng 1 quả nếu học từ 25 phút trở lên và dưới mốc treo máy (240 phút)
+                if (minutesStudied >= 25 && minutesStudied < 240) {
+                    console.log("🎯 Hoàn thành phiên học tối giản! Cộng 1 quả cà chua.");
+                    if (typeof tomato_now === "function") {
+                        stopsound();
+                        tomato_now(); 
+                    } else {
+                        let count = parseInt(localStorage.getItem('tomato_count')) || 0;
+                        count += 1;
+                        localStorage.setItem('tomato_count', count);
+                        if(typeof tomato_count_backend !== 'undefined') tomato_count_backend = count;
+                        const displayElement = document.getElementById("tomato-count");
+                        if (displayElement) displayElement.innerHTML = `${count}/10`;
+                    }
+                } else if (minutesStudied >= 240) {
+                    console.log("🚫 Treo máy quá lâu, không kích hoạt thưởng cà chua.");
                 }
-            }, 1000);
-        } else { alert("Vui lòng nhập số hợp lệ!"); }
-    } else { alert("Thời gian không hợp lý (1 đến 65 phút)!"); }
+
+                setTimeout(() => { 
+                    document.getElementById("AOD").style.display = "none";
+                    document.getElementById("container").style.display = "block";
+                    releaseWakeLock();
+                }, 5000); 
+                
+            } else {
+                let h = Math.floor(remainingTime / 3600000);
+                let m = Math.floor((remainingTime % 3600000) / 60000);
+                let s = Math.floor((remainingTime % 60000) / 1000); 
+                document.getElementById("time-count-set").innerHTML = `${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
+            }
+        }, 1000);
+    } else { alert("Thời gian nhập vào không hợp lý!"); }
 }
+
 // Kiểm tra phạt khi thoát Fullscreen giữa chừng
 function check() {
     if (timeLeft > 0 && timeLeft < 25 * 60) {
@@ -355,6 +392,7 @@ document.addEventListener('visibilitychange', () => {
                 alert(`Có vẻ bạn đã bỏ lỡ đồng hồ suốt ${overdueMinutes}`)
             } else {
                 alert(`Bạn đã học chăm chỉ vượt ${overdueMinutes} phút rồi đó!`);
+                tomato_now(); 
             }
 
             playAlarmSound();
@@ -395,5 +433,5 @@ console.log(
   '%c⚠ CẢNH BÁO QUAN TRỌNG!\n%cBạn không nên vào đây để chỉnh sửa hệ thống vì mục đích ứng dụng là tốt cho bạn. Việc chỉnh sửa có thể dẫn đến sai lệch kết quả cuối năm.\n\n%cBạn có thể tham khảo ToS.', 
   'color: red; font-size: 30px; font-weight: bold;', // Style dòng tiêu đề
   'color: red; font-size: 16px;',                   // Style dòng nội dung chính
-  'color: gray; font-size: 12px; font-style: italic; text-decoration: underline;' // Style dòng ToS
+  'color: gray; font-size: 12px; font-style: italic; text-decoration: underline;'
 );
