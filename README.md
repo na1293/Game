@@ -9,3 +9,4 @@
 - sayst.js: Những câu nói
 - search.js: Xử lý search
 - tomato_month.js: Phần game hóa lấy dữ liệu giá cà chua, nhận/ bán cà chua và update UI cà chua
+

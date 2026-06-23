@@ -26,7 +26,7 @@ function playSelectedMusic() {
     // --- TÍNH NĂNG MỚI: Cấu hình âm lượng ---
     // Thuộc tính .volume nhận giá trị từ 0.0 (tắt tiếng) đến 1.0 (100% âm lượng)
     if (selectedSource.includes("no-sound-but-free.mp3")) {
-        loopAudio.volume = 0.01; // 1% âm lượng để giữ trình duyệt không sleep
+        loopAudio.volume = 0.01; // 10% âm lượng để giữ trình duyệt không sleep
     } else {
         loopAudio.volume = 1.0;  // 100% âm lượng cho các sound khác
     }
