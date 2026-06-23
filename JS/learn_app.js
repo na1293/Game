@@ -10,7 +10,7 @@ let event_news = document.getElementById("event_news");
 let timer;
 let isRunning = false;
 let timeLeft = 25 * 60; 
-let sayst = typeof cau_noi_hay !== 'undefined' ? cau_noi_hay : ["Hãy tập trung học tập vì tương lai!"]; 
+let sayst = typeof cau_noi_hay !== 'undefined' ? cau_noi_hay : ["Đang tải câu nói..."]; 
 let endTime; 
 
 let day_week = new Date().getDay();
