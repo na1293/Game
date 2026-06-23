@@ -10,7 +10,7 @@ let cau_noi_hay = [
     "Bạn chính là người định nghĩa cuộc đời mình. Đừng để người khác viết kịch bản cho bạn. - Oprah Winfrey",
     "Điều nằm phía sau và phía trước chúng ta chỉ là chuyện nhỏ so với điều nằm bên trong chúng ta. - Ralph Waldo Emerson",
     "Không sợ bạn đi chậm, chỉ sợ bạn đứng yên. - Khuyết danh",
-    "Lúc nhỏ, người ta nhìn bố mẹ để đánh giá bạn. Lớn lên, người ta nhìn vào lượng công nghệ bạn biết để nhờ bạn sửa hộ điện thoại cho bố mẹ bạn.",
+    "Khi bạn còn nhỏ, sự yêu thương của bố mẹ là lá chắn bảo vệ bạn. Khi bạn lớn lên, sự vững vàng của bạn là chỗ dựa bình yên cho bố mẹ",
     "Sự hiện diện của bạn có thể mang lại hạnh phúc cho người khác. Tôi hy vọng bạn sẽ nhớ kỹ điều đó. - World Wide Handsome",
     "Đôi khi, nhìn bạn bè tiến lên phía trước khiến tôi cảm thấy lo lắng... nhưng tôi nhanh chóng nhận ra rằng tốc độ của họ không phải là tốc độ của tôi. Mỗi khi điều đó xảy ra, điều giúp tôi tiếp tục tiến lên chính là lời hứa với bản thân rằng 'cứ từ từ thôi'. - Jin (BTS, hay còn gọi là World Wide Handsome)",
     "Nhưng tôi tin rằng ngay cả những thứ vô dụng cũng có mục đích! Tôi nghĩ chúng ta cần những ngày mà người khác cho là lãng phí để sau này có thể tập trung vào những việc hữu ích hơn. - Jin (BTS)",
@@ -71,5 +71,7 @@ let cau_noi_hay = [
     "Your best is enough - Corgi",
     "Hãy tự viết lên câu nói của bạn - App Học Tập",
     "Hãy nói theo cách riêng của bạn - Viettel",
-    
+    "FACT: Steve Jobs, lúc cho ra mắt điện thoại cảm ứng, ai cũng nghĩ nó là điên rồ và bất khả thi. Nhưng sau hơn 20 năm, cả thế giới vẫn đang dùng nó.",
+    "FACT: Thuở nhỏ ở vùng quê nghèo Madeira, gia đình Ronaldo nghèo đến mức không có tiền mua nổi một quả bóng tử tế. Anh chàng toàn phải gom giẻ lau, tất cũ cuộn lại thành hình tròn để đá.",
+    "FACT: Năm 11 tuổi, Messi đối mặt với cú sốc lớn nhất đời: anh bị chẩn đoán mắc chứng thiếu hụt hormone tăng trưởng. Nếu không chữa trị, Messi sẽ chỉ cao tối đa khoảng 1m40 và vĩnh viễn không thể chơi bóng chuyên nghiệp. Chi phí chữa trị lên tới $900/tháng, một con số không tưởng với gia đình anh lúc bấy giờ. Để tiếp tục đam mê, Messi đã phải trải qua một cuộc chiến thể xác cực kỳ tàn nhẫn đối với một đứa trẻ. Suốt 3 năm trời, mỗi buổi tối trước khi đi ngủ, Messi phải tự tay đâm kim tiêm hormone vào chân mình. Anh từng chia sẻ: "Ban đầu là một chân, sau đó là chân kia. Nó đau đớn, nhưng tôi không khóc, vì tôi biết đó là cách duy nhất để tôi có thể tiếp tục chơi bóng". Sự kiên trì và chịu đựng của Messi năm 11 tuổi là nền móng tạo nên một 'vua lỳ đòn' trên sân cỏ sau này."
 ];

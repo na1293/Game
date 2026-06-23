@@ -1,53 +1,72 @@
-// 1. Khởi tạo đối tượng Audio chung
-let loopAudio = new Audio();
-loopAudio.loop = true;
 
+// Kênh 1: Chuyên trị nhạc nền (Mưa, Cafe, No-sound...)
+let bgMusicAudio = new Audio();
+bgMusicAudio.loop = true;
+
+// Kênh 2: Chuyên trị chuông báo (Độc lập hoàn toàn, không sợ bị ghi đè)
+let alarmAudio = new Audio("Music/audley_fergine-warning-alarm.mp3");
+
+// Lấy các phần tử giao diện
 const musicSelector = document.getElementById("music-selector");
 const playBtn = document.getElementById("btn-play-music");
 const stopBtn = document.getElementById("btn-stop-music");
 
-// Hàm thực thi phát nhạc (dùng cho cả nút Start và nút Phát)
+// Hàm thực thi phát nhạc nền (Không đụng chạm vào kênh chuông)
 function playSelectedMusic() {
-    // Tìm lại selector ngay trong hàm để đảm bảo luôn cập nhật
     const musicSelector = document.getElementById("music-selector");
-    
-    // Kiểm tra xem có tìm thấy selector không
     if (!musicSelector) {
         console.error("Lỗi: Không tìm thấy thẻ select với ID 'music-selector'");
-        return; // Dừng lại ở đây, không chạy tiếp nữa
+        return;
     }
 
     const selectedSource = musicSelector.value;
     
-    if (loopAudio.src !== selectedSource) {
-        loopAudio.src = selectedSource;
+    // Cập nhật nguồn nhạc nền nếu có thay đổi
+    if (bgMusicAudio.src !== selectedSource) {
+        bgMusicAudio.src = selectedSource;
     }
 
-    // --- TÍNH NĂNG MỚI: Cấu hình âm lượng ---
-    // Thuộc tính .volume nhận giá trị từ 0.0 (tắt tiếng) đến 1.0 (100% âm lượng)
+    // Cấu hình âm lượng thông minh để chống sleep trình duyệt
     if (selectedSource.includes("no-sound-but-free.mp3")) {
-        loopAudio.volume = 0.01; // 10% âm lượng để giữ trình duyệt không sleep
+        bgMusicAudio.volume = 0.01;
     } else {
-        loopAudio.volume = 1.0;  // 100% âm lượng cho các sound khác
+        bgMusicAudio.volume = 1.0;  // 100% âm lượng cho các sound khác
     }
-    // ----------------------------------------
     
-    loopAudio.play().catch(e => console.log("Trình duyệt chặn:", e));
+    bgMusicAudio.play().catch(e => console.log("Trình duyệt chặn nhạc nền:", e));
 }
 
-// 2. Nút "Bắt đầu học" trong Pomodoro
+// Hàm kích hoạt khi bấm nút "Bắt đầu học" từ Pomodoro
 function playsoundsth() {
-    // Mặc định luôn là no-sound khi bắt đầu
-    musicSelector.value = "Music/no-sound-but-free.mp3";
-    playSelectedMusic();
+    const musicSelector = document.getElementById("music-selector");
+    if (musicSelector) {
+        // Mặc định ép chọn no-sound khi bắt đầu để giữ app chạy ngầm an toàn
+        musicSelector.value = "Music/no-sound-but-free.mp3";
+    }
+    
+    // 🔥 ĐOẠN KHÓA VÀNG: Bấm một phát, kích hoạt luôn cả 2 kênh để iOS cấp "vé thông hành"
+    playSelectedMusic(); // Mở khóa kênh nhạc nền
+    
+    // Kích hoạt nhử kênh chuông rồi tắt ngay (nhận vé chạy ngầm trước)
+    alarmAudio.volume = 0; // Tạm thời tắt tiếng
+    alarmAudio.play()
+        .then(() => {
+            alarmAudio.pause();
+            alarmAudio.currentTime = 0;
+            alarmAudio.volume = 1.0; // Đẩy volume lại 100% chờ thời
+            console.log("Kênh chuông báo: Đã lấy vé thông hành iOS thành công!");
+        })
+        .catch(e => console.log("Lỗi kích hoạt trước chuông báo:", e));
 }
 
-// 3. Nút "Phát" trong phần nhạc
-playBtn.addEventListener("click", playSelectedMusic);
-
-// 4. Nút "Dừng" trong phần nhạc
-function stopsound() {
-    loopAudio.pause();
-    loopAudio.currentTime = 0;
+// Hàm tắt nhạc nền
+function stopsoundsth() {
+    bgMusicAudio.pause();
 }
-stopBtn.addEventListener("click", stopsound);
+
+// Hàm dừng toàn bộ (Cả chuông cả nhạc - Dùng khi kết thúc hoặc reset)
+function stopAllAudio() {
+    bgMusicAudio.pause();
+    alarmAudio.pause();
+    alarmAudio.currentTime = 0;
+}

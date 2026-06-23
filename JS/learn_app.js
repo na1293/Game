@@ -39,6 +39,12 @@ document.getElementById("say").innerHTML = sayst[getRandom(0, sayst.length - 1)]
 
 // 🔊 HÀM BÁO THỨC PHÁT NHẠC TỪ FILE + RUNG 5 GIÂY
 function playAlarmSound() {
+    
+    if (alarmAudio) {
+        alarmAudio.volume = 1.0; // Để 100% cho chắc
+        alarmAudio.play().catch(e => console.log("Không thể nổ chuông báo ngầm:", e));
+    }
+
     // 1. Kích hoạt rung (Chỉ chạy trên Android, iOS sẽ tự bỏ qua không lỗi)
     if ('vibrate' in navigator) {
         navigator.vibrate(5000); 
