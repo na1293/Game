@@ -21,7 +21,7 @@ let cau_noi_hay = [
     "Những ai không có ước mơ thì cũng không sao. Không sao cả nếu bạn không có ước mơ. Điều quan trọng là bạn phải hạnh phúc. - Suga (BTS)",
     "No matter how hard it is right now, think of how the result will make you feel. - Jimin (BTS)",
     "Your time is limited, so don't waste it living someone else's life. - Steve Jobs",
-    "Love myself, love my fans, love my music. That’s all that matters. - Idol nào đó",
+    "Love myself, love my fans, love my music. That’s all that matters. - Min Yoongi (Suga - BTS)",
     "Bản thân việc học là một quá trình tự khám phá, chứ không phải là sự áp đặt từ bên ngoài. - Noam Chomsky",
     "Rễ của giáo dục thì đắng cay, nhưng quả của nó lại ngọt ngào. - Aristotle",
     "Giáo dục là vũ khí mạnh nhất mà bạn có thể sử dụng để thay đổi thế giới. - Nelson Mandela",
