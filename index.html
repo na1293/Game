@@ -188,13 +188,37 @@
             <div class="pomodoro-timer" style="text-align: left;" id="learing-tool">
                 <h2>Công cụ hỗ trợ học tập</h2>
                 <p>Dưới đây là các công cụ tiện ích giúp bạn học tập hiệu quả hơn:</p>
-                <ul style="margin-left: 10px; color: var(--text-muted); font-size: 0.95rem;">
-                    <li style="margin-bottom: 5px;">Học Toán: <span><a href="https://gemini.google.com/gem/dbd119ed2d4f" target="_blank">Trợ lý học toán</a> (Cần đăng nhập)</span></li>
-                    <li style="margin-bottom: 5px;">Hướng dẫn dùng AI: <span><a href="https://docs.google.com/document/d/1Q19QCakJFWLiZgT9zg6hW3A7eJHWcpEkHXazEq8CExI/edit?usp=sharing" target="_blank">Cách dùng AI Toán</a></span></li>
-                    <li style="margin-bottom: 5px;">Làm đề: <span><a href="https://www.onluyen.vn/" target="_blank">Ôn luyện</a></span></li>
-                    <li style="margin-bottom: 5px;">Đề thi Anh: <span><a href="https://prepedu.com/vi/blog/de-thi-thpt-quoc-gia-mon-anh" target="_blank">Đề thi THPTQG Anh</a></span></li>
-                    <li style="margin-bottom: 5px;">Đóng góp, đề xuất tính năng: <span><a href="https://khaosat.me/survey/6a2e1bae5d1e1843c8ef7545" target="_blank">Bắt đầu đóng góp</a></span></li>
-                    <li style="margin-bottom: 5px;">Học tiếng Anh: <a href="https://quizlet.com/vn/1187779427/on-luyen-tieng-anh-flash-cards/?i=45dhif&x=1jqt" target="_blank">Thẻ từ vựng tiếng Anh</a></li>
+                <ul style="margin-left: 10px; color: var(--text-muted); font-size: 0.95rem; list-style-type: none; padding-left: 0;">
+                    <li style="margin-bottom: 8px; transition: transform 0.2s ease;">
+                        📚 Học Toán: <span><a href="https://gemini.google.com/gem/dbd119ed2d4f" target="_blank" style="color: var(--accent-color, #007bff); text-decoration: none; font-weight: 500;">Trợ lý học toán</a> (Cần đăng nhập)</span>
+                    </li>
+                    <li style="margin-bottom: 8px; transition: transform 0.2s ease;">
+                        💡 Hướng dẫn dùng AI: <span><a href="https://docs.google.com/document/d/1Q19QCakJFWLiZgT9zg6hW3A7eJHWcpEkHXazEq8CExI/edit?usp=sharing" target="_blank" style="color: var(--accent-color, #007bff); text-decoration: none; font-weight: 500;">Cách dùng AI Toán</a></span>
+                    </li>
+                    <li style="margin-bottom: 8px; transition: transform 0.2s ease;">
+                        📝 Làm đề: <span><a href="https://www.onluyen.vn/" target="_blank" style="color: var(--accent-color, #007bff); text-decoration: none; font-weight: 500;">Ôn luyện</a></span>
+                    </li>
+                    <li style="margin-bottom: 8px; transition: transform 0.2s ease;">
+                        🇬🇧 Đề thi Anh: <span><a href="https://prepedu.com/vi/blog/de-thi-thpt-quoc-gia-mon-anh" target="_blank" style="color: var(--accent-color, #007bff); text-decoration: none; font-weight: 500;">Đề thi THPTQG Anh</a></span>
+                    </li>
+                    <li style="margin-bottom: 8px; transition: transform 0.2s ease;">
+                        🗂️ Học tiếng Anh: <a href="https://quizlet.com/vn/1187779427/on-luyen-tieng-anh-flash-cards/?i=45dhif&x=1jqt" target="_blank" style="color: var(--accent-color, #007bff); text-decoration: none; font-weight: 500;">Thẻ từ vựng tiếng Anh</a>
+                    </li>
+                    <li style="margin-bottom: 8px; transition: transform 0.2s ease;">
+                        💬 Đóng góp, đề xuất tính năng: <span><a href="https://khaosat.me/survey/6a2e1bae5d1e1843c8ef7545" target="_blank" style="color: var(--accent-color, #007bff); text-decoration: none; font-weight: 500;">Bắt đầu đóng góp</a></span>
+                    </li>
+                    
+                    <li style="margin-top: 15px; padding-top: 15px; border-top: 1px dashed rgba(255,255,255,0.1);">
+                        <div style="margin-bottom: 8px; font-weight: 500; display: flex; align-items: center; gap: 5px;" id="weather-tool">
+                            🌤️ Thời tiết Hà Nội:
+                        </div>
+                        <div style="border-radius: 8px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
+                            <a class="weatherwidget-io" href="https://forecast7.com/en/21d03105d83/hanoi/" data-label_1="HÀ NỘI" data-label_2="THỜI TIẾT" data-theme="pure" data-basecolor="" style="display: block; text-align: center; padding: 10px; background: rgba(0,0,0,0.05); text-decoration: none; color: inherit;">Đang tải thời tiết...</a>
+                            <script>
+                            !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src='https://weatherwidget.io/js/widget.min.js';fjs.parentNode.insertBefore(js,fjs);}}(document,'script','weatherwidget-io');
+                            </script>
+                        </div>
+                    </li>
                 </ul>
             </div>
 
@@ -258,11 +282,6 @@
                 </div>
 
                 <ul id="todo-list" style="list-style-type: none; text-align: left;"></ul>
-            </div>
-
-            <div class="pomodoro-timer" id="weather-tool">
-                <h2>🌤️ Thời Tiết Hiện Tại</h2>
-                <a class="weatherwidget-io" href="https://forecast7.com/en/21d03105d83/hanoi/" data-label_1="Ha Noi" data-label_2="Viet Nam" data-icons="Climacons Animated" data-theme="pure" data-basecolor="" >Ha Noi Viet Nam</a>
             </div>
 
             <footer>
