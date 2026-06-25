@@ -368,3 +368,50 @@ ul {
     font-weight: 600;
     color: #1a202c;
 }
+
+/* --- CSS Responsive cho Mobile --- */
+@media screen and (max-width: 480px) {
+
+    /* Cấu trúc lại dòng danh sách */
+    #birthdayListContainer li {
+        flex-direction: column; /* Chuyển sang dạng dọc nếu dòng quá dài */
+        align-items: flex-start !important;
+        gap: 8px;
+        padding: 12px 10px !important;
+    }
+
+    /* Box hiển thị thông tin thường */
+    .name_tag {
+        flex-direction: row; /* Tên một bên, ngày đếm ngược một bên */
+        justify-content: space-between;
+        width: 100% !important;
+    }
+
+    /* CHỐT HẠ: Box chỉnh sửa khi bấm vào */
+    .edit_tag {
+        flex-wrap: wrap; /* Tự động xuống hàng khi không đủ chỗ */
+        gap: 8px !important;
+        width: 100% !important;
+    }
+
+    /* Cho 2 ô input chiếm hết hàng trên */
+    .edit_tag .edit-name {
+        width: 55% !important;
+        font-size: 14px;
+        padding: 6px !important;
+    }
+    
+    .edit_tag .edit-date {
+        width: 40% !important;
+        font-size: 14px;
+        padding: 6px !important;
+    }
+
+    /* Đẩy 2 nút Lưu/Hủy xuống hàng dưới và kéo dài ra cho dễ bấm bằng tay */
+    .edit_tag button {
+        flex: 1; /* Chia đều 50/50 chiều ngang hàng dưới */
+        padding: 8px !important;
+        font-size: 13px !important;
+        text-align: center;
+    }
+}
