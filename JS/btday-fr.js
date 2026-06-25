@@ -55,22 +55,32 @@ const renderList = () => {
         // Render cấu trúc: có sẵn cả box thông tin thường VÀ box chỉnh sửa (ẩn đi bằng display: none)
         li.innerHTML = `
             <div class="name_tag" style="display: flex; justify-content: space-between; width: 100%; align-items: center; cursor: pointer;" onclick="toggleEdit(this, true)">
-                <span style="font-weight: ${isToday ? 'bold' : 'normal'}">
-                    ${item.name} ${isToday ? '🎂' : ''} <small style="color: #888; font-weight: normal;">(${item.date})</small>
-                </span>
-                <div style="display: flex; gap: 10px; align-items: center;" onclick="event.stopPropagation(); /* Ngăn chặn kích hoạt click vào name_tag */">
-                    <strong style="color: ${isToday ? '#d39e00' : '#2f3542'}">
+                <div style="display: flex; flex-direction: column; gap: 4px; align-items: flex-start; max-width: 50%;">
+                    <span style="font-weight: ${isToday ? 'bold' : '500'}; color: #2f3542; font-size: 15px; text-align: left;">
+                        ${item.name} ${isToday ? '🎂' : ''}
+                    </span>
+                    <span style="color: #a4b0be; font-size: 12px; font-weight: normal;">
+                        ${item.date}
+                    </span>
+                </div>
+                
+                <div style="display: flex; gap: 12px; align-items: center; justify-content: flex-end; flex: 1;" onclick="event.stopPropagation();">
+                    <strong style="color: ${isToday ? '#d39e00' : 'black'}; font-size: 14px; white-space: nowrap;">
                         ${isToday ? "HÔM NAY" : days + " ngày nữa"}
                     </strong>
-                    <button onclick="deleteBirthday('${item.name.replace(/'/g, "\\'")}')" style="cursor: pointer; color: #ff6b6b; border: none; background: none; font-weight: bold;">✕</button>
+                    <button onclick="deleteBirthday('${item.name.replace(/'/g, "\\'")}')" style="cursor: pointer; color: #ff6b6b; border: none; background: #fff5f5; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; transition: 0.2s;">✕</button>
                 </div>
             </div>
 
-            <div class="edit_tag" style="display: none; gap: 8px; width: 100%; align-items: center;">
-                <input type="text" class="edit-name" value="${item.name}" style="padding: 4px 8px; width: 40%; border: 1px solid #ccc; border-radius: 4px;">
-                <input type="date" class="edit-date" value="${item.date}" style="padding: 4px 8px; width: 35%; border: 1px solid #ccc; border-radius: 4px;">
-                <button onclick="saveEdit(this, '${item.name.replace(/'/g, "\\'")}')" style="background: #2ed573; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 12px;">Lưu</button>
-                <button onclick="toggleEdit(this, false)" style="background: #a4b0be; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 12px;">Hủy</button>
+            <div class="edit_tag" style="display: none; flex-direction: column; gap: 10px; width: 100%;">
+                <div style="display: flex; gap: 10px; width: 100%;">
+                    <input type="text" class="edit-name" value="${item.name}" style="flex: 1; padding: 6px 10px; border: 1px solid #ccc; border-radius: 6px; font-size: 14px; box-sizing: border-box;">
+                    <input type="date" class="edit-date" value="${item.date}" style="flex: 1; padding: 6px 10px; border: 1px solid #ccc; border-radius: 6px; font-size: 14px; box-sizing: border-box;">
+                </div>
+                <div style="display: flex; gap: 10px; width: 100%;">
+                    <button onclick="saveEdit(this, '${item.name.replace(/'/g, "\\'")}')" style="flex: 1; background: #2ed573; color: white; border: none; padding: 8px; border-radius: 6px; cursor: pointer; font-size: 14px; font-weight: bold;">Lưu</button>
+                    <button onclick="toggleEdit(this, false)" style="flex: 1; background: #a4b0be; color: white; border: none; padding: 8px; border-radius: 6px; cursor: pointer; font-size: 14px; font-weight: bold;">Hủy</button>
+                </div>
             </div>
         `;
         listContainer.appendChild(li);
@@ -101,8 +111,7 @@ renderList();
 
 // === Hàm chuyển đổi qua lại giữa giao diện Xem và Sửa ===
 window.toggleEdit = (element, isEditing) => {
-    // Tìm thẻ cha li chứa cả 2 box
-    const parentLi = element.closest('li'); 
+    const parentLi = element.closest('li'); // Tìm thẻ li bọc ngoài cùng
     const nameTag = parentLi.querySelector('.name_tag');
     const editTag = parentLi.querySelector('.edit_tag');
 
@@ -121,7 +130,7 @@ window.saveEdit = (buttonElement, oldName) => {
     const newName = parentLi.querySelector('.edit-name').value.trim();
     const newDate = parentLi.querySelector('.edit-date').value;
 
-    if (!newName || !newDate) return alert("Không được để trống tên hoặc ngày sinh đâu nha quý vị ơi! 🤦‍♂️");
+    if (!newName || !newDate) return alert("Không được để trống tên hoặc ngày sinh");
 
     // Tìm vị trí của item cũ dựa vào oldName
     const index = birthdayList.findIndex(item => item.name === oldName);

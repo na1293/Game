@@ -139,6 +139,7 @@ function startTimer() {
                 setTimeout(() => { resetTimer(); }, 500);
             } else {
                 timerDisplay.textContent = formatTime(timeLeft);
+                document.title = `⏱️ ${formatTime(timeLeft)} - Ứng dụng tập trung`;
             }
         }, 1000);
         isRunning = true;
