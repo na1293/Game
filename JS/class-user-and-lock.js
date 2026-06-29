@@ -29,12 +29,12 @@ function display_class() {
     }
 
     const grade = getGrade(userBirthYear);
-
+    
     if (grade < 1) {
-        element_class.textContent = "Bạn đang học mẫu giáo";
+        element_class.textContent = "Bạn còn... chưa học lớp 1 🥰";
     } else if (grade <= 12) {
         element_class.textContent = `Lớp ${grade}`;
     } else {
-        element_class.textContent = "Bạn đã tốt nghiệp";
+        element_class.textContent = "Bạn đã tốt nghiệp! 🎓";
     }
 }

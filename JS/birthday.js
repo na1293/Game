@@ -6,15 +6,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const countdownEl = document.getElementById("countdown-birthdate");
     const timeEl = document.getElementById("time-conut-birthdate");
 
-    // 1. Kiểm tra localStorage khi load trang
-    const savedDate = localStorage.getItem("userBirthdate");
-    const date_now_ = new Date(savedDate);
+    if (!inputDiv || !countDiv || !birthdateInput || !btnSubmit || !countdownEl || !timeEl) return;
 
-    if (!savedDate || isNaN(date_now_.getTime())) {
-        countdownEl.innerText = "Không thể tải";
-        timeEl.innerText = "";
-        return;
-    }
+    let countdownInterval;
+
+    const savedDate = localStorage.getItem("userBirthdate");
 
     if (savedDate) {
         inputDiv.style.display = "none";
@@ -25,44 +21,41 @@ document.addEventListener("DOMContentLoaded", () => {
         countDiv.style.display = "none";
     }
 
-    // 2. Xử lý khi nhấn nút xác nhận
     btnSubmit.addEventListener("click", () => {
         const val = birthdateInput.value;
-        if (!val) return alert("Nhập ngày sinh đi ông ơi!");
-        
+        if (!val) return alert("Nhập ngày sinh đi!");
+
         localStorage.setItem("userBirthdate", val);
         inputDiv.style.display = "none";
         countDiv.style.display = "block";
         startCountdown(val);
     });
 
-    // 3. Hàm đếm ngược
     function startCountdown(birthDateStr) {
+        if (countdownInterval) clearInterval(countdownInterval);
+
         const bDate = new Date(birthDateStr);
-        const bMonth = bDate.getUTCMonth(); // Dùng UTC để tránh sai lệch múi giờ khi lưu
-        const bDay = bDate.getUTCDate();
+        const bMonth = bDate.getMonth();
+        const bDay = bDate.getDate();
 
-        setInterval(() => {
+        countdownInterval = setInterval(() => {
             const now = new Date();
-            const nowMonth = now.getMonth();
-            const nowDate = now.getDate();
 
-            // Kiểm tra sinh nhật hôm nay
-            if (nowMonth === bMonth && nowDate === bDay) {
+            if (now.getMonth() === bMonth && now.getDate() === bDay) {
                 countdownEl.innerText = "Chúc mừng sinh nhật! 🎉";
                 timeEl.innerText = "Chúc bạn tuổi mới rực rỡ!";
-                return; // Dừng chạy đếm ngược để hiển thị lời chúc
+                return;
             }
 
-            // Logic đếm ngược như cũ
             let nextBday = new Date(now.getFullYear(), bMonth, bDay);
             if (now > nextBday) nextBday.setFullYear(now.getFullYear() + 1);
 
             const diff = nextBday - now;
-            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+            const days = Math.floor(diff / 86400000);
+            const hours = Math.floor((diff % 86400000) / 3600000);
+            const minutes = Math.floor((diff % 3600000) / 60000);
+            const seconds = Math.floor((diff % 60000) / 1000);
 
             countdownEl.innerText = `${days} ngày`;
             timeEl.innerText = `${hours} giờ ${minutes} phút ${seconds} giây`;
