@@ -36,12 +36,18 @@ async function fetchLatestPriceFromServer() {
             tomatoPrice = parseInt(sheetData.gia_ca_chua);
             console.log(`🔄 Đồng bộ giá từ Server thành công: ${tomatoPrice} xu`);
         } else {
-            tomatoPrice = 12; // Giá dự phòng nếu server lỗi cấu trúc dữ liệu
+            tomatoPrice = 0; // Giá dự phòng nếu server lỗi cấu trúc dữ liệu
         }
     } catch (e) {
         console.warn("⚠️ Không kết nối được server, dùng dữ liệu dự phòng:", e);
-        tomatoPrice = 12; // Giá dự phòng nếu sập mạng
+        tomatoPrice = 0; // Giá dự phòng nếu sập mạng
     }
+
+    if (tomatoPrice == 0) {
+        alert("Đã xảy ra lỗi. Vui lòng kiểm tra kết nối mạng hoặc bản cập nhật mới nhất.");
+        return 0;
+    }
+
     // Cập nhật giao diện lập tức ngay sau khi có kết quả
     updateTomatoUI();
 }

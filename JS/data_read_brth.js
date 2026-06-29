@@ -107,8 +107,9 @@ function importLocalStorage(storageKey, compareKeys = []) {
 // ==========================================
 
 // --- MÔN SINH NHẬT ---
+
 export_data_brth.addEventListener("click", () => {
-    exportLocalStorage("myBirthdays", "my_birthdays_backup.json", "Không có dữ liệu sinh nhật");
+    exportLocalStorage("myBirthdays", "birthdays_backup.json", "Không có dữ liệu sinh nhật");
 });
 
 import_data_brth.addEventListener("click", () => {

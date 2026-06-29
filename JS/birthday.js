@@ -8,6 +8,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // 1. Kiểm tra localStorage khi load trang
     const savedDate = localStorage.getItem("userBirthdate");
+    const date_now_ = new Date(savedDate);
+
+    if (!savedDate || isNaN(date_now_.getTime())) {
+        countdownEl.innerText = "Không thể tải";
+        timeEl.innerText = "";
+        return;
+    }
 
     if (savedDate) {
         inputDiv.style.display = "none";

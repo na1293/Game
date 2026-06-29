@@ -21,7 +21,7 @@ if ('Notification' in window && Notification.permission !== 'granted') {
 }
 
 if (day_week == 0) {
-    event_news.innerHTML = "Chủ Nhật: Nghỉ ngơi trọn vẹn, skincare 🧴 dưỡng da và ngủ sớm nạp năng lượng nhé!";
+    event_news.innerHTML = "Chủ Nhật: Nghỉ ngơi, thư giãn hoặc làm bài tập.";
 } else if (day_week == 1) {
     event_news.innerHTML = "🎯 Thứ Hai: Lý, Tin, Toán, HĐTN.";
 } else if (day_week == 2) {
@@ -150,6 +150,7 @@ function startTimer() {
 
 function resetTimer() {
     timeLeft = 25 * 60;
+    document.title = `Ứng dụng tập trung`;
     if (timerDisplay) timerDisplay.textContent = formatTime(timeLeft);
     if (isRunning) {
         clearInterval(timer);
@@ -206,11 +207,11 @@ function timesay() {
 
     if (hh >= 23 || (hh >= 0 && hh <= 4)) { 
         // 🚨 KHÓA QUY ĐỊNH BẮT BUỘC NGỦ ĐÚNG CHIỀU CAO & SKINCARE
-        sayTimeEl.innerHTML = "🚨 ĐÃ ĐẾN GIỜ ĐI NGỦ BẮT BUỘC! 🛌";
-        talkEl.innerHTML = "Quá 23:00 rồi bạn ơi! Gập máy, tắt điện thoại và ĐI NGỦ NGAY để thúc đẩy chiều cao tối đa, da đẹp hết mụn nào! Đừng cố quá nha! 🌙";
+        sayTimeEl.innerHTML = "🚨 ĐÃ ĐẾN GIỜ ĐI NGỦ! 🛌";
+        talkEl.innerHTML = "Hiện tại đang rất muộn, vui lòng tắt máy đi ngủ! Học/ chơi thêm có thể suy giảm năng suất.";
     } else if (hh >= 5 && hh <= 6) {
         sayTimeEl.innerHTML = "Chào ngày mới sớm 🌅";
-        talkEl.innerHTML = "Dậy sớm thế bạn ơi! Nhớ uống cốc nước ấm và bổ sung Canxi trước khi đi học nhé! 🔥";
+        talkEl.innerHTML = "Dậy sớm thế bạn? Hãy ăn sáng đủ chất nhé. Có thể thêm nước ép cam sau khi ăn sáng!";
     } else if (hh >= 7 && hh <= 9) {
         sayTimeEl.innerHTML = "Chào buổi sáng tốt lành ☀️";
         talkEl.innerHTML = "Tranh thủ giải quyết các bài tập khó nhằn lúc não tỉnh táo nhất nhé!";
@@ -222,7 +223,7 @@ function timesay() {
         talkEl.innerHTML = "Giữ vững sự tập trung ở trường, đừng lén ngủ gật trong giờ Văn nha. 🤫";
     } else if (hh >= 16 && hh <= 17) {
         sayTimeEl.innerHTML = "Chào chiều muộn 🌆";
-        talkEl.innerHTML = "Đứng dậy vươn vai, uống chút nước hoặc làm vài động tác thể thao đi nào.";
+        talkEl.innerHTML = "Đứng dậy vươn vai, uống chút nước hoặc làm vài động tác thể thao đi.";
     } else if (hh >= 18 && hh <= 19) {
         sayTimeEl.innerHTML = "Chào buổi tối 🌌";
         talkEl.innerHTML = "Giờ cơm tối sum họp gia đình đây rồi. Ăn ngon miệng nhé!";
@@ -331,7 +332,7 @@ function nghi_ngoi() {
 
 function check() {
     if (timeLeft > 0 && timeLeft < 25 * 60) {
-        alert("Ơ kìa? Bạn chưa học xong cơ mà, định lén lướt mạng xã hội đúng không? Tập trung lại ngay! 😤");
+        alert("Ơ kìa? Bạn chưa học xong cơ mà, định lén lướt mạng xã hội đúng không?");
     }
 }
 document.addEventListener('fullscreenchange', () => { if (!document.fullscreenElement) check(); });

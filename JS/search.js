@@ -16,6 +16,10 @@ searchBtn.addEventListener('click', function() {
     let searchUrl = '';
     if (selectedTool === 'coccoc.com') {
         searchUrl = `https://coccoc.com/search?query=${encodeURIComponent(query)}`;
+    } else if (selectedTool === 'cambridge') {
+        searchUrl = `https://www.dictionary.cambridge.org/dictionary/english/${encodeURIComponent(query)}?q=${encodeURIComponent(query)}`
+    } else if (selectedTool === 'oxfordlearnersdictionaries') {
+        searchUrl = `https://www.oxfordlearnersdictionaries.com/definition/english/${encodeURIComponent(query)}?q=${encodeURIComponent(query)}`
     } else {
         // Tất cả các ông còn lại dùng chung công thức ?q=
         searchUrl = `https://${selectedTool}/search?q=${encodeURIComponent(query)}`;
