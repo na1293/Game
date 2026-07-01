@@ -20,10 +20,13 @@
     <script src="JS/btday-fr.js" defer></script>
     <script src="JS/getData.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/lunar-javascript/lunar.js"></script>
+    <!-- Thư viện gánh team sắp xếp icon sao cho đỡ phải tính toán -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.2/Sortable.min.js"></script>
     <script src="JS/moon.js" defer></script>
     <script src="JS/data_read_brth.js" defer></script>
     <script src="JS/tomato_month.js"></script>
     <script src="JS/music.js" defer></script>
+    <script src="JS/dashboard_sort.js"></script>
     <script src="JS/class-user-and-lock.js" defer></script>
 </head>
 
@@ -295,10 +298,34 @@
 
             <footer>
                 <p>© 2026 Không gian làm việc tối giản & tập trung cao độ</p>
+                <a href="" id="reset-settings">Khôi phục cài đặt gốc</a>
                 <p style="color: gray;">(Xu không có giá trị trao đổi)</p>
             </footer>
         </div>
     </div>
+
+    <script>
+        let reset_settings = document.getElementById('reset-settings');
+
+        reset_settings.addEventListener('click', function() {
+            // Bước 1: Gom hết cảnh báo vào một chỗ
+            let firstCheck = confirm('⚠️ CẢNH BÁO VĨNH VIỄN:\n- Tất cả dữ liệu web sẽ bị xóa sạch.\n- Hãy đảm bảo bạn ĐÃ XUẤT FILE SAO LƯU.\n\nBạn vẫn muốn tiếp tục?');
+            if (!firstCheck) return;
+
+            // Bước 2: Tạo một mã số ngẫu nhiên 4 chữ số để user không thể "gõ đại"
+            let randomCode = Math.floor(1000 + Math.random() * 999999); //
+            let userInput = prompt(`HÀNH ĐỘNG KHÔNG THỂ HOÀN TÁC!\nVui lòng nhập chính xác mã số sau để xác nhận xóa: ${randomCode}`);
+
+            // Kiểm tra kết quả (ép kiểu về chuỗi để so sánh)
+            if (userInput === String(randomCode)) {
+                localStorage.clear();
+                sessionStorage.clear();
+                alert('✨ Đã xóa toàn bộ dữ liệu và khôi phục cài đặt gốc!');
+            } else {
+                alert('❌ Mã xác nhận không đúng. Hành động đã bị hủy.');
+            }
+        });
+    </script>
 
     <script>
         const input = document.getElementById('todo-input');
