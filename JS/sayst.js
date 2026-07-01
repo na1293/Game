@@ -8,7 +8,8 @@ let cau_noi_hay = [
     "Học không phải là việc lấp đầy một cái xô, mà là thắp sáng một ngọn lửa. - Plutarch",
     "Nhà trường cho chúng ta bài học trước rồi mới kiểm tra. Cuộc đời bắt chúng ta kiểm tra trước rồi mới rút ra bài học. - Tom Bodett",
     "Ta chưa từng thấy ai không giữ được lòng liêm khiết mà có thể dạy người khác thành bậc chính nhân quân tử - Chu Văn An",
-
+    "Tôi không thất bại, tôi chỉ tìm ra 10.000 cách không hoạt động. - Thomas Edison",
+    
     // === Yêu Bản Thân & Định Hình Phong Cách === //
     "Hãy là chính mình, những người khác đã là người khác rồi. - Oscar Wilde",
     "Bạn chính là người định nghĩa cuộc đời mình. Đừng để người khác viết kịch bản cho bạn. - Oprah Winfrey",
@@ -45,6 +46,7 @@ let cau_noi_hay = [
     "Khi bạn gặp phải khó khăn, hãy biến nó thành động lực. Đừng bao giờ chọn con đường dễ dàng nhất, hãy chọn con đường giúp bạn học hỏi được nhiều nhất. - Elon Musk",
 
     // === Cuộc Sống & Hạnh Phúc === //
+    "Bạn biết tính năng đổi cà chua lấy xu chứ? Đó không phải là để xếp hạng năng lực của bạn, mà là để bạn thấy cả hành trình mình đã đi bao xa. - App học tập",
     "Khi bạn còn nhỏ, sự yêu thương của bố mẹ là lá chắn bảo vệ bạn. Khi bạn lớn lên, sự vững vàng của bạn là chỗ dựa bình yên cho bố mẹ",
     "Bạn có thấy kỳ diệu không? Bạn có thể gặp một người bạn tốt, thời cơ tốt, đó là điều may mắn. Để giữ được, tất cả là ở bạn.",
     "Đôi khi, nhìn bạn bè tiến lên phía trước khiến tôi cảm thấy lo lắng... nhưng tôi nhanh chóng nhận ra rằng tốc độ của họ không phải là tốc độ của tôi. Mỗi khi điều đó xảy ra, điều giúp tôi tiếp tục tiến lên chính là lời hứa với bản thân rằng 'cứ từ từ thôi'. - Jin (BTS)",
