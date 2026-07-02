@@ -29,7 +29,7 @@ self.addEventListener('activate', (event) => {
   );
 });
 
-// 3. ĐÁNH CHẶN REQUEST (Vá lỗi Chiến lược Stale-While-Revalidate)
+// 3. ĐÁNH CHẶN REQUEST
 self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET' || !event.request.url.startsWith(self.location.origin)) {
     return;
@@ -39,7 +39,6 @@ self.addEventListener('fetch', (event) => {
     caches.open(CACHE_NAME).then((cache) => {
       return cache.match(event.request).then((cachedResponse) => {
         
-        // Tạo request mạng để cập nhật cache ngầm
         const fetchPromise = fetch(event.request)
           .then((networkResponse) => {
             if (networkResponse.status === 200) {
@@ -48,15 +47,10 @@ self.addEventListener('fetch', (event) => {
             return networkResponse;
           })
           .catch((error) => {
-            // Nếu CÓ cache, kệ lỗi mạng, ngầm nuốt lỗi để không phá hỏng luồng
             if (cachedResponse) return cachedResponse; 
-            
-            // Nếu KHÔNG có cache, ném lỗi hoặc trả về giao diện offline chuẩn
             throw error; 
           });
 
-        // TRẢ VỀ NGAY: Nếu có cache thì trả về luôn, mạng tính sau. 
-        // Nếu không có cache, đợi fetchPromise (có thể fail và ném lỗi mạng chuẩn)
         return cachedResponse || fetchPromise;
       });
     })
@@ -64,7 +58,6 @@ self.addEventListener('fetch', (event) => {
 });
 
 // === Pomodoro & Notification Logic ===
-// CẢNH BÁO: Biến này chắc chắn sẽ bị xóa khi SW ngủ đông (Idling)!
 let currentTimeout = null;
 
 self.addEventListener('message', (event) => {

@@ -35,16 +35,9 @@
 <script>
     if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
-        // MẸO: Thêm ?v=3 hoặc ?t=Date.now() để ép trình duyệt kiểm tra file sw.js mới trên server
-        navigator.searchWith = navigator.serviceWorker.register('/sw.js?v=3')
-        .then((reg) => {
-            console.log('SW đã sẵn sàng chạy ngầm!');
-            
-            // Chủ động kích hoạt kiểm tra bản mới ngay khi mở app
-            reg.update(); 
-        }).catch((err) => {
-            console.error('Đăng ký SW thất bại rồi:', err);
-        });
+        navigator.serviceWorker.register('./sw.js?v=3') 
+        .then(reg => console.log('Đăng ký SW thành công rùi nè! 🎉', reg))
+        .catch(err => console.error('Đăng ký SW thất bại rồi cứu với: 💥', err));
     });
     }
 </script>
