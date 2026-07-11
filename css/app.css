@@ -33,3 +33,15 @@ button, a, input, select {
     margin-right: 20px;
 }
 
+/* Khi ở chế độ chỉnh sửa, tạo viền bao quanh các khối lớn để nhận diện */
+body.is-editing #work-mode, 
+body.is-editing #pet-mode {
+    border: 3px dashed #ff7875; /* Viền nét đứt màu nổi bật */
+    margin-bottom: 20px;
+    cursor: grab;
+}
+
+body.is-editing #work-mode:active, 
+body.is-editing #pet-mode:active {
+    cursor: grabbing;
+}

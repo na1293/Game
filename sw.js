@@ -8,11 +8,17 @@ const ASSETS_TO_CACHE = [
 ];
 
 // 1. CÀI ĐẶT
-self.addEventListener('install', (event) => {
+self.addEventListener('install', function onInstall(event) {
   event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => {
-      return cache.addAll(ASSETS_TO_CACHE);
-    }).then(() => self.skipWaiting())
+    caches.open(CACHE_NAME + 'offline').then(function prefill(cache) {
+      return cache.addAll([
+        '/index.html',
+        '/manifest.json',
+        '/images/icon-192x192.png',
+        '/images/icon-512x512.png',
+        // etc
+      ]);
+    })
   );
 });
 

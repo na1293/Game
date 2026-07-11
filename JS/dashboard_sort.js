@@ -1,24 +1,70 @@
-// Khai báo mảng toàn cục để quản lý các thực thể Sortable
+// === Hệ thống kéo thả đa cấp: Long Press (>1s) mới cho phép di chuyển === //
+
 let sortableInstances = [];
-let isEditMode = false; // Mặc định vừa vào app là CHƯA cho sửa (Khóa)
+let isEditMode = false; 
 
 document.addEventListener("DOMContentLoaded", () => {
-    // 1. Tìm tất cả các danh sách dạng lưới trong app
-    const gridContainers = document.querySelectorAll(".link-grid-ui");
-    const editBtn = document.getElementById("btn-edit-layout");
 
+    // CẤU HÌNH LONG PRESS CHUNG CHO CÁC CẤP
+    const longPressConfig = {
+        delay: 300,            //  Thời gian giữ: 300ms = 0.3 giây
+        delayOnTouchOnly: false, // Bật tính năng này cho CẢ chuột trên PC và cảm ứng trên điện thoại
+        touchStartThreshold: 5,  // Độ lệch pixel cho phép khi giữ (tránh việc rung tay bị hủy kích hoạt)
+        animation: 250,
+        ghostClass: 'sortable-ghost',
+        disabled: true           // Mặc định ban đầu luôn khóa
+    };
+
+    // ==========================================
+    // CẤP 1: KÉO THẢ CÁC PHẦN TỬ CHÍNH (work-mode <=> pet-mode)
+    // ==========================================
+    const mainWrapper = document.querySelector(".main-layout-wrapper");
+    const mainStorageKey = "main_layout_modes_order";
+
+    if (mainWrapper) {
+        const saveMainOrder = () => {
+            const modes = mainWrapper.children;
+            const orderArray = Array.from(modes).map(el => el.getAttribute("id"));
+            localStorage.setItem(mainStorageKey, JSON.stringify(orderArray));
+        };
+
+        const loadMainOrder = () => {
+            const savedOrder = JSON.parse(localStorage.getItem(mainStorageKey));
+            if (!savedOrder) return;
+
+            const modeMap = {};
+            Array.from(mainWrapper.children).forEach(el => {
+                if (el.getAttribute("id")) modeMap[el.getAttribute("id")] = el;
+            });
+
+            savedOrder.forEach(id => {
+                if (modeMap[id]) mainWrapper.appendChild(modeMap[id]);
+            });
+        };
+
+        loadMainOrder();
+
+        const mainSortable = new Sortable(mainWrapper, {
+            ...longPressConfig, // Kế thừa cấu hình nhấn giữ 1s
+            onEnd: saveMainOrder
+        });
+
+        sortableInstances.push(mainSortable);
+    }
+
+    // ==========================================
+    // CẤP 2: KÉO THẢ CÁC LINK/ICON TRONG CÁC Ô LƯỚI
+    // ==========================================
+    const gridContainers = document.querySelectorAll(".link-grid-ui");
     gridContainers.forEach((container, groupIndex) => {
-        // Tạo một key unique cho từng nhóm danh sách để lưu vào LocalStorage
         const storageKey = `grid_order_group_${groupIndex}`;
 
-        // Hàm lưu thứ tự vào LocalStorage
         const saveOrder = () => {
             const items = container.querySelectorAll("li a");
             const orderArray = Array.from(items).map(a => a.getAttribute("href"));
             localStorage.setItem(storageKey, JSON.stringify(orderArray));
         };
 
-        // Hàm load và sắp xếp lại vị trí khi mở app
         const loadOrder = () => {
             const savedOrder = JSON.parse(localStorage.getItem(storageKey));
             if (!savedOrder) return;
@@ -27,54 +73,83 @@ document.addEventListener("DOMContentLoaded", () => {
             const liItems = container.querySelectorAll("li");
             liItems.forEach(li => {
                 const a = li.querySelector("a");
-                if (a) {
-                    itemMap[a.getAttribute("href")] = li;
-                }
+                if (a) itemMap[a.getAttribute("href")] = li;
             });
 
             savedOrder.forEach(href => {
-                if (itemMap[href]) {
-                    container.appendChild(itemMap[href]);
-                }
+                if (itemMap[href]) container.appendChild(itemMap[href]);
             });
         };
 
-        // Bước A: Load vị trí cũ ngay khi vừa tải trang xong
         loadOrder();
 
-        // Bước B: Kích hoạt Sortable và LƯU thực thể vào mảng sortableInstances
         const sortableInstance = new Sortable(container, {
-            animation: 150,       
-            ghostClass: 'sortable-ghost', 
-            disabled: true, // 🌟 QUAN TRỌNG: Mặc định khóa kéo thả khi mới tải trang!
-            onEnd: () => {
-                saveOrder(); 
-            }
+            ...longPressConfig, // Áp dụng nhấn giữ 1s cho cả icon nhỏ nếu thích
+            animation: 150,     // Ghi đè tốc độ animation cho mượt hơn với icon
+            onEnd: saveOrder
         });
 
-        // Đẩy thực thể vừa tạo vào mảng quản lý chung
         sortableInstances.push(sortableInstance);
     });
 
-    // 2. XỬ LÝ SỰ KIỆN BẤM NÚT EDIT
+    // ==========================================
+    // CẤP 3: KÉO THẢ CÁC CÔNG CỤ LỚN (.pomodoro-timer)
+    // ==========================================
+    const widgetContainer = document.querySelector(".sortable-widgets-container") || document.querySelector(".show-then");
+    const widgetStorageKey = "widgets_order_main";
+
+    if (widgetContainer) {
+        const saveWidgetOrder = () => {
+            const widgets = widgetContainer.querySelectorAll(".pomodoro-timer");
+            const orderArray = Array.from(widgets).map(widget => widget.getAttribute("id"));
+            localStorage.setItem(widgetStorageKey, JSON.stringify(orderArray));
+        };
+
+        const loadWidgetOrder = () => {
+            const savedOrder = JSON.parse(localStorage.getItem(widgetStorageKey));
+            if (!savedOrder) return;
+
+            const widgetMap = {};
+            const widgets = widgetContainer.querySelectorAll(".pomodoro-timer");
+            widgets.forEach(widget => {
+                if (widget.getAttribute("id")) widgetMap[widget.getAttribute("id")] = widget;
+            });
+
+            savedOrder.forEach(id => {
+                if (widgetMap[id]) widgetContainer.appendChild(widgetMap[id]);
+            });
+        };
+
+        loadWidgetOrder();
+
+        const widgetSortable = new Sortable(widgetContainer, {
+            ...longPressConfig, // Kế thừa cấu hình nhấn giữ 1s
+            draggable: '.pomodoro-timer', 
+            onEnd: saveWidgetOrder
+        });
+
+        sortableInstances.push(widgetSortable);
+    }
+
+    // ==========================================
+    // NÚT ĐIỀU KHIỂN CHUNG: BẬT / TẮT CHẾ ĐỘ SỬA BỐ CỤC
+    // ==========================================
+    const editBtn = document.getElementById("btn-edit-layout");
     if (editBtn) {
         editBtn.addEventListener("click", () => {
-            isEditMode = !isEditMode; // Đảo trạng thái (True <-> False)
+            isEditMode = !isEditMode; 
 
-            // Duyệt qua tất cả các thực thể để Bật/Tắt tính năng kéo thả
+            // Kích hoạt hoặc Khóa toàn bộ các cấp độ kéo thả
             sortableInstances.forEach(instance => {
-                // Nếu đang edit (isEditMode = true) -> disabled = false (Mở khóa để kéo)
-                // Nếu bấm Xong (isEditMode = false) -> disabled = true (Khóa lại không cho kéo)
                 instance.option("disabled", !isEditMode); 
             });
 
-            // Thay đổi giao diện nút bấm để báo hiệu cho user
             if (isEditMode) {
                 editBtn.innerHTML = "🔒 Sửa xong? Khóa bố cục";
-                editBtn.style.background = "var(--success-gradient, #48bb78)"; 
+                editBtn.style.background = "#48bb78"; 
                 document.body.classList.add("is-editing"); 
             } else {
-                editBtn.innerHTML = "⚙️ Sửa bố cục";
+                editBtn.innerHTML = "🖋 Sửa bố cục";
                 editBtn.style.background = ""; 
                 document.body.classList.remove("is-editing");
             }

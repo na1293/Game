@@ -30,6 +30,11 @@
     <script src="JS/class-user-and-lock.js" defer></script>
     <!-- Sử dụng main.js để nhận update -->
     <script src="JS/main.js"></script>
+    <!-- Dữ liệu PWA -->
+    <link rel="manifest" href="./manifest.json"> <!-- Cái này có ./ -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <link rel="manifest" href="manifest.json">
+    <link rel="manifest" href="/manifest.json"> <!-- Cái này không có ./ -->
 </head>
 
 <script>
@@ -43,264 +48,265 @@
 </script>
 </head>
 <body>
-    <button onclick="nghi_ngoi()" id="btn-sleep">⏱️ Chế độ tối giản</button>
-    <button id="move-home">Lên trên</button>
-
-    <div id="AOD">
-        <div id="countdown-container">
-            <h1 id="time-count-set">00:00:00</h1>
-            <h1 id="now-set">00:00</h1>
-        </div>
-        <button id="btn-toggle-aod-view" onclick="toggleAodVisibility()">🔒 Tạm ẩn đồng hồ</button>
-    </div>
-
-    <div class="container" id="container">
-        <header>
-            <h1>Trạm Tập Trung Học Tập</h1>
-            <h3 id="say">Đang tải câu nói truyền cảm hứng...</h3>
-            <hr>
-            <strong id="event_news">Lịch học hôm nay</strong>
-        </header>
-        
-
-        <div class="pomodoro-timer tools-dashboard">
-            <h2>Công cụ thông minh</h2>
-            <div style="text-align: center;">
-                <button id="btn-edit-layout">🖋 Sửa bố cục</button>
-                <button id="btn-update">🔄 Cập nhật mới</button>
-            </div>
-            <span><p class="subtitle">Hệ sinh thái hỗ trợ học tập và quản lý cuộc sống của bạn:</p></span>
-            <div class="tool-group">
-                <h3><span class="group-icon">📚</span> Học tập bứt phá</h3>
-                <ul class="link-grid-ui">
-                    <li><a href="#pomodoro-timer-tool"><span class="icon">⏱️</span> Đồng hồ Pomodoro</a></li>
-                    <li><a href="#music-play">🎶 Âm nhạc</a></li>
-                    <li><a href="#pomodoro-happy"><span class="icon">🍅</span>Trồng cà chua</a></li>
-                    <li><a href="#countdown-thptqg"><span class="icon">🎯</span> Đếm ngược THPTQG</a></li>
-                    <li><a href="#search-engine-tool"><span class="icon">🔍</span> Công cụ tìm kiếm</a></li>
-                    <li><a href="#learing-tool"><span class="icon">📖</span> Công cụ học tập</a></li>
-                </ul>
-            </div>
-
-            <div class="tool-group">
-                <h3><span class="group-icon">🎮</span> Giải trí & Chill</h3>
-                <ul class="link-grid-ui">
-                    <li><a href="#cute-mess"><span class="icon">💬</span> Lời nhắc từ hệ thống</a></li>
-                    <li><a href="#new-feed"><span class="icon">📰</span> Tin tức mới nhất</a></li>
-                </ul>
-            </div>
-
-            <div class="tool-group">
-                <h3><span class="group-icon">⚙️</span> Tiện ích hằng ngày</h3>
-                <ul class="link-grid-ui">
-                    <li><a href="#to-do-list-tool"><span class="icon">✅</span> Việc cần làm</a></li>
-                    <li><a href="#moon-cal"><span class="icon">🌙</span> Lịch âm hôm nay</a></li>
-                    <li><a href="#birthday-section"><span class="icon">🎂</span> Sinh nhật sắp tới</a></li>
-                    <li><a href="#weather-tool"><span class="icon">☀️</span> Thời tiết hiện tại</a></li>
-                </ul>
-            </div>
-        </div>
-
-        <div class="show-then" style="display: none;">
+    <div id="work-mode">
     
-            <div class="pomodoro-timer" id="countdown-thptqg">
-                <h2>Kỳ thi THPTQG năm 2027 sẽ bắt đầu sau:</h2>
-                <h1 id="countdown">0 ngày</h1>
-                <strong id="time-conut">00 giờ 00 phút 00 giây</strong>
-                <hr>
-                <button onclick="location.reload()">Tải lại</button>
+        <button onclick="nghi_ngoi()" id="btn-sleep">⏱️ Chế độ tối giản</button>
+        <button id="move-home">Lên trên</button>
+
+        <div id="AOD">
+            <div id="countdown-container">
+                <h1 id="time-count-set">00:00:00</h1>
+                <h1 id="now-set">00:00</h1>
             </div>
-        
-            <div class="pomodoro-timer" id="pomodoro-timer-tool">
-                <h2>⏱️ Đồng Hồ Pomodoro</h2>
-                <p id="timer-display">25:00</p>
-                <button id="start-btn" onclick="playsoundsth()">Bắt đầu học</button>
-                <button id="reset-btn" onclick="stopsound()">Đặt lại</button>
-            </div>
-
-            <div class="pomodoro-timer" id="music-play">
-                <h2>Chọn âm nhạc nghe nền</h2>
-
-                <select id="music-selector" class="select_ui">
-                    <option value="Music/no-sound-but-free.mp3">Âm thanh ngắt quãng (Tốt nhất nếu muốn no sound)</option>
-                    <option value="Music/no-sound.wav">Không âm thanh (Có thể không có thông báo)</option>
-                    <option value="Music/thac-nuoc.mp3">Thác nước</option>
-                    <option value="Music/sound_test.mp3">Tiếng mưa</option>
-                    <option value="Music/big-rain.mp3">Tiếng bão</option>
-                    <option value="Music/sea.mp3">Tiếng biển</option>
-                    <option value="Music/ice.mp3">Nước đá</option>
-                    <option value="Music/cafe-sound.mp3">Tiếng quán cafe</option>
-                    <option value="Music/fly-funny.mp3">Tiếng muỗi</option>
-                </select>
-
-                <button id="btn-play-music">✔ Phát</button>
-                <button id="btn-stop-music">😒 Dừng</button>
-            </div>
-                        
-            <div class="pomodoro-timer" id="pomodoro-happy">
-                <h2>Bạn đã hái được bao cà chua?</h2>
-                <h1 id="tomato-count" style="color: tomato; font-size: clamp(2.5rem, 12vw, 8rem); font-size: clamp(2.5rem, 10vmax, 7rem); margin-bottom: 5px; text-align: center; line-height: 1.1;">0/10</h1>
-                
-                <div style="margin-bottom: 15px; font-size: 0.95rem; color: #4a5568; line-height: 1.5;">
-                    <div>🍅 Giá hôm nay: <strong style="color: #e53e3e;"><span id="tomato-price-display">Đang tải...</span></strong></div>
-                    <div>💰 Xu của bạn: <strong style="color: #d69e2e;"><span id="user-coins-display">Đang tải...</span></strong></div>
-                </div>
-
-                <button id="sell-anytime-btn" onclick="sellTomatoesAnytime()" style="background: var(--success-gradient); margin-top: 10px;">Bán cà chua lấy xu 💰</button>
-                <button onclick="alert('Chứ mỗi 25p học liên tục (Mà không thoát app) thì bạn sẽ nhận 1 cà chua.')">Cách lấy cà chua</button>
-            </div>
-
-            <div class="pomodoro-timer" id="search-engine-tool">
-                <h1>Tìm kiếm nội dung</h1>
-                <p>Mỗi 45 lượt tìm kiếm của bạn bằng Ecosia là 1 cái cây được trồng</p>
-                <div class="todo-container">
-                    <input type="text" id="search-input" placeholder="Tìm kiếm nội dung...">
-                    <button id="search-btn">Tìm kiếm</button>
-                </div>
-                <select id="search-tool" class="select_ui">
-                    <option value="startpage.com">Startpage (Nên chọn) - Tìm kiếm trung lập</option>
-                    <option value="google.com">Google (Tốt nhất) - Tìm kiếm toàn cầu</option>
-                    <option value="ecosia.org">Ecosia (Trồng cây xanh) - Tìm kiếm và bảo vệ Môi trường</option>
-                    <option value="coccoc.com">Cốc Cốc - Made in Vietnam</option>
-                    <option value="oxfordlearnersdictionaries">Từ điển Oxford</option>
-                    <option value="cambridge">Từ điển Cambridge</option>
-                </select>
-            </div>
-
-            <div class="pomodoro-timer">
-                <h2>Chọn trình tìm kiếm nào?</h2>
-                <div class="can-le">
-                    <p>Nếu bạn lo ngại việc Google liên tục <span class="highlight">theo dõi hành vi</span> — từ vị trí, từ khóa đến thói quen sinh hoạt của mình — thì <span class="highlight">Startpage</span> chính là giải pháp thay thế tốt nhất hiện nay.</p>
-                    <p>Về bản chất, Startpage sử dụng chính hệ thống của Google nên mang lại chất lượng tìm kiếm chính xác <span class="highlight">tương đương</span>. Điểm khác biệt vượt trội là Startpage bảo mật thông tin cá nhân, đồng thời trả về kết quả <span class="highlight">trung lập và khách quan hơn</span>.</p>
-                    <p>Ngoài ra, nếu bạn muốn bảo vệ môi trường, bạn có thể cân nhắc <span class="highlight">Ecosia</span>. Cứ mỗi <span class="highlight">45 lượt tìm kiếm</span> trung bình thì số tiền từ quảng cáo sẽ đủ cho Ecosia trích 80%-100% lợi nhuận <span class="highlight">trồng 1 cái cây</span>.</p>
-                </div>
-            </div>
-
-            <div class="pomodoro-timer" id="moon-cal">
-                <h2>Lịch âm</h2>
-                <h1 id="lunar-display-moondate">Ngày 1</h1>
-                <strong id="lunar-display-moondate-month">Tháng 1</strong>
-                <strong id="lunar-display-moondate-year">Năm 2000</strong>
-            </div>         
-
-            <div class="pomodoro-timer" id="cute-mess">
-                <h2 id="say-time" style="color: #4c51bf;">Chào bạn nhé</h2>
-                <p id="talk" style="color: var(--text-muted); font-size: 1rem;"></p>
-                <br>
-                <h3 id="say-now" style="font-weight: 500; font-size: 1.1rem;"></h3>
-            </div>
-
-            <div class="pomodoro-timer" style="text-align: left;" id="learing-tool">
-                <h2>Công cụ hỗ trợ học tập</h2>
-                <p>Dưới đây là các công cụ tiện ích giúp bạn học tập hiệu quả hơn:</p>
-                <ul style="margin-left: 10px; color: var(--text-muted); font-size: 0.95rem; list-style-type: none; padding-left: 0;">
-                    <li style="margin-bottom: 8px; transition: transform 0.2s ease;">
-                        📚 Học Toán: <span><a href="https://gemini.google.com/gem/dbd119ed2d4f" target="_blank" style="color: var(--accent-color, #007bff); text-decoration: none; font-weight: 500;">Trợ lý học toán</a> (Cần đăng nhập)</span>
-                    </li>
-                    <li style="margin-bottom: 8px; transition: transform 0.2s ease;">
-                        💡 Hướng dẫn dùng AI: <span><a href="https://docs.google.com/document/d/1Q19QCakJFWLiZgT9zg6hW3A7eJHWcpEkHXazEq8CExI/edit?usp=sharing" target="_blank" style="color: var(--accent-color, #007bff); text-decoration: none; font-weight: 500;">Cách dùng AI Toán</a></span>
-                    </li>
-                    <li style="margin-bottom: 8px; transition: transform 0.2s ease;">
-                        📝 Làm đề: <span><a href="https://www.onluyen.vn/" target="_blank" style="color: var(--accent-color, #007bff); text-decoration: none; font-weight: 500;">Ôn luyện</a></span>
-                    </li>
-                    <li style="margin-bottom: 8px; transition: transform 0.2s ease;">
-                        🇬🇧 Đề thi Anh: <span><a href="https://prepedu.com/vi/blog/de-thi-thpt-quoc-gia-mon-anh" target="_blank" style="color: var(--accent-color, #007bff); text-decoration: none; font-weight: 500;">Đề thi THPTQG Anh</a></span>
-                    </li>
-                    <li style="margin-bottom: 8px; transition: transform 0.2s ease;">
-                        🗂️ Học tiếng Anh: <a href="https://quizlet.com/user/quizlette2318772/folders/tieng-anh" target="_blank" style="color: var(--accent-color, #007bff); text-decoration: none; font-weight: 500;">Thẻ từ vựng tiếng Anh (Full thẻ)</a>
-                    </li>
-                    <li style="margin-bottom: 8px; transition: transform 0.2s ease;">
-                        💬 Đóng góp, đề xuất tính năng: <span><a href="https://khaosat.me/survey/6a2e1bae5d1e1843c8ef7545" target="_blank" style="color: var(--accent-color, #007bff); text-decoration: none; font-weight: 500;">Bắt đầu đóng góp</a></span>
-                    </li>
-                    
-                    <li style="margin-top: 15px; padding-top: 15px; border-top: 1px dashed rgba(255,255,255,0.1);">
-                        <div style="margin-bottom: 8px; font-weight: 500; display: flex; align-items: center; gap: 5px;" id="weather-tool">
-                            🌤️ Thời tiết Hà Nội:
-                        </div>
-                        <div style="border-radius: 8px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
-                            <a class="weatherwidget-io" href="https://forecast7.com/en/21d03105d83/hanoi/" data-label_1="HÀ NỘI" data-label_2="THỜI TIẾT" data-theme="pure" data-basecolor="" style="display: block; text-align: center; padding: 10px; background: rgba(0,0,0,0.05); text-decoration: none; color: inherit;">Đang tải thời tiết...</a>
-                            <script>
-                            !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src='https://weatherwidget.io/js/widget.min.js';fjs.parentNode.insertBefore(js,fjs);}}(document,'script','weatherwidget-io');
-                            </script>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-
-            <section id="birthday-section">
-                <div class="pomodoro-timer input-birthdate" style="text-align: left;">
-                    <h2>Nhập ngày tháng năm sinh bạn</h2>
-                    <div class="todo-container">
-                        <input type="date" id="birthdate">
-                        <button id="btn-submit-birthdate">Xác nhận</button>
-                    </div>
-                </div>
-
-                <div class="pomodoro-timer" id="class-user-section">
-                    <h2>Bạn đang học lớp:</h2>
-                    <h1 style="font-size: 2em;" id="class-user">Lớp 12</h1>
-                </div>   
-
-                <div class="pomodoro-timer count-birthdate">
-                    <h2>Sinh nhật bạn:</h2>
-                    <h1 id="countdown-birthdate">0 ngày</h1>
-                    <strong id="time-conut-birthdate">00 giờ 00 phút 00 giây</strong>
-                </div>
-
-                <div class="pomodoro-timer">
-                    <h2>🎂 Sinh nhật sắp tới</h2>
-                    <input type="text" id="nameInput" placeholder="Tên bạn thân/ người thân/ crush/ idol...">
-                    <p>---</p>
-                    <div class="todo-container">
-                        <input type="date" id="dateInput">
-                        <button id="addBtn">Thêm</button>
-                    </div>
-                    <div class="todo-container">
-                        <button id="import_data_brth">Nhập dữ liệu</button>
-                        <button id="export_data_brth">Xuất dữ liệu</button>
-                    </div>
-                    
-                    <ul id="birthdayListContainer" style="list-style: none; padding: 0;"></ul>
-                </div>
-
-            </section>
-
-            <div class="pomodoro-timer" style="text-align: left;" id="new-feed">
-                <h2>📢 Bản Tin Lớp Học</h2>
-                <hr>
-                <div class="news-container">
-                    <h3 id="news-title" style="color: #4c51bf; margin-top: 5px;">Đang tải tiêu đề...</h3>
-                    <p id="news-content" style="font-size: 0.95rem; line-height: 1.5; color: #2d3748; background: #f7fafc; padding: 10px; border-radius: 8px;">Đang tải nội dung bản tin...</p>
-                    <hr>
-                    <p id="news-author">Tác giả: --</p>
-                    <p id="news-date">Ngày đăng: --</p>
-                </div>
-                <button onclick="getNewsData()" style="margin-top: 15px; width: 100%;">Cập nhật bản tin</button>
-                <button onclick="window.open('https://khaosat.me/survey/6a302090a838d1cf4ff591e1')" style="margin-top: 15px; width: 100%;">Đăng bài</button>
-            </div>
-
-            <div class="pomodoro-timer" id="to-do-list-tool">
-                <h2>📝 Nhiệm Vụ Trong Tuần</h2>
-                <div class="todo-container">
-                    <input type="text" id="todo-input" placeholder="Thêm việc cần hoàn thành...">
-                    <button id="add-todo-btn">Thêm</button>
-                </div>
-
-                <div class="todo-container">
-                    <button id="export-btn-todo">Xuất dữ liệu</button>
-                    <button id="import-btn-todo">Nhập dữ liệu</button>
-                </div>
-
-                <ul id="todo-list" style="list-style-type: none; text-align: left;"></ul>
-            </div>
-
-            <footer>
-                <p>© 2026 Không gian làm việc tối giản & tập trung cao độ</p>
-                <a href="" id="reset-settings">Khôi phục cài đặt gốc</a>
-                <p style="color: gray;">(Xu không có giá trị trao đổi)</p>
-            </footer>
+            <button id="btn-toggle-aod-view" onclick="toggleAodVisibility()">🔒 Tạm ẩn đồng hồ</button>
         </div>
+
+        <div class="container" id="container">
+            <header>
+                <h1>Trạm Tập Trung Học Tập</h1>
+                <h3 id="say">Đang tải câu nói truyền cảm hứng...</h3>
+                <hr>
+                <strong id="event_news">Lịch học hôm nay</strong>
+                <button onclick="location.reload()">Tải lại</button>
+            </header>
+            
+
+            <div class="pomodoro-timer tools-dashboard">
+                <h2>Công cụ thông minh</h2>
+                <div style="text-align: center;">
+                    <button id="btn-edit-layout">🖋 Sửa bố cục</button>
+                    <button id="btn-update" style="display: none;">🔄 Cập nhật mới</button>
+                </div>
+                <span><p class="subtitle">Hệ sinh thái hỗ trợ học tập và quản lý cuộc sống của bạn:</p></span>
+                <div class="tool-group">
+                    <h3><span class="group-icon">📚</span> Học tập bứt phá</h3>
+                    <ul class="link-grid-ui">
+                        <li><a href="#pomodoro-timer-tool"><span class="icon">⏱️</span> Đồng hồ Pomodoro</a></li>
+                        <li><a href="#music-play">🎶 Âm nhạc</a></li>
+                        <li><a href="#pomodoro-happy"><span class="icon">🍅</span>Trồng cà chua</a></li>
+                        <li><a href="#countdown-thptqg"><span class="icon">🎯</span> Đếm ngược THPTQG</a></li>
+                        <li><a href="#search-engine-tool"><span class="icon">🔍</span> Công cụ tìm kiếm</a></li>
+                        <li><a href="#learing-tool"><span class="icon">📖</span> Công cụ học tập</a></li>
+                    </ul>
+                </div>
+
+                <div class="tool-group">
+                    <h3><span class="group-icon">🎮</span> Giải trí & Chill</h3>
+                    <ul class="link-grid-ui">
+                        <li><a href="#cute-mess"><span class="icon">💬</span> Lời nhắc từ hệ thống</a></li>
+                        <li><a href="#new-feed"><span class="icon">📰</span> Tin tức mới nhất</a></li>
+                    </ul>
+                </div>
+
+                <div class="tool-group">
+                    <h3><span class="group-icon">⚙️</span> Tiện ích hằng ngày</h3>
+                    <ul class="link-grid-ui">
+                        <li><a href="#to-do-list-tool"><span class="icon">✅</span> Việc cần làm</a></li>
+                        <li><a href="#moon-cal"><span class="icon">🌙</span> Lịch âm hôm nay</a></li>
+                        <li><a href="#birthday-section"><span class="icon">🎂</span> Sinh nhật sắp tới</a></li>
+                        <li><a href="#weather-tool"><span class="icon">☀️</span> Thời tiết hiện tại</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="show-then" style="display: none;">
+        
+                <div class="pomodoro-timer" id="countdown-thptqg">
+                    <h2>Kỳ thi THPTQG năm 2027 sẽ bắt đầu sau:</h2>
+                    <h1 id="countdown">0 ngày</h1>
+                    <strong id="time-conut">00 giờ 00 phút 00 giây</strong>
+                    <hr>
+                </div>
+            
+                <div class="pomodoro-timer" id="pomodoro-timer-tool">
+                    <h2>⏱️ Đồng Hồ Pomodoro</h2>
+                    <p id="timer-display">25:00</p>
+                    <button id="start-btn" onclick="playsoundsth()">Bắt đầu học</button>
+                    <button id="reset-btn" onclick="stopsound()">Đặt lại</button>
+                </div>
+
+                <div class="pomodoro-timer" id="music-play">
+                    <h2>Chọn âm nhạc nghe nền</h2>
+
+                    <select id="music-selector" class="select_ui">
+                        <option value="Music/no-sound-but-free.mp3">Âm thanh ngắt quãng (Tốt nhất nếu muốn no sound)</option>
+                        <option value="Music/no-sound.wav">Không âm thanh (Có thể không có thông báo)</option>
+                        <option value="Music/thac-nuoc.mp3">Thác nước</option>
+                        <option value="Music/sound_test.mp3">Tiếng mưa</option>
+                        <option value="Music/big-rain.mp3">Tiếng bão</option>
+                        <option value="Music/sea.mp3">Tiếng biển</option>
+                        <option value="Music/ice.mp3">Nước đá</option>
+                        <option value="Music/cafe-sound.mp3">Tiếng quán cafe</option>
+                        <option value="Music/fly-funny.mp3">Tiếng muỗi</option>
+                    </select>
+
+                    <button id="btn-play-music">✔ Phát</button>
+                    <button id="btn-stop-music">😒 Dừng</button>
+                </div>
+                            
+                <div class="pomodoro-timer" id="pomodoro-happy">
+                    <h2>Bạn đã hái được bao cà chua?</h2>
+                    <h1 id="tomato-count" style="color: tomato; font-size: clamp(2.5rem, 12vw, 8rem); font-size: clamp(2.5rem, 10vmax, 7rem); margin-bottom: 5px; text-align: center; line-height: 1.1;">0/10</h1>
+                    
+                    <div style="margin-bottom: 15px; font-size: 0.95rem; color: #4a5568; line-height: 1.5;">
+                        <div>🍅 Giá hôm nay: <strong style="color: #e53e3e;"><span id="tomato-price-display">Đang tải...</span></strong></div>
+                        <div>💰 Xu của bạn: <strong style="color: #d69e2e;"><span id="user-coins-display">Đang tải...</span></strong></div>
+                    </div>
+
+                    <button id="sell-anytime-btn" onclick="sellTomatoesAnytime()" style="background: var(--success-gradient); margin-top: 10px;">Bán cà chua lấy xu 💰</button>
+                    <button onclick="alert('Chứ mỗi 25p học liên tục (Mà không thoát app) thì bạn sẽ nhận 1 cà chua.')">Cách lấy cà chua</button>
+                </div>
+
+                <div class="pomodoro-timer" id="search-engine-tool">
+                    <h1>Tìm kiếm nội dung</h1>
+                    <p>Mỗi 45 lượt tìm kiếm của bạn bằng Ecosia là 1 cái cây được trồng</p>
+                    <div class="todo-container">
+                        <input type="text" id="search-input" placeholder="Tìm kiếm nội dung...">
+                        <button id="search-btn">Tìm kiếm</button>
+                    </div>
+                    <select id="search-tool" class="select_ui">
+                        <option value="search.brave.com">Brave (Nên chọn)</option>
+                        <option value="google.com">Google (Tốt nhất) - Tìm kiếm toàn cầu</option>
+                        <option value="ecosia.org">Ecosia (Trồng cây xanh) - Tìm kiếm và bảo vệ Môi trường</option>
+                        <option value="coccoc.com">Cốc Cốc - Made in Vietnam</option>
+                        <option value="oxfordlearnersdictionaries">Từ điển Oxford</option>
+                        <option value="cambridge">Từ điển Cambridge</option>
+                    </select>
+                </div>
+
+                <div class="pomodoro-timer" id="moon-cal">
+                    <h2>Lịch âm</h2>
+                    <h1 id="lunar-display-moondate">Ngày 1</h1>
+                    <strong id="lunar-display-moondate-month">Tháng 1</strong>
+                    <strong id="lunar-display-moondate-year">Năm 2000</strong>
+                </div>         
+
+                <div class="pomodoro-timer" id="cute-mess">
+                    <h2 id="say-time" style="color: #4c51bf;">Chào bạn nhé</h2>
+                    <p id="talk" style="color: var(--text-muted); font-size: 1rem;"></p>
+                    <br>
+                    <h3 id="say-now" style="font-weight: 500; font-size: 1.1rem;"></h3>
+                </div>
+
+                <div class="pomodoro-timer" style="text-align: left;" id="learing-tool">
+                    <h2>Công cụ hỗ trợ học tập</h2>
+                    <p>Dưới đây là các công cụ tiện ích giúp bạn học tập hiệu quả hơn:</p>
+                    <ul style="margin-left: 10px; color: var(--text-muted); font-size: 0.95rem; list-style-type: none; padding-left: 0;">
+                        <li style="margin-bottom: 8px; transition: transform 0.2s ease;">
+                            📚 Học Toán: <span><a href="https://gemini.google.com/gem/dbd119ed2d4f" target="_blank" style="color: var(--accent-color, #007bff); text-decoration: none; font-weight: 500;">Trợ lý học toán</a> (Cần đăng nhập)</span>
+                        </li>
+                        <li style="margin-bottom: 8px; transition: transform 0.2s ease;">
+                            💡 Hướng dẫn dùng AI: <span><a href="https://docs.google.com/document/d/1Q19QCakJFWLiZgT9zg6hW3A7eJHWcpEkHXazEq8CExI/edit?usp=sharing" target="_blank" style="color: var(--accent-color, #007bff); text-decoration: none; font-weight: 500;">Cách dùng AI Toán</a></span>
+                        </li>
+                        <li style="margin-bottom: 8px; transition: transform 0.2s ease;">
+                            📝 Làm đề: <span><a href="https://www.onluyen.vn/" target="_blank" style="color: var(--accent-color, #007bff); text-decoration: none; font-weight: 500;">Ôn luyện</a></span>
+                        </li>
+                        <li style="margin-bottom: 8px; transition: transform 0.2s ease;">
+                            🇬🇧 Đề thi Anh: <span><a href="https://prepedu.com/vi/blog/de-thi-thpt-quoc-gia-mon-anh" target="_blank" style="color: var(--accent-color, #007bff); text-decoration: none; font-weight: 500;">Đề thi THPTQG Anh</a></span>
+                        </li>
+                        <li style="margin-bottom: 8px; transition: transform 0.2s ease;">
+                            🗂️ Học tiếng Anh: <a href="https://quizlet.com/user/quizlette2318772/folders/tieng-anh" target="_blank" style="color: var(--accent-color, #007bff); text-decoration: none; font-weight: 500;">Thẻ từ vựng tiếng Anh (Full thẻ)</a>
+                        </li>
+                        <li style="margin-bottom: 8px; transition: transform 0.2s ease;">
+                            💬 Đóng góp, đề xuất tính năng: <span><a href="https://khaosat.me/survey/6a2e1bae5d1e1843c8ef7545" target="_blank" style="color: var(--accent-color, #007bff); text-decoration: none; font-weight: 500;">Bắt đầu đóng góp</a></span>
+                        </li>
+                        
+                        <li style="margin-top: 15px; padding-top: 15px; border-top: 1px dashed rgba(255,255,255,0.1);">
+                            <div style="margin-bottom: 8px; font-weight: 500; display: flex; align-items: center; gap: 5px;" id="weather-tool">
+                                🌤️ Thời tiết Hà Nội:
+                            </div>
+                            <div style="border-radius: 8px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
+                                <a class="weatherwidget-io" href="https://forecast7.com/en/21d03105d83/hanoi/" data-label_1="HÀ NỘI" data-label_2="THỜI TIẾT" data-theme="pure" data-basecolor="" style="display: block; text-align: center; padding: 10px; background: rgba(0,0,0,0.05); text-decoration: none; color: inherit;">Đang tải thời tiết...</a>
+                                <script>
+                                !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src='https://weatherwidget.io/js/widget.min.js';fjs.parentNode.insertBefore(js,fjs);}}(document,'script','weatherwidget-io');
+                                </script>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+                <section id="birthday-section">
+                    <div class="pomodoro-timer input-birthdate" style="text-align: left;">
+                        <h2>Nhập ngày tháng năm sinh bạn</h2>
+                        <div class="todo-container">
+                            <input type="date" id="birthdate">
+                            <button id="btn-submit-birthdate">Xác nhận</button>
+                        </div>
+                    </div>
+
+                    <div class="pomodoro-timer" id="class-user-section">
+                        <h2>Bạn đang học lớp:</h2>
+                        <h1 style="font-size: 2em;" id="class-user">Lớp 12</h1>
+                    </div>   
+
+                    <div class="pomodoro-timer count-birthdate">
+                        <h2>Sinh nhật bạn:</h2>
+                        <h1 id="countdown-birthdate">0 ngày</h1>
+                        <strong id="time-conut-birthdate">00 giờ 00 phút 00 giây</strong>
+                    </div>
+
+                    <div class="pomodoro-timer">
+                        <h2>🎂 Sinh nhật sắp tới</h2>
+                        <input type="text" id="nameInput" placeholder="Tên bạn thân/ người thân/ crush/ idol...">
+                        <p>---</p>
+                        <div class="todo-container">
+                            <input type="date" id="dateInput">
+                            <button id="addBtn">Thêm</button>
+                        </div>
+                        <div class="todo-container">
+                            <button id="import_data_brth">Nhập dữ liệu</button>
+                            <button id="export_data_brth">Xuất dữ liệu</button>
+                        </div>
+                        
+                        <ul id="birthdayListContainer" style="list-style: none; padding: 0;"></ul>
+                    </div>
+
+                </section>
+
+                <div class="pomodoro-timer" style="text-align: left;" id="new-feed">
+                    <h2>📢 Bản Tin Lớp Học</h2>
+                    <hr>
+                    <div class="news-container">
+                        <h3 id="news-title" style="color: #4c51bf; margin-top: 5px;">Đang tải tiêu đề...</h3>
+                        <p id="news-content" style="font-size: 0.95rem; line-height: 1.5; color: #2d3748; background: #f7fafc; padding: 10px; border-radius: 8px;">Đang tải nội dung bản tin...</p>
+                        <hr>
+                        <p id="news-author">Tác giả: --</p>
+                        <p id="news-date">Ngày đăng: --</p>
+                    </div>
+                    <button onclick="getNewsData()" style="margin-top: 15px; width: 100%;">Cập nhật bản tin</button>
+                    <button onclick="window.open('https://khaosat.me/survey/6a302090a838d1cf4ff591e1')" style="margin-top: 15px; width: 100%;">Đăng bài</button>
+                </div>
+
+                <div class="pomodoro-timer" id="to-do-list-tool">
+                    <h2>📝 Nhiệm Vụ Trong Tuần</h2>
+                    <div class="todo-container">
+                        <input type="text" id="todo-input" placeholder="Thêm việc cần hoàn thành...">
+                        <button id="add-todo-btn">Thêm</button>
+                    </div>
+
+                    <div class="todo-container">
+                        <button id="export-btn-todo">Xuất dữ liệu</button>
+                        <button id="import-btn-todo">Nhập dữ liệu</button>
+                    </div>
+
+                    <ul id="todo-list" style="list-style-type: none; text-align: left;"></ul>
+                </div>
+
+            </div>
+        </div>
+        <!-- Kết thúc Work-mode -->
     </div>
+
+    <!-- Bắt đầu pet-mode -->
+    <div id="pet-mode">
+        <!-- Comming soon -->
+    </div>
+
+    <footer>
+        <p>© 2026 Không gian làm việc tối giản & tập trung cao độ</p>
+        <a href="" id="reset-settings">Khôi phục cài đặt gốc</a>
+        <p style="color: gray;">(Xu không có giá trị trao đổi)</p>
+    </footer>
 
     <script>
         let reset_settings = document.getElementById('reset-settings');
