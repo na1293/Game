@@ -103,7 +103,9 @@
                     <ul class="link-grid-ui">
                         <li><a href="#to-do-list-tool"><span class="icon">✅</span> Việc cần làm</a></li>
                         <li><a href="#moon-cal"><span class="icon">🌙</span> Lịch âm hôm nay</a></li>
-                        <li><a href="#birthday-section"><span class="icon">🎂</span> Sinh nhật sắp tới</a></li>
+                        <li><a href="#birthday-section"><span class="icon">🎂</span> Sinh nhật bạn</a></li>
+                        <li><a href="#birthday-section-fr"><span class="icon">🎁</span> Sinh nhật sắp tới</a></li>
+                        <li><a href="#todo-list"><span class="icon">📝</span> Danh sách việc cần làm</a></li>
                         <li><a href="#weather-tool"><span class="icon">☀️</span> Thời tiết hiện tại</a></li>
                     </ul>
                 </div>
@@ -225,43 +227,40 @@
                     </ul>
                 </div>
 
-                <section id="birthday-section">
-                    <div class="pomodoro-timer input-birthdate" style="text-align: left;">
-                        <h2>Nhập ngày tháng năm sinh bạn</h2>
-                        <div class="todo-container">
-                            <input type="date" id="birthdate">
-                            <button id="btn-submit-birthdate">Xác nhận</button>
-                        </div>
+                <div class="pomodoro-timer input-birthdate" style="text-align: left;" id="birthday-section">
+                    <h2>Nhập ngày tháng năm sinh bạn</h2>
+                    <div class="todo-container">
+                        <input type="date" id="birthdate">
+                        <button id="btn-submit-birthdate">Xác nhận</button>
                     </div>
+                </div>
 
-                    <div class="pomodoro-timer" id="class-user-section">
-                        <h2>Bạn đang học lớp:</h2>
-                        <h1 style="font-size: 2em;" id="class-user">Lớp 12</h1>
-                    </div>   
+                <div class="pomodoro-timer" id="class-user-section">
+                    <h2>Bạn đang học lớp:</h2>
+                    <h1 style="font-size: 2em;" id="class-user">Lớp 12</h1>
+                </div>   
 
-                    <div class="pomodoro-timer count-birthdate">
-                        <h2>Sinh nhật bạn:</h2>
-                        <h1 id="countdown-birthdate">0 ngày</h1>
-                        <strong id="time-conut-birthdate">00 giờ 00 phút 00 giây</strong>
+                <div class="pomodoro-timer count-birthdate">
+                    <h2>Sinh nhật bạn:</h2>
+                    <h1 id="countdown-birthdate">0 ngày</h1>
+                    <strong id="time-conut-birthdate">00 giờ 00 phút 00 giây</strong>
+                </div>
+
+                <div class="pomodoro-timer" id="birthday-section-fr">
+                    <h2>🎂 Sinh nhật sắp tới</h2>
+                    <input type="text" id="nameInput" placeholder="Tên bạn thân/ người thân/ crush/ idol...">
+                    <p>---</p>
+                    <div class="todo-container">
+                        <input type="date" id="dateInput">
+                        <button id="addBtn">Thêm</button>
                     </div>
-
-                    <div class="pomodoro-timer">
-                        <h2>🎂 Sinh nhật sắp tới</h2>
-                        <input type="text" id="nameInput" placeholder="Tên bạn thân/ người thân/ crush/ idol...">
-                        <p>---</p>
-                        <div class="todo-container">
-                            <input type="date" id="dateInput">
-                            <button id="addBtn">Thêm</button>
-                        </div>
-                        <div class="todo-container">
-                            <button id="import_data_brth">Nhập dữ liệu</button>
-                            <button id="export_data_brth">Xuất dữ liệu</button>
-                        </div>
-                        
-                        <ul id="birthdayListContainer" style="list-style: none; padding: 0;"></ul>
+                    <div class="todo-container">
+                        <button id="import_data_brth">Nhập dữ liệu</button>
+                        <button id="export_data_brth">Xuất dữ liệu</button>
                     </div>
-
-                </section>
+                    
+                    <ul id="birthdayListContainer" style="list-style: none; padding: 0;"></ul>
+                </div>
 
                 <div class="pomodoro-timer" style="text-align: left;" id="new-feed">
                     <h2>📢 Bản Tin Lớp Học</h2>

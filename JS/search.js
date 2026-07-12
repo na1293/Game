@@ -2,29 +2,35 @@ let searchInput = document.getElementById('search-input');
 let searchBtn = document.getElementById('search-btn');
 let searchTool = document.getElementById('search-tool');
 
-searchBtn.addEventListener('click', function() {    
+// 1. Tách logic ra thành một hàm riêng
+function performSearch() {
     let query = searchInput.value.trim();
     let selectedTool = searchTool.value;
 
-    // Bước 1: Chặn ngay nếu user lười không chịu nhập gì
     if (!query) { 
         alert('Vui lòng nhập nội dung tìm kiếm! 🔍');
-        return; // Dừng hàm luôn, không chạy xuống dưới nữa
+        return;
     }
 
-    // Bước 2: Đã có chữ, giờ check xem ông nào "khó ở" để xử lý
     let searchUrl = '';
+    // ... (Giữ nguyên logic if/else của cưng ở đây)
+    
+    // Ví dụ mẫu cho 1 trường hợp
     if (selectedTool === 'coccoc.com') {
         searchUrl = `https://coccoc.com/search?query=${encodeURIComponent(query)}`;
-    } else if (selectedTool === 'cambridge') {
-        searchUrl = `https://www.dictionary.cambridge.org/dictionary/english/${encodeURIComponent(query)}?q=${encodeURIComponent(query)}`
-    } else if (selectedTool === 'oxfordlearnersdictionaries') {
-        searchUrl = `https://www.oxfordlearnersdictionaries.com/definition/english/${encodeURIComponent(query)}?q=${encodeURIComponent(query)}`
     } else {
-        // Tất cả các ông còn lại dùng chung công thức ?q=
         searchUrl = `https://${selectedTool}/search?q=${encodeURIComponent(query)}`;
     }
 
-    // Bước 3: Mở tab
     window.open(searchUrl, '_blank');
+}
+
+// 2. Gán sự kiện click cho nút
+searchBtn.addEventListener('click', performSearch);
+
+// 3. Gán sự kiện nhấn Enter cho input
+searchInput.addEventListener('keydown', function(event) {
+    if (event.key === 'Enter') {
+        performSearch();
+    }
 });
