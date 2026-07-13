@@ -101,9 +101,8 @@
                 <div class="tool-group">
                     <h3><span class="group-icon">⚙️</span> Tiện ích hằng ngày</h3>
                     <ul class="link-grid-ui">
-                        <li><a href="#to-do-list-tool"><span class="icon">✅</span> Việc cần làm</a></li>
                         <li><a href="#moon-cal"><span class="icon">🌙</span> Lịch âm hôm nay</a></li>
-                        <li><a href="#birthday-section"><span class="icon">🎂</span> Sinh nhật bạn</a></li>
+                        <li><a href="#your-bthday"><span class="icon">🎂</span> Sinh nhật bạn</a></li>
                         <li><a href="#birthday-section-fr"><span class="icon">🎁</span> Sinh nhật sắp tới</a></li>
                         <li><a href="#todo-list"><span class="icon">📝</span> Danh sách việc cần làm</a></li>
                         <li><a href="#weather-tool"><span class="icon">☀️</span> Thời tiết hiện tại</a></li>
@@ -140,9 +139,11 @@
                         <option value="Music/ice.mp3">Nước đá</option>
                         <option value="Music/cafe-sound.mp3">Tiếng quán cafe</option>
                         <option value="Music/fly-funny.mp3">Tiếng muỗi</option>
+                        <option value="Music/lofi.mp3">Nhạc Lofi</option>
+                        <option value="Music/funny.mp3">Nhạc Vui Vẻ</option>
                     </select>
 
-                    <button id="btn-play-music">✔ Phát</button>
+                    <button id="btn-play-music">✅ Phát</button>
                     <button id="btn-stop-music">😒 Dừng</button>
                 </div>
                             
@@ -241,7 +242,7 @@
                 </div>   
 
                 <div class="pomodoro-timer count-birthdate">
-                    <h2>Sinh nhật bạn:</h2>
+                    <h2 id="your-bthday">Sinh nhật bạn:</h2>
                     <h1 id="countdown-birthdate">0 ngày</h1>
                     <strong id="time-conut-birthdate">00 giờ 00 phút 00 giây</strong>
                 </div>
@@ -344,8 +345,8 @@
         function addTodo() {
             const text = input.value.trim();
             if (!text) return;
-            if (todos.length >= 15) {
-                alert('Tối đa 15 việc thôi, nhiều quá làm không xuể đâu nè!');
+            if (todos.length >= 30) {
+                alert('Tối đa 30 việc thôi, nhiều quá làm không xuể đâu nè!');
                 input.value = '';
                 return;
             }

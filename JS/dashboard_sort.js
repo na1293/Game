@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // CẤU HÌNH LONG PRESS CHUNG CHO CÁC CẤP
     const longPressConfig = {
-        delay: 300,            //  Thời gian giữ: 300ms = 0.3 giây
+        delay: 100,            //  Thời gian giữ: 100ms = 0.1 giây
         delayOnTouchOnly: false, // Bật tính năng này cho CẢ chuột trên PC và cảm ứng trên điện thoại
         touchStartThreshold: 5,  // Độ lệch pixel cho phép khi giữ (tránh việc rung tay bị hủy kích hoạt)
         animation: 250,
