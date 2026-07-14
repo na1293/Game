@@ -28,6 +28,7 @@
     <script src="JS/music.js" defer></script>
     <script src="JS/dashboard_sort.js" defer></script>
     <script src="JS/class-user-and-lock.js" defer></script>
+    <script src="JS/time-table.js" defer></script>
     <!-- Sử dụng main.js để nhận update -->
     <script src="JS/main.js"></script>
     <!-- Dữ liệu PWA -->
@@ -39,11 +40,11 @@
 
 <script>
     if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-        navigator.serviceWorker.register('./sw.js?v=3') 
-        .then(reg => console.log('Đăng ký SW thành công rùi nè! 🎉', reg))
-        .catch(err => console.error('Đăng ký SW thất bại rồi cứu với: 💥', err));
-    });
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('./sw.js?v=3') 
+            .then(reg => console.log('Đăng ký SW thành công rùi nè! 🎉', reg))
+            .catch(err => console.error('Đăng ký SW thất bại rồi cứu với: 💥', err));
+        });
     }
 </script>
 </head>
@@ -66,11 +67,10 @@
                 <h1>Trạm Tập Trung Học Tập</h1>
                 <h3 id="say">Đang tải câu nói truyền cảm hứng...</h3>
                 <hr>
-                <strong id="event_news">Lịch học hôm nay</strong>
+                <strong class="event_news event_news_style">Lịch học hôm nay</strong>
                 <button onclick="location.reload()">Tải lại</button>
             </header>
             
-
             <div class="pomodoro-timer tools-dashboard">
                 <h2>Công cụ thông minh</h2>
                 <div style="text-align: center;">
@@ -81,6 +81,7 @@
                 <div class="tool-group">
                     <h3><span class="group-icon">📚</span> Học tập bứt phá</h3>
                     <ul class="link-grid-ui">
+                        <li><a href="#time-table">📆 Thời khóa biểu</a></li>
                         <li><a href="#pomodoro-timer-tool"><span class="icon">⏱️</span> Đồng hồ Pomodoro</a></li>
                         <li><a href="#music-play">🎶 Âm nhạc</a></li>
                         <li><a href="#pomodoro-happy"><span class="icon">🍅</span>Trồng cà chua</a></li>
@@ -221,7 +222,7 @@
                             <div style="border-radius: 8px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
                                 <a class="weatherwidget-io" href="https://forecast7.com/en/21d03105d83/hanoi/" data-label_1="HÀ NỘI" data-label_2="THỜI TIẾT" data-theme="pure" data-basecolor="" style="display: block; text-align: center; padding: 10px; background: rgba(0,0,0,0.05); text-decoration: none; color: inherit;">Đang tải thời tiết...</a>
                                 <script>
-                                !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src='https://weatherwidget.io/js/widget.min.js';fjs.parentNode.insertBefore(js,fjs);}}(document,'script','weatherwidget-io');
+                                    !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src='https://weatherwidget.io/js/widget.min.js';fjs.parentNode.insertBefore(js,fjs);}}(document,'script','weatherwidget-io');
                                 </script>
                             </div>
                         </li>
@@ -290,6 +291,22 @@
                     </div>
 
                     <ul id="todo-list" style="list-style-type: none; text-align: left;"></ul>
+                </div>
+                
+                <div class="pomodoro-timer" id="time-table">
+                    <h2>Thời khóa biểu chi tiết</h2>
+                    <h3 class="event_news_style" id="schedule_title">Lịch học hôm nay</h3>
+                    <select id="day-select" class="select_ui">
+                        <option value="2">Thứ 2</option>
+                        <option value="3">Thứ 3</option>
+                        <option value="4">Thứ 4</option>
+                        <option value="5">Thứ 5</option>
+                        <option value="6">Thứ 6</option>
+                        <option value="7">Thứ 7</option>
+                        <option value="1">Chủ nhật</option>
+                    </select>
+                    <!-- <button>Nhập dữ liệu</button>
+                    <button>Xuất dữ liệu</button> -->
                 </div>
 
             </div>

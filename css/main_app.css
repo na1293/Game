@@ -58,13 +58,15 @@ hr {
     margin: 15px 0;
 }
 
-#event_news {
+.event_news_style {
     font-size: 1rem;
-    font-weight: 500;
-    background: rgba(255, 255, 255, 0.15);
+    font-weight: 800; /* Extra bold */
+    background: rgba(255, 255, 255, 0.2);
     padding: 10px 15px;
     border-radius: 12px;
+    border: 2px solid rgba(255, 255, 255, 0.4); /* Viền dày hơn */
     display: inline-block;
+    letter-spacing: 0.5px; /* Giãn chữ nhẹ giúp dễ đọc hơn khi chữ đậm */
 }
 
 /* Các khối chức năng (Card) */

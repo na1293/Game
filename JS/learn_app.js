@@ -5,7 +5,7 @@ let timerDisplay = document.getElementById("timer-display");
 let startBtn = document.getElementById("start-btn");
 let resetBtn = document.getElementById("reset-btn");
 let say = document.getElementById("say");
-let event_news = document.getElementById("event_news");
+let event_news = document.querySelector(".event_news");
 
 let timer;
 let isRunning = false;
@@ -20,21 +20,36 @@ if ('Notification' in window && Notification.permission !== 'granted') {
     Notification.requestPermission();
 }
 
-if (day_week == 0) {
-    event_news.innerHTML = "Chủ Nhật: Nghỉ ngơi, thư giãn hoặc làm bài tập.";
-} else if (day_week == 1) {
-    event_news.innerHTML = "🎯 Thứ Hai: Lý, Tin, Toán, HĐTN.";
-} else if (day_week == 2) {
-    event_news.innerHTML = "🔥 Thứ Ba: Anh, Địa, Văn, HĐTN. ";
-} else if (day_week == 3) {
-    event_news.innerHTML = "🏃‍♂️ Thứ Tư: Sáng: GDĐP, Quốc phòng, Thể chất | Chiều: KTPL, Tin, Toán, Anh.";
-} else if (day_week == 4) {
-    event_news.innerHTML = "⚡ Thứ Năm: KTPL, Sử, Địa.";
-} else if (day_week == 5) {
-    event_news.innerHTML = "🎉 Thứ Sáu: Văn, Toán, HĐTN. Sắp cuối tuần rồi cố lên!";
-} else if (day_week == 6) {
-    event_news.innerHTML = "Thứ Bảy: Cuối tuần rồi, hoàn thành nốt To-do list.";
+// =========================================== //
+// 1. Lưu trữ dữ liệu vào một Object
+const schedule = {
+    0: "Chủ Nhật: Nghỉ ngơi, thư giãn hoặc làm bài tập.",
+    1: "🎯 Thứ Hai: Lý, Tin, Toán, HĐTN.",
+    2: "🔥 Thứ Ba: Anh, Địa, Văn, HĐTN.",
+    3: "🏃‍♂️ Thứ Tư: Sáng: GDĐP, Quốc phòng, Thể chất | Chiều: KTPL, Tin, Toán, Anh.",
+    4: "⚡ Thứ Năm: KTPL, Sử, Địa.",
+    5: "🎉 Thứ Sáu: Văn, Toán, HĐTN. Sắp cuối tuần rồi cố lên!",
+    6: "Thứ Bảy: Cuối tuần rồi, hoàn thành nốt To-do list."
+};
+
+function updateSchedule(day_week) {
+    // 2. Lấy danh sách tất cả các phần tử có class event_news
+    const newsElements = document.querySelectorAll(".event_news");
+    
+    // 3. Lấy nội dung từ Object (fallback về thông báo lỗi nếu không tìm thấy)
+    const content = schedule[day_week] || "Không có lịch học";
+    
+    // 4. Cập nhật cho tất cả (cả cái trong header và cái trong div)
+    newsElements.forEach(el => {
+        el.innerHTML = content;
+    });
 }
+
+// Ví dụ: Lấy ngày hiện tại
+const today = new Date().getDay(); 
+updateSchedule(today);
+
+// =========================================== //
 
 function getRandom(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
 if(document.getElementById("say") && sayst.length > 0) {
