@@ -29,6 +29,7 @@
     <script src="JS/dashboard_sort.js" defer></script>
     <script src="JS/class-user-and-lock.js" defer></script>
     <script src="JS/time-table.js" defer></script>
+    <script src="JS/u-read-json-time-table.js" defer></script>
     <!-- Sử dụng main.js để nhận update -->
     <script src="JS/main.js"></script>
     <!-- Dữ liệu PWA -->
@@ -296,6 +297,10 @@
                 <div class="pomodoro-timer" id="time-table">
                     <h2>Thời khóa biểu chi tiết</h2>
                     <h3 class="event_news_style" id="schedule_title">Lịch học hôm nay</h3>
+                    <hr>
+                    <h3 class="event_news_style" id="user-upload-json-time-table">Lịch học do người dùng tự tải lên bằng JSON</h3>
+                    <p id="schedule-content">Tải lên thời khóa biểu: <a onclick="document.getElementById('schedule-upload').click()" style="color:#007bff;">Tải lên</a> hoặc <a href="upload.html" style="color:#007bff;">Tạo thời khóa biểu</a></p>
+                    <input type="file" id="schedule-upload" style="display: none;" accept=".json">
                     <select id="day-select" class="select_ui">
                         <option value="2">Thứ 2</option>
                         <option value="3">Thứ 3</option>
@@ -305,8 +310,8 @@
                         <option value="7">Thứ 7</option>
                         <option value="1">Chủ nhật</option>
                     </select>
-                    <!-- <button>Nhập dữ liệu</button>
-                    <button>Xuất dữ liệu</button> -->
+                    <button id="export-btn-time-table">Xuất dữ liệu</button>
+                    <button id="clear-btn-time-table">Xóa lịch học</button>
                 </div>
 
             </div>

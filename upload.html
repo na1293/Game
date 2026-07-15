@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/app.css">
+    <link rel="stylesheet" href="css/main_app.css">
+    <link rel="stylesheet" href="css/moon.css">
+    <link rel="stylesheet" href="css/update.css">
+    <script src="JS/upload-time-table.js" defer></script>
+</head>
+<body>
+    <div class="container" id="container">
+        <h1>Tạo Thời Khóa Biểu</h1>
+        <p>Bạn có thể tạo một thời khóa biểu tùy chỉnh cho mình. Hãy thử làm quen với công cụ bảng nhé.</p>
+        <br>
+        <div class="pomodoro-timer" id="countdown-thptqg">
+            <h2>Tạo thời khóa biểu của bạn</h2>
+            <input type="text" id="schedule-title" placeholder="Sáng: Toán, văn, Anh | Chiều: Hóa, Lý, Sinh">
+            <!-- Box drop thứ trong tuần -->
+             <div>
+                <select id="day-select" class="select_ui">
+                    <option value="2">Thứ 2</option>
+                    <option value="3">Thứ 3</option>
+                    <option value="4">Thứ 4</option>
+                    <option value="5">Thứ 5</option>
+                    <option value="6">Thứ 6</option>
+                    <option value="7">Thứ 7</option>
+                    <option value="1">Chủ nhật</option>
+                </select>
+                <button id="add">Thêm</button>
+                <button onclick="clearData()">Xóa dữ liệu</button>
+             </span>
+            <button id="export">Xuất dữ liệu</button>
+            <button id="input">Nhập dữ liệu</button>
+            <hr>
+            <ul id="todo-list" style="list-style-type: none; text-align: left;"></ul>
+        </div>
+
+    </div>
+
+</body>
+</html>

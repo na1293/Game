@@ -22,6 +22,7 @@ function performSearch() {
         searchUrl = `https://${selectedTool}/search?q=${encodeURIComponent(query)}`;
     }
 
+    searchInput.value = ''; 
     window.open(searchUrl, '_blank');
 }
 
