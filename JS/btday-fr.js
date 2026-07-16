@@ -42,7 +42,7 @@ const renderList = () => {
         const days = getDaysUntil(item.date);
         const isToday = days === 0;
         
-        // Tạo element chứa (ở đây ví dụ là thẻ li như file cũ của bạn)
+        // Tạo element chứa (ở đây ví dụ là thẻ li như file cũ)
         const li = document.createElement("li");
         li.style.cssText = `
             display: flex; justify-content: space-between; padding: 10px; 
