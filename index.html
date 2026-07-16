@@ -30,16 +30,18 @@
     <!-- Sử dụng main.js để nhận update -->
     <script src="JS/main.js"></script>
     <!-- Dữ liệu PWA -->
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <link rel="manifest" href="/manifest.json">
-    <link rel="manifest" href="manifest.json">
+    <!-- Dùng đường dẫn tương đối chuẩn xác -->
     <link rel="manifest" href="./manifest.json">
+    <meta name="mobile-web-app-capable" content="yes">
 </head>
 
 <script>
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
-            navigator.serviceWorker.register('./sw.js?v=3') 
+            // Tự động lấy đường dẫn tương đối chính xác dựa trên thư mục hiện tại
+            const swPath = './sw.js?v=3'; 
+            
+            navigator.serviceWorker.register(swPath) 
             .then(reg => console.log('Đăng ký SW thành công rùi nè! 🎉', reg))
             .catch(err => console.error('Đăng ký SW thất bại rồi cứu với: 💥', err));
         });
@@ -94,7 +96,6 @@
                     <ul class="link-grid-ui">
                         <li><a href="#cute-mess"><span class="icon">💬</span> Lời nhắc từ hệ thống</a></li>
                         <li><a href="#new-feed"><span class="icon">📰</span> Tin tức mới nhất</a></li>
-                        <li><a href="https://www.tiktok.com" target="_blank"><span class="icon">🎵</span> TikTok</a></li>
                     </ul>
                 </div>
 
