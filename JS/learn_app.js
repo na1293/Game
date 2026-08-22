@@ -21,43 +21,32 @@ if ('Notification' in window && Notification.permission !== 'granted') {
 }
 
 // =========================================== //
+// 1. Lưu trữ dữ liệu vào một Object
+const schedule = scheduleData;
 
 function updateSchedule(day_week) {
-    // === Note: Console log kiểm tra kiểu dữ liệu và giá trị truyền vào === //
-    console.log("👉 1. Giá trị day_week truyền vào:", day_week, "| Kiểu dữ liệu:", typeof day_week);
-    console.log("👉 2. Biến scheduleData hiện tại:", scheduleData);
-
-    // Bắt trường hợp scheduleData chưa có dữ liệu
-    if (!scheduleData || Object.keys(scheduleData).length === 0) {
-        console.warn("⚠️ Cảnh báo: scheduleData đang RỖNG (API chưa tải xong hoặc bị lỗi fetch)!");
-    }
-
-    // === Note: Ép kiểu linh hoạt để chấp nhận cả Key dạng Số (1) lẫn Chuỗi ("1") === //
-    const content = scheduleData[day_week] ?? scheduleData[String(day_week)] ?? "Lỗi không lấy dữ liệu";
-    
-    console.log("👉 3. Nội dung tìm thấy (content):", content);
-
+    // 2. Lấy danh sách tất cả các phần tử có class event_news
     const newsElements = document.querySelectorAll(".event_news");
-    console.log("👉 4. Số lượng thẻ .event_news tìm thấy trên DOM:", newsElements.length);
-
-    if (newsElements.length === 0) {
-        console.error("❌ Lỗi DOM: Không tìm thấy phần tử nào có class '.event_news'!");
-    }
     
-    newsElements.forEach((el, index) => {
+    // 3. Lấy nội dung từ Object (fallback về thông báo lỗi nếu không tìm thấy)
+    const content = schedule[day_week] || "Không có lịch học";
+    
+    // 4. Cập nhật cho tất cả (cả cái trong header và cái trong div)
+    newsElements.forEach(el => {
         el.innerHTML = content;
-        console.log(`✅ Đã ghi dữ liệu vào phần tử thứ ${index}:`, el);
     });
 }
 
-// Lắng nghe sự kiện data sẵn sàng
-window.addEventListener('scheduleDataReady', () => {
-    console.log("🚀 Sự kiện 'scheduleDataReady' đã kích hoạt!");
-    const today = new Date().getDay(); 
-    updateSchedule(today);
-});
+// Ví dụ: Lấy ngày hiện tại
+const today = new Date().getDay(); 
+updateSchedule(today);
 
 // =========================================== //
+
+function getRandom(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
+if(document.getElementById("say") && sayst.length > 0) {
+    document.getElementById("say").innerHTML = sayst[getRandom(0, sayst.length - 1)];
+}
 
 // 🔊 HÀM BÁO THỨC PHÁT NHẠC TỪ FILE + RUNG 5 GIÂY
 function playAlarmSound() {

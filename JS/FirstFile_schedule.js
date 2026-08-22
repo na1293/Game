@@ -14,42 +14,39 @@
 
 /// ==== Main code === ///
 
-// === CẤU HÌNH VÀ KHỞI TẠO HỆ THỐNG === //
-// === CẤU HÌNH VÀ NGUYÊN MẪU DỮ LIỆU === //
-// === Note: Khai báo biến scheduleData ở phạm vi phù hợp để chứa dữ liệu Thời khóa biểu === //
-// === Note: Khai báo biến toàn cục (Global Scope) để các file JS khác có thể truy cập === //
-var scheduleData = {};
+// Dữ liệu Offline dự phòng mặc định (dùng khi mất mạng hoàn toàn)
+// FirstFile_schedule.js
 
-(function() {
-    const STORAGE_KEY = 'scheduleData_v1';
-    const GIST_BASE_URL = 'https://gist.githubusercontent.com/na1293/672cb87bee7c50dd3c0c00a94a7de134/raw/scheduleAPI.json';
-    
-    // === Note: Thêm Timestamp để triệt tiêu Browser & CDN Cache === //
-    const GIST_URL = `${GIST_BASE_URL}?t=${Date.now()}`;
+// Luôn khởi tạo biến global trước
+window.scheduleData = window.scheduleData || {
+    0: "Chủ Nhật: Nghỉ ngơi",
+    1: "Thứ Hai: Chưa có lịch",
+    2: "Thứ Ba: Chưa có lịch",
+    3: "Thứ Tư: Chưa có lịch",
+    4: "Thứ Năm: Chưa có lịch",
+    5: "Thứ Sáu: Chưa có lịch",
+    6: "Thứ Bảy: Chưa có lịch"
+};
 
-    async function initScheduleData() {
-        try {
-            const response = await fetch(GIST_URL);
-            if (!response.ok) throw new Error(`HTTP Error: ${response.status}`);
+async function fetchScheduleFromOnline() {
+    const API_URL = "https://gist.githubusercontent.com/na1293/672cb87bee7c50dd3c0c00a94a7de134/raw/scheduleAPI.json";
 
-            const data = await response.json();
-            scheduleData = data;
-            
-            // Backup vào LocalStorage
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(scheduleData));
-            
-            // === Note: Phát ra Custom Event báo hiệu cho các file JS khác biết dữ liệu đã sẵn sàng === //
-            window.dispatchEvent(new CustomEvent('scheduleDataReady'));
-        } catch (error) {
-            console.warn('Lỗi tải API, chuyển sang đọc Cache:', error);
-            
-            const cachedData = localStorage.getItem(STORAGE_KEY);
-            if (cachedData) {
-                scheduleData = JSON.parse(cachedData);
-                window.dispatchEvent(new CustomEvent('scheduleDataReady'));
-            }
-        }
+    try {
+        const response = await fetch(API_URL, { cache: 'no-cache' });
+        if (!response.ok) throw new Error("Lỗi Server");
+
+        const data = await response.json();
+        window.scheduleData = data;
+        localStorage.setItem("user_schedule", JSON.stringify(data));
+    } catch (error) {
+        console.warn("Lỗi fetch API, dùng cache/offline:", error);
+        const cached = localStorage.getItem("user_schedule");
+        if (cached) window.scheduleData = JSON.parse(cached);
+    } finally {
+        // Bắt buộc bắn event này khi tải xong
+        window.dispatchEvent(new Event('scheduleDataReady'));
     }
+}
 
-    initScheduleData();
-})();
+// Gọi fetch
+fetchScheduleFromOnline();

@@ -96,14 +96,12 @@ window.saveEdit = function(btn, currentDay, oldSubject) {
 
 // Xóa một mục
 window.deleteItem = function(subjectName) {
-    if (confirm(`Xóa môn "${subjectName}"?`)) {
-        const li = event.target.closest('li');
-        li.remove();
-        const index = scheduleData.findIndex(item => item.subject === subjectName);
-        if (index !== -1) {
-            scheduleData.splice(index, 1);
-            saveData();
-        }
+    const li = event.target.closest('li');
+    li.remove();
+    const index = scheduleData.findIndex(item => item.subject === subjectName);
+    if (index !== -1) {
+        scheduleData.splice(index, 1);
+        saveData();
     }
 };
 
