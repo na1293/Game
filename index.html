@@ -99,24 +99,27 @@
                     <button id="btn-update" style="display: none;">🔄 Cập nhật mới</button>
                 </div>
                 <span><p class="subtitle">Hệ sinh thái hỗ trợ học tập và quản lý cuộc sống của bạn:</p></span>
-                <div class="tool-group">
-                    <h3><span class="group-icon">📚</span> Học tập bứt phá</h3>
-                    <ul class="link-grid-ui">
-                        <li><a href="#time-table">📆 Thời khóa biểu</a></li>
-                        <li><a href="#pomodoro-timer-tool"><span class="icon">⏱️</span> Đồng hồ Pomodoro</a></li>
-                        <li><a href="#music-play">🎶 Âm nhạc</a></li>
-                        <li><a href="#pomodoro-happy"><span class="icon">🍅</span>Trồng cà chua</a></li>
-                        <li><a href="#countdown-thptqg"><span class="icon">🎯</span> Đếm ngược THPTQG</a></li>
-                        <li><a href="#search-engine-tool"><span class="icon">🔍</span> Công cụ tìm kiếm</a></li>
-                        <li><a href="#learing-tool"><span class="icon">📖</span> Công cụ học tập</a></li>
-                    </ul>
-                </div>
+                <section id="section-tool-group">
+                    <div class="tool-group">
+                        <h3><span class="group-icon">📚</span> Học tập bứt phá</h3>
+                        <ul class="link-grid-ui">
+                            <li><a href="#time-table">📆 Thời khóa biểu</a></li>
+                            <li><a href="#pomodoro-timer-tool"><span class="icon">⏱️</span> Đồng hồ Pomodoro</a></li>
+                            <li><a href="#music-play">🎶 Âm nhạc</a></li>
+                            <li><a href="#pomodoro-happy"><span class="icon">🍅</span>Trồng cà chua</a></li>
+                            <li><a href="#countdown-thptqg"><span class="icon">🎯</span> Đếm ngược THPTQG</a></li>
+                            <li><a href="#search-engine-tool"><span class="icon">🔍</span> Công cụ tìm kiếm</a></li>
+                            <li><a href="#learing-tool"><span class="icon">📖</span> Công cụ học tập</a></li>
+                        </ul>
+                    </div>
+                </section>
 
                 <div class="tool-group">
                     <h3><span class="group-icon">🎮</span> Giải trí & Chill</h3>
                     <ul class="link-grid-ui">
                         <li><a href="#cute-mess"><span class="icon">💬</span> Lời nhắc từ hệ thống</a></li>
                         <li><a href="#new-feed"><span class="icon">📰</span> Tin tức mới nhất</a></li>
+                        <li><a href="#learing-tool"><span class="icon">☀ </span> Thời tiết</a></li>
                     </ul>
                 </div>
 
@@ -127,6 +130,8 @@
                         <li><a href="#your-bthday"><span class="icon">🎂</span> Sinh nhật bạn</a></li>
                         <li><a href="#birthday-section-fr"><span class="icon">🎁</span> Sinh nhật sắp tới</a></li>
                         <li><a href="#todo-list"><span class="icon">📝</span> Danh sách việc cần làm</a></li>
+                        <li><a href="#class-user-section"><span class="icon">📆</span> Bạn học lớp mấy?</a></li>
+                         <li><a href="#birthday-section"><span class="icon">😎</span> Chỉnh sinh nhật</a></li>
                     </ul>
                 </div>
             </div>
@@ -402,135 +407,221 @@
         });
     </script>
 
-    <script>
-        const input = document.getElementById('todo-input');
-        const btn = document.getElementById('add-todo-btn');
-        const list = document.getElementById('todo-list');
-
-        let todos = JSON.parse(localStorage.getItem('todos')) || [];
-        renderTodos();
-
-        btn.addEventListener('click', addTodo);
-        input.addEventListener('keypress', e => { if (e.key === 'Enter') addTodo(); });
-
-        function addTodo() {
-            const text = input.value.trim();
-            if (!text) return;
-            if (todos.length >= 30) {
-                alert('Tối đa 30 việc thôi, nhiều quá làm không xuể đâu nè!');
-                input.value = '';
-                return;
-            }
-            todos.push({ text, done: false });
-            saveTodos();
-            renderTodos();
-            input.value = '';
-        }
-
-        function renderTodos() {
-            list.innerHTML = '';
-            todos.forEach((todo, index) => {
-                const li = document.createElement('li');
-                li.style.display = 'flex';
-                li.style.alignItems = 'center';
-                li.style.justifyContent = 'space-between';
-
-                const span = document.createElement('span');
-                span.textContent = todo.text;
-                span.style.flex = '1';
-                span.style.cursor = 'pointer';
-                if (todo.done) {
-                    span.style.textDecoration = 'line-through';
-                    span.style.opacity = '0.5';
-                }
-
-                const delBtn = document.createElement('button');
-                delBtn.textContent = 'Xóa';
-                delBtn.className = 'del-btn-todo';
-
-                span.onclick = () => {
-                    todo.done = !todo.done;
-                    saveTodos();
-                    renderTodos();
-                };
-
-                delBtn.onclick = (e) => {
-                    e.stopPropagation();
-                    todos.splice(index, 1);
-                    saveTodos();
-                    renderTodos();
-                };
-
-                li.appendChild(span);
-                li.appendChild(delBtn);
-                list.appendChild(li);
-            });
-        }
-
-        function saveTodos() { localStorage.setItem('todos', JSON.stringify(todos)); }
-    </script>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            // Lấy tất cả các đường dẫn menu có chứa dấu '#'
-            const menuLinks = document.querySelectorAll('.tool-group a[href^="#"]');
-            const showThenContainer = document.querySelector('.show-then');
-
-            menuLinks.forEach(link => {
-                link.addEventListener('click', (e) => {
-                    e.preventDefault(); 
-                    
-                    const targetId = link.getAttribute('href'); 
-                    const targetTool = document.querySelector(targetId);
-                    
-                    if (targetTool) {
-                        // 1. Mở khóa khung chứa lớn
-                        showThenContainer.style.display = 'block';
-
-                        // 2. Ẩn toàn bộ các "con trực tiếp" của khung lớn (ẩn sạch các section và công cụ lẻ)
-                        Array.from(showThenContainer.children).forEach(child => {
-                            child.style.display = 'none';
-                        });
-
-                        // 3. Kiểm tra xem công cụ có nằm trong "nhà" <section> nào không
-                        const parentSection = targetTool.closest('section');
-                        
-                        // Nếu có trong section thì bê nguyên section đó ra. 
-                        // Nếu công cụ đi lẻ (không có section bọc ngoài), thì hiện chính nó.
-                        const groupToShow = parentSection ? parentSection : targetTool;
-                        groupToShow.style.display = 'block';
-
-                        // 4. Vẫn lướt mượt mà xuống ngay đúng công cụ bạn vừa bấm
-                        targetTool.scrollIntoView({ behavior: 'smooth' });
-                    }
-                });
-            });
-        });
-    </script>
-
+    <!-- CSS cho Bảng điều khiển & Nút đóng từng ô -->
     <style>
-        .notice-box {
+        /* Bảng điều khiển nằm ngay bên dưới Menu */
+        .zen-control-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(8px);
+            padding: 10px 16px;
+            border-radius: 12px;
+            margin: 15px 0;
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+
+        .btn-zen-action {
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: transform 0.2s, opacity 0.2s;
+        }
+
+        .btn-zen-action:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+
+        /* Đặt góc cho nút Close */
+        .show-then .pomodoro-timer {
+            position: relative !important;
+        }
+
+        /* Nút đóng (✕) góc trên bên phải mỗi ô */
+        .btn-close-tool {
+            position: absolute;
+            top: 10px;
+            right: 12px;
+            background: rgba(0, 0, 0, 0.06);
+            border: none;
+            color: #718096;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
             display: flex;
             align-items: center;
-            gap: 12px;
-            margin: 12px 0;
-            padding: 12px 16px;
-            border-radius: 10px;
-            background-color: rgba(245, 158, 11, 0.1);
-            border: 1px solid rgba(245, 158, 11, 0.3);
-            color: #d97706;
-            font-size: 0.95rem;
-            text-align: left;
+            justify-content: center;
+            transition: all 0.2s ease;
+            z-index: 10;
         }
 
-        .notice-icon {
-            font-size: 1.2rem;
+        .btn-close-tool:hover {
+            background: #e53e3e;
+            color: white;
+            transform: scale(1.1);
+        }
+    </style>
+
+    <style>
+        /* Styling cho Notice Box trong Thời khóa biểu */
+        .notice-box {
+            display: flex !important;
+            align-items: center;
+            gap: 12px;
+            background: linear-gradient(135deg, rgba(79, 70, 229, 0.08), rgba(124, 58, 237, 0.08));
+            border-left: 4px solid #4f46e5;
+            padding: 12px 16px;
+            border-radius: 10px;
+            margin: 12px 0;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        }
+
+        .notice-box .notice-icon {
+            font-size: 1.4rem;
             line-height: 1;
         }
 
-        .notice-content strong {
-            font-weight: 600;
+        .notice-box .notice-content {
+            font-size: 0.92rem;
+            color: #374151;
+            line-height: 1.4;
+        }
+
+        .notice-box #schedule_title {
+            color: #4f46e5;
+            font-size: 1.05rem;
+            font-weight: 700;
+        }
+
+        /* Định dạng chọn Thứ & Các nút trong TKB */
+        #time-table select.select_ui {
+            width: 100%;
+            padding: 10px 14px;
+            border-radius: 8px;
+            border: 1px solid #cbd5e1;
+            background-color: #ffffff;
+            font-size: 0.95rem;
+            margin: 10px 0;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        #time-table select.select_ui:focus {
+            border-color: #4f46e5;
+        }
+
+        #time-table button {
+            margin-right: 8px;
+            margin-top: 8px;
         }
     </style>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const toolsDashboard = document.querySelector('.tools-dashboard');
+        const showThenContainer = document.querySelector('.show-then');
+        const menuLinks = document.querySelectorAll('.tool-group a[href^="#"]');
+        const allTools = document.querySelectorAll('.show-then .pomodoro-timer');
+        const allSections = document.querySelectorAll('.show-then section');
+
+        // Xóa hash (#menu...) khỏi URL ngay khi vừa load trang lần đầu
+        if (window.location.hash) {
+        history.replaceState(null, null, window.location.pathname + window.location.search);
+        }   
+
+        // Ngăn trình duyệt tự động cuộn xuống vị trí Hash khi vừa load trang
+        if ('scrollRestoration' in history) {
+            history.scrollRestoration = 'manual';
+        }
+
+        window.scrollTo(0, 0); // Đảm bảo luôn cuộn lên đầu trang khi mới vào
+
+        // BƯỚC 1: Ẩn 100% tất cả phần tử ban đầu
+        showThenContainer.style.display = 'block';
+        allTools.forEach(tool => tool.style.display = 'none');
+        allSections.forEach(sec => sec.style.display = 'block');
+
+        // BƯỚC 2: Tạo Bảng điều khiển đặt NGAY DƯỚI MENU
+        const zenBar = document.createElement('div');
+        zenBar.className = 'zen-control-bar';
+        zenBar.innerHTML = `
+            <span style="font-weight: 600; font-size: 0.95rem; color: #4a5568;">Giảm lược thị giác</span>
+            <button class="btn-zen-action" id="btn-toggle-menu">Thu gọn</button>
+        `;
+        toolsDashboard.parentNode.insertBefore(zenBar, toolsDashboard.nextSibling);
+
+        const btnToggleMenu = document.getElementById('btn-toggle-menu');
+
+        // BƯỚC 3: Gắn nút Đóng (✕) vào từng ô công cụ
+        allTools.forEach(tool => {
+            if (!tool.querySelector('.btn-close-tool')) {
+                const closeBtn = document.createElement('button');
+                closeBtn.className = 'btn-close-tool';
+                closeBtn.innerHTML = '✕';
+                closeBtn.title = 'Ẩn ô này';
+                
+                closeBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    tool.style.display = 'none';
+                });
+
+                tool.appendChild(closeBtn);
+            }
+        });
+
+        // BƯỚC 4: Bấm menu -> Hiện đúng ô công cụ (Đã fix lỗi lệch ID)
+        menuLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = link.getAttribute('href');
+                
+                // Xử lý riêng cho 'todo-list' nếu ID menu bị lệch với HTML
+                let targetElem = document.querySelector(targetId);
+                if (!targetElem && targetId === '#todo-list') {
+                    targetElem = document.querySelector('#to-do-list-tool');
+                }
+
+                if (targetElem) {
+                    // Tìm thẻ .pomodoro-timer gần nhất chứa phần tử được click
+                    const targetTool = targetElem.classList.contains('pomodoro-timer') 
+                        ? targetElem 
+                        : targetElem.closest('.pomodoro-timer');
+
+                    if (targetTool) {
+                        targetTool.style.display = 'block';
+                        targetTool.scrollIntoView({ behavior: 'smooth' });
+                    }
+                }
+            });
+        });
+
+        // BƯỚC 5: Xử lý nút Hide / Trở về Menu
+        btnToggleMenu.addEventListener('click', () => {
+            const isHidden = toolsDashboard.style.display === 'none';
+
+            if (isHidden) {
+                toolsDashboard.style.display = 'block';
+                btnToggleMenu.innerHTML = 'Thu gọn';
+                toolsDashboard.scrollIntoView({ behavior: 'smooth' });
+            } else {
+                toolsDashboard.style.display = 'none';
+                btnToggleMenu.innerHTML = 'Chi tiết';
+            }
+        });
+    });
+    </script>
 </body>
 </html>
