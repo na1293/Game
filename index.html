@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <title>Ứng dụng tập trung | All in one</title>
+
+    
     <link rel="stylesheet" href="css/app.css">
     <link rel="stylesheet" href="css/main_app.css">
     <link rel="stylesheet" href="css/moon.css">
@@ -125,91 +127,113 @@
                         <li><a href="#your-bthday"><span class="icon">🎂</span> Sinh nhật bạn</a></li>
                         <li><a href="#birthday-section-fr"><span class="icon">🎁</span> Sinh nhật sắp tới</a></li>
                         <li><a href="#todo-list"><span class="icon">📝</span> Danh sách việc cần làm</a></li>
-                        <li><a href="#weather-tool"><span class="icon">☀️</span> Thời tiết hiện tại</a></li>
                     </ul>
                 </div>
             </div>
 
             <div class="show-then" style="display: none;">
         
-                <div class="pomodoro-timer" id="countdown-thptqg">
-                    <h2>Kỳ thi THPTQG năm 2027 sẽ bắt đầu sau:</h2>
-                    <h1 id="countdown">0 ngày</h1>
-                    <strong id="time-conut">00 giờ 00 phút 00 giây</strong>
-                    <hr>
-                </div>
-            
-                <div class="pomodoro-timer" id="pomodoro-timer-tool">
-                    <h2>⏱️ Đồng Hồ Pomodoro</h2>
-                    <p id="timer-display">25:00</p>
-                    <button id="start-btn" onclick="playsoundsth()">Bắt đầu học</button>
-                    <button id="reset-btn" onclick="stopsound()">Đặt lại</button>
-                </div>
+                <section id="section-learn">
 
-                <div class="pomodoro-timer" id="music-play">
-                    <h2>Chọn âm nhạc nghe nền</h2>
+                    <div class="pomodoro-timer" id="pomodoro-timer-tool">
+                        <h2>⏱️ Đồng Hồ Pomodoro</h2>
+                        <p id="timer-display">25:00</p>
+                        <button id="start-btn" onclick="playsoundsth()">Bắt đầu học</button>
+                        <button id="reset-btn" onclick="stopsound()">Đặt lại</button>
+                    </div>
 
-                    <select id="music-selector" class="select_ui">
-                        <option value="Music/no-sound-but-free.mp3">Âm thanh ngắt quãng (Tốt nhất nếu muốn no sound)</option>
-                        <option value="Music/no-sound.wav">Không âm thanh (Có thể không có thông báo)</option>
-                        <option value="Music/thac-nuoc.mp3">Thác nước</option>
-                        <option value="Music/sound_test.mp3">Tiếng mưa</option>
-                        <option value="Music/big-rain.mp3">Tiếng bão</option>
-                        <option value="Music/sea.mp3">Tiếng biển</option>
-                        <option value="Music/ice.mp3">Nước đá</option>
-                        <option value="Music/cafe-sound.mp3">Tiếng quán cafe</option>
-                        <option value="Music/fly-funny.mp3">Tiếng muỗi</option>
-                        <option value="Music/lofi.mp3">Nhạc Lofi</option>
-                        <option value="Music/funny.mp3">Nhạc Vui Vẻ</option>
-                    </select>
+                    <div class="pomodoro-timer" id="countdown-thptqg">
+                        <h2>Kỳ thi THPTQG năm 2027 sẽ bắt đầu sau:</h2>
+                        <h1 id="countdown">0 ngày</h1>
+                        <strong id="time-conut">00 giờ 00 phút 00 giây</strong>
+                        <hr>
+                    </div>
 
-                    <button id="btn-play-music">✅ Phát</button>
-                    <button id="btn-stop-music">😒 Dừng</button>
-                </div>
+                    <div class="pomodoro-timer" id="music-play">
+                        <h2>Chọn âm nhạc nghe nền</h2>
+
+                        <select id="music-selector" class="select_ui">
+                            <option value="Music/no-sound-but-free.mp3">Âm thanh ngắt quãng (Tốt nhất nếu muốn no sound)</option>
+                            <option value="Music/no-sound.wav">Không âm thanh (Có thể không có thông báo)</option>
+                            <option value="Music/thac-nuoc.mp3">Thác nước</option>
+                            <option value="Music/sound_test.mp3">Tiếng mưa</option>
+                            <option value="Music/big-rain.mp3">Tiếng bão</option>
+                            <option value="Music/sea.mp3">Tiếng biển</option>
+                            <option value="Music/ice.mp3">Nước đá</option>
+                            <option value="Music/cafe-sound.mp3">Tiếng quán cafe</option>
+                            <option value="Music/fly-funny.mp3">Tiếng muỗi</option>
+                            <option value="Music/lofi.mp3">Nhạc Lofi</option>
+                            <option value="Music/funny.mp3">Nhạc Vui Vẻ</option>
+                        </select>
+
+                        <button id="btn-play-music">✅ Phát</button>
+                        <button id="btn-stop-music">😒 Dừng</button>
+                    </div>
                             
-                <div class="pomodoro-timer" id="pomodoro-happy">
-                    <h2>Bạn đã hái được bao cà chua?</h2>
-                    <h1 id="tomato-count" style="color: tomato; font-size: clamp(2.5rem, 12vw, 8rem); font-size: clamp(2.5rem, 10vmax, 7rem); margin-bottom: 5px; text-align: center; line-height: 1.1;">0/10</h1>
-                    
-                    <div style="margin-bottom: 15px; font-size: 0.95rem; color: #4a5568; line-height: 1.5;">
-                        <div>🍅 Giá hôm nay: <strong style="color: #e53e3e;"><span id="tomato-price-display">Đang tải...</span></strong></div>
-                        <div>💰 Xu của bạn: <strong style="color: #d69e2e;"><span id="user-coins-display">Đang tải...</span></strong></div>
+                    <div class="pomodoro-timer" id="pomodoro-happy">
+                        <h2>Bạn đã hái được bao cà chua?</h2>
+                        <h1 id="tomato-count" style="color: tomato; font-size: clamp(2.5rem, 12vw, 8rem); font-size: clamp(2.5rem, 10vmax, 7rem); margin-bottom: 5px; text-align: center; line-height: 1.1;">0/10</h1>
+                        
+                        <div style="margin-bottom: 15px; font-size: 0.95rem; color: #4a5568; line-height: 1.5;">
+                            <div>🍅 Giá hôm nay: <strong style="color: #e53e3e;"><span id="tomato-price-display">Đang tải...</span></strong></div>
+                            <div>💰 Xu của bạn: <strong style="color: #d69e2e;"><span id="user-coins-display">Đang tải...</span></strong></div>
+                        </div>
+
+                        <button id="sell-anytime-btn" onclick="sellTomatoesAnytime()" style="background: var(--success-gradient); margin-top: 10px;">Bán cà chua lấy xu 💰</button>
+                        <button onclick="alert('Chứ mỗi 25p học liên tục (Mà không thoát app) thì bạn sẽ nhận 1 cà chua.')">Cách lấy cà chua</button>
                     </div>
 
-                    <button id="sell-anytime-btn" onclick="sellTomatoesAnytime()" style="background: var(--success-gradient); margin-top: 10px;">Bán cà chua lấy xu 💰</button>
-                    <button onclick="alert('Chứ mỗi 25p học liên tục (Mà không thoát app) thì bạn sẽ nhận 1 cà chua.')">Cách lấy cà chua</button>
-                </div>
-
-                <div class="pomodoro-timer" id="search-engine-tool">
-                    <h1>Tìm kiếm nội dung</h1>
-                    <p>Mỗi 45 lượt tìm kiếm của bạn bằng Ecosia là 1 cái cây được trồng</p>
-                    <div class="todo-container">
-                        <input type="text" id="search-input" placeholder="Tìm kiếm nội dung...">
-                        <button id="search-btn">Tìm kiếm</button>
+                    <div class="pomodoro-timer" id="cute-mess">
+                        <h2 id="say-time" style="color: #4c51bf;">Chào bạn nhé</h2>
+                        <p id="talk" style="color: var(--text-muted); font-size: 1rem;"></p>
+                        <br>
+                        <h3 id="say-now" style="font-weight: 500; font-size: 1.1rem;"></h3>
                     </div>
-                    <select id="search-tool" class="select_ui">
-                        <option value="search.brave.com">Brave (Nên chọn)</option>
-                        <option value="google.com">Google (Tốt nhất) - Tìm kiếm toàn cầu</option>
-                        <option value="ecosia.org">Ecosia (Trồng cây xanh) - Tìm kiếm và bảo vệ Môi trường</option>
-                        <option value="coccoc.com">Cốc Cốc - Made in Vietnam</option>
-                        <option value="oxfordlearnersdictionaries">Từ điển Oxford</option>
-                        <option value="cambridge">Từ điển Cambridge</option>
-                    </select>
-                </div>
 
-                <div class="pomodoro-timer" id="moon-cal">
-                    <h2>Lịch âm</h2>
-                    <h1 id="lunar-display-moondate">Ngày 1</h1>
-                    <strong id="lunar-display-moondate-month">Tháng 1</strong>
-                    <strong id="lunar-display-moondate-year">Năm 2000</strong>
-                </div>         
+                    <div class="pomodoro-timer" id="to-do-list-tool">
+                        <h2>📝 Nhiệm Vụ Trong Tuần</h2>
+                        <div class="todo-container">
+                            <input type="text" id="todo-input" placeholder="Thêm việc cần hoàn thành...">
+                            <button id="add-todo-btn">Thêm</button>
+                        </div>
 
-                <div class="pomodoro-timer" id="cute-mess">
-                    <h2 id="say-time" style="color: #4c51bf;">Chào bạn nhé</h2>
-                    <p id="talk" style="color: var(--text-muted); font-size: 1rem;"></p>
-                    <br>
-                    <h3 id="say-now" style="font-weight: 500; font-size: 1.1rem;"></h3>
-                </div>
+                        <div class="todo-container">
+                            <button id="export-btn-todo">Xuất dữ liệu</button>
+                            <button id="import-btn-todo">Nhập dữ liệu</button>
+                        </div>
+
+                        <ul id="todo-list" style="list-style-type: none; text-align: left;"></ul>
+                    </div>
+
+                </section>
+
+                <section id="section-search">
+                    <div class="pomodoro-timer" id="search-engine-tool">
+                        <h1>Tìm kiếm nội dung</h1>
+                        <p>Mỗi 45 lượt tìm kiếm của bạn bằng Ecosia là 1 cái cây được trồng</p>
+                        <div class="todo-container">
+                            <input type="text" id="search-input" placeholder="Tìm kiếm nội dung...">
+                            <button id="search-btn">Tìm kiếm</button>
+                        </div>
+                        <select id="search-tool" class="select_ui">
+                            <option value="search.brave.com">Brave (Nên chọn)</option>
+                            <option value="google.com">Google (Tốt nhất) - Tìm kiếm toàn cầu</option>
+                            <option value="ecosia.org">Ecosia (Trồng cây xanh) - Tìm kiếm và bảo vệ Môi trường</option>
+                            <option value="coccoc.com">Cốc Cốc - Made in Vietnam</option>
+                            <option value="oxfordlearnersdictionaries">Từ điển Oxford</option>
+                            <option value="cambridge">Từ điển Cambridge</option>
+                        </select>
+                    </div>
+                </section>
+
+                <section id="section-moon-cal">
+                    <div class="pomodoro-timer" id="moon-cal">
+                        <h2>Lịch âm</h2>
+                        <h1 id="lunar-display-moondate">Ngày 1</h1>
+                        <strong id="lunar-display-moondate-month">Tháng 1</strong>
+                        <strong id="lunar-display-moondate-year">Năm 2000</strong>
+                    </div>  
+                </section>
 
                 <div class="pomodoro-timer" style="text-align: left;" id="learing-tool">
                     <h2>Công cụ hỗ trợ học tập</h2>
@@ -248,40 +272,44 @@
                     </ul>
                 </div>
 
-                <div class="pomodoro-timer input-birthdate" style="text-align: left;" id="birthday-section">
-                    <h2>Nhập ngày tháng năm sinh bạn</h2>
-                    <div class="todo-container">
-                        <input type="date" id="birthdate">
-                        <button id="btn-submit-birthdate">Xác nhận</button>
-                    </div>
-                </div>
 
-                <div class="pomodoro-timer" id="class-user-section">
-                    <h2>Bạn đang học lớp:</h2>
-                    <h1 style="font-size: 2em;" id="class-user">Lớp 12</h1>
-                </div>   
-
-                <div class="pomodoro-timer count-birthdate">
-                    <h2 id="your-bthday">Sinh nhật bạn:</h2>
-                    <h1 id="countdown-birthdate">0 ngày</h1>
-                    <strong id="time-conut-birthdate">00 giờ 00 phút 00 giây</strong>
-                </div>
-
-                <div class="pomodoro-timer" id="birthday-section-fr">
-                    <h2>🎂 Sinh nhật sắp tới</h2>
-                    <input type="text" id="nameInput" placeholder="Tên bạn thân/ người thân/ crush/ idol...">
-                    <p>---</p>
-                    <div class="todo-container">
-                        <input type="date" id="dateInput">
-                        <button id="addBtn">Thêm</button>
+                <section id="section-brthday">
+                    <div class="pomodoro-timer input-birthdate" style="text-align: left;" id="birthday-section">
+                        <h2>Nhập ngày tháng năm sinh bạn</h2>
+                        <div class="todo-container">
+                            <input type="date" id="birthdate">
+                            <button id="btn-submit-birthdate">Xác nhận</button>
+                        </div>
                     </div>
-                    <div class="todo-container">
-                        <button id="import_data_brth">Nhập dữ liệu</button>
-                        <button id="export_data_brth">Xuất dữ liệu</button>
+
+                    <div class="pomodoro-timer" id="class-user-section">
+                        <h2>Bạn đang học lớp:</h2>
+                        <h1 style="font-size: 2em;" id="class-user">Lớp 12</h1>
+                    </div>   
+
+                    <div class="pomodoro-timer count-birthdate">
+                        <h2 id="your-bthday">Sinh nhật bạn:</h2>
+                        <h1 id="countdown-birthdate">0 ngày</h1>
+                        <strong id="time-conut-birthdate">00 giờ 00 phút 00 giây</strong>
                     </div>
-                    
-                    <ul id="birthdayListContainer" style="list-style: none; padding: 0;"></ul>
-                </div>
+
+                    <div class="pomodoro-timer" id="birthday-section-fr">
+                        <h2>🎂 Sinh nhật sắp tới</h2>
+                        <input type="text" id="nameInput" placeholder="Tên bạn thân/ người thân/ crush/ idol...">
+                        <p>---</p>
+                        <div class="todo-container">
+                            <input type="date" id="dateInput">
+                            <button id="addBtn">Thêm</button>
+                        </div>
+                        <div class="todo-container">
+                            <button id="import_data_brth">Nhập dữ liệu</button>
+                            <button id="export_data_brth">Xuất dữ liệu</button>
+                        </div>
+                        
+                        <ul id="birthdayListContainer" style="list-style: none; padding: 0;"></ul>
+                    </div>
+
+                </section>
 
                 <div class="pomodoro-timer" style="text-align: left;" id="new-feed">
                     <h2>📢 Bản Tin Lớp Học</h2>
@@ -296,28 +324,23 @@
                     <button onclick="getNewsData()" style="margin-top: 15px; width: 100%;">Cập nhật bản tin</button>
                     <button onclick="window.open('https://khaosat.me/survey/6a302090a838d1cf4ff591e1')" style="margin-top: 15px; width: 100%;">Đăng bài</button>
                 </div>
-
-                <div class="pomodoro-timer" id="to-do-list-tool">
-                    <h2>📝 Nhiệm Vụ Trong Tuần</h2>
-                    <div class="todo-container">
-                        <input type="text" id="todo-input" placeholder="Thêm việc cần hoàn thành...">
-                        <button id="add-todo-btn">Thêm</button>
-                    </div>
-
-                    <div class="todo-container">
-                        <button id="export-btn-todo">Xuất dữ liệu</button>
-                        <button id="import-btn-todo">Nhập dữ liệu</button>
-                    </div>
-
-                    <ul id="todo-list" style="list-style-type: none; text-align: left;"></ul>
-                </div>
                 
                 <div class="pomodoro-timer" id="time-table">
                     <h2>Thời khóa biểu chi tiết</h2>
-                    <h3 class="event_news_style" id="schedule_title">Lịch học hôm nay</h3>
+                    <div class="notice-box">
+                        <strong id="schedule_title">Lịch học hôm nay</strong>
+                    </div>
+
                     <hr>
-                    <h2>Lịch của bạn</h2>
-                    <h3 class="event_news_style" id="user-upload-json-time-table">Lịch học do người dùng tự tải lên bằng JSON</h3>
+                        <strong>Lịch của bạn</strong>
+
+                    <div class="notice-box" id="user-upload-json-time-table">
+                        <span class="notice-icon">💡</span>
+                        <div class="notice-content">
+                            <strong>Lưu ý:</strong> Đây là lịch học do bạn tự tải lên từ file JSON.
+                        </div>
+                    </div>
+
                     <p id="schedule-content">
                         Tải lên thời khóa biểu: 
                         <a onclick="document.getElementById('schedule-upload').click()" style="color:#007bff; cursor:pointer;">Tải lên</a> 
@@ -448,22 +471,66 @@
     </script>
 
     <script>
-        document.querySelectorAll('.tools-dashboard a').forEach(link => {
-            link.addEventListener('click', function(e) {
-                // Hiển thị phần nội dung
-                const showThen = document.querySelector('.show-then');
-                if (showThen) {
-                    showThen.style.display = 'block';
-                }
-                
-                // Xử lý scroll mượt đến vị trí cần tìm
-                const targetId = this.getAttribute('href');
-                const targetElement = document.querySelector(targetId);
-                if (targetElement) {
-                    targetElement.scrollIntoView({ behavior: 'smooth' });
-                }
+        document.addEventListener('DOMContentLoaded', () => {
+            // Lấy tất cả các đường dẫn menu có chứa dấu '#'
+            const menuLinks = document.querySelectorAll('.tool-group a[href^="#"]');
+            const showThenContainer = document.querySelector('.show-then');
+
+            menuLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault(); 
+                    
+                    const targetId = link.getAttribute('href'); 
+                    const targetTool = document.querySelector(targetId);
+                    
+                    if (targetTool) {
+                        // 1. Mở khóa khung chứa lớn
+                        showThenContainer.style.display = 'block';
+
+                        // 2. Ẩn toàn bộ các "con trực tiếp" của khung lớn (ẩn sạch các section và công cụ lẻ)
+                        Array.from(showThenContainer.children).forEach(child => {
+                            child.style.display = 'none';
+                        });
+
+                        // 3. Kiểm tra xem công cụ có nằm trong "nhà" <section> nào không
+                        const parentSection = targetTool.closest('section');
+                        
+                        // Nếu có trong section thì bê nguyên section đó ra. 
+                        // Nếu công cụ đi lẻ (không có section bọc ngoài), thì hiện chính nó.
+                        const groupToShow = parentSection ? parentSection : targetTool;
+                        groupToShow.style.display = 'block';
+
+                        // 4. Vẫn lướt mượt mà xuống ngay đúng công cụ bạn vừa bấm
+                        targetTool.scrollIntoView({ behavior: 'smooth' });
+                    }
+                });
             });
         });
     </script>
+
+    <style>
+        .notice-box {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 12px 0;
+            padding: 12px 16px;
+            border-radius: 10px;
+            background-color: rgba(245, 158, 11, 0.1);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            color: #d97706;
+            font-size: 0.95rem;
+            text-align: left;
+        }
+
+        .notice-icon {
+            font-size: 1.2rem;
+            line-height: 1;
+        }
+
+        .notice-content strong {
+            font-weight: 600;
+        }
+    </style>
 </body>
 </html>
