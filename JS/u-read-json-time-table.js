@@ -1,47 +1,40 @@
-// === CẤU HÌNH VÀ KHỞI TẠO === //
 (function() {
-    const STORAGE_KEY = 'myCustomTimetable_v1';
+    const STORAGE_KEY = 'scheduleData_v1';
     
-    // Lấy các phần tử cần thiết từ DOM
     const daySelect = document.getElementById('day-select');
-    const displayArea = document.getElementById('user-upload-json-time-table'); // ID theo yêu cầu của bạn
+    const displayArea = document.getElementById('user-upload-json-time-table');
     const uploadInput = document.getElementById('schedule-upload');
     const exportBtn = document.getElementById('export-btn-time-table');
     const clearBtn = document.getElementById('clear-btn-time-table');
 
-    // Kiểm tra xem các phần tử có tồn tại không (để tránh lỗi nếu file JS chạy trước khi HTML load)
-    if (!daySelect || !displayArea) {
-        console.error('Không tìm thấy các phần tử ID cần thiết (day-select hoặc user-upload-json-time-table).');
-        return;
-    }
+    if (!daySelect || !displayArea) return;
 
-    // Khởi tạo dữ liệu từ LocalStorage
-    let currentScheduleData = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+    // === Note: Khởi tạo là Object {} thay vì Array [] === //
+    let currentScheduleData = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
 
-    // === HÀM LƯU DỮ LIỆU (PERSISTENT) === //
     function saveData() {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(currentScheduleData));
     }
 
-    // === HÀM HIỂN THỊ DỮ LIỆU === //
+    // === HÀM HIỂN THỊ DỮ LIỆU (Đã loại bỏ .filter() gây lỗi) === //
     function renderSchedule() {
+        // Đồng bộ dữ liệu mới nhất từ biến toàn cục scheduleData nếu có
+        if (typeof scheduleData !== 'undefined' && Object.keys(scheduleData).length > 0) {
+            currentScheduleData = scheduleData;
+        }
+
         const day = daySelect.value;
         const selectedOption = daySelect.options[daySelect.selectedIndex];
         const dayName = selectedOption ? selectedOption.text : "Thứ " + day;
 
-        // Lọc và gom nhóm các môn học theo ngày
-        // Giả sử dữ liệu JSON có cấu trúc: [{ day: "2", subject: "Toán" }, { day: "2", subject: "Lý" }]
-        const subjects = currentScheduleData
-            .filter(item => item.day === day)
-            .map(item => item.subject);
+        // === Note: Lấy nội dung trực tiếp từ Key của Object === //
+        const subjectText = currentScheduleData[day];
 
-        if (subjects.length === 0) {
+        if (!subjectText) {
             displayArea.innerHTML = `<span class="no-data" style="color: #a4b0be;">${dayName}: Chưa có dữ liệu.</span>`;
             return;
         }
 
-        // Tạo chuỗi hiển thị: "Thứ 3: Toán, Lý, Hóa"
-        const subjectText = subjects.join(', ');
         displayArea.innerHTML = `<b>${dayName}:</b> ${subjectText}`;
         displayArea.style.color = '#2f3542';
     }
@@ -55,70 +48,52 @@
             try {
                 const data = JSON.parse(e.target.result);
                 
-                // Validate dữ liệu
-                if (!Array.isArray(data)) throw new Error("File JSON phải là một mảng.");
-                const isValid = data.every(item => item.day && item.subject);
-                if (!isValid) throw new Error("Dữ liệu thiếu trường 'day' hoặc 'subject'.");
+                // === Note: Kiểm tra dữ liệu upload phải là Object === //
+                if (typeof data !== 'object' || Array.isArray(data)) {
+                    throw new Error("File JSON phải có cấu trúc Object { \"0\": \"...\", \"1\": \"...\" }");
+                }
 
                 currentScheduleData = data;
-                saveData(); // Lưu vào bộ nhớ
-                renderSchedule(); // Cập nhật giao diện
-                alert("Đã tải lên và lưu thành công!");
+                scheduleData = data; // Cập nhật luôn biến global
+                saveData(); 
+                renderSchedule(); 
+                alert("Đã tải lên và ghi đè thành công!");
             } catch (err) {
                 alert("Lỗi khi đọc file: " + err.message);
             }
         };
         reader.readAsText(file);
-        if (uploadInput) uploadInput.value = ''; // Reset input
+        if (uploadInput) uploadInput.value = '';
     }
 
-    // Sự kiện khi chọn file
-    if (uploadInput) {
-        uploadInput.addEventListener('change', (e) => handleFileUpload(e.target.files[0]));
-    }
-
-    // Sự kiện khi thay đổi ngày
+    if (uploadInput) uploadInput.addEventListener('change', (e) => handleFileUpload(e.target.files[0]));
     daySelect.addEventListener('change', renderSchedule);
 
-    // === XỬ LÝ XUẤT FILE (EXPORT) === //
+    // Xử lý Export & Clear
     if (exportBtn) {
         exportBtn.addEventListener('click', () => {
-            if (currentScheduleData.length === 0) {
-                alert("Chưa có dữ liệu để xuất.");
-                return;
-            }
-            const dataStr = JSON.stringify(currentScheduleData, null, 2);
-            const blob = new Blob([dataStr], { type: "application/json" });
-            const url = URL.createObjectURL(blob);
+            if (Object.keys(currentScheduleData).length === 0) return alert("Chưa có dữ liệu để xuất.");
+            const blob = new Blob([JSON.stringify(currentScheduleData, null, 2)], { type: "application/json" });
+            const url = URL.URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
             a.download = "thoi-khoa-bieu.json";
-            document.body.appendChild(a);
             a.click();
-            document.body.removeChild(a);
             URL.revokeObjectURL(url);
         });
     }
 
-    // === XỬ LÝ XÓA DỮ LIỆU (CLEAR) === //
     if (clearBtn) {
         clearBtn.addEventListener('click', () => {
-            if (currentScheduleData.length === 0) return;
-            if (confirm("Bạn có chắc chắn muốn xóa toàn bộ lịch học đã lưu? Dữ liệu sẽ mất vĩnh viễn.")) {
-                currentScheduleData = [];
+            if (confirm("Bạn có chắc chắn muốn xóa toàn bộ lịch học?")) {
+                currentScheduleData = {};
+                scheduleData = {};
                 localStorage.removeItem(STORAGE_KEY);
                 renderSchedule();
             }
         });
     }
 
-    // Tự động chọn ngày hôm nay khi load trang
-    const today = new Date().getDay();
-    const dayValue = today === 0 ? '1' : today.toString(); // 0 = CN -> 1, 1 = T2 -> 2...
-    if (daySelect.options[daySelect.selectedIndex].value !== dayValue) {
-        daySelect.value = dayValue;
-    }
-
-    // Khởi chạy lần đầu
-    renderSchedule();
+    // Lắng nghe khi API tải xong thì render
+    window.addEventListener('scheduleDataReady', renderSchedule);
 })();

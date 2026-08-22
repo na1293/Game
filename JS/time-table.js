@@ -1,10 +1,14 @@
-// 1. Khai báo lấy element trước (Chỉ chạy 1 lần khi load trang)
+// 1. Khai báo lấy element
 const day_select = document.getElementById("day-select");
 const schedule_title = document.getElementById("schedule_title");
 
-// Hàm cập nhật lịch (Tách ra để tái sử dụng)
+// Hàm cập nhật lịch
 function updateSchedule() {
-    const schedule_date = schedule[Number(day_select.value - 1)];
+    if (!day_select || !schedule_title) return;
+
+    // === Note: Đọc theo Key chuỗi/số trực tiếp từ Object scheduleData, không trừ 1 === //
+    const selectedDay = day_select.value;
+    const schedule_date = scheduleData[selectedDay];
     
     if (schedule_date) {
         schedule_title.innerHTML = `<strong>${schedule_date}</strong>`;
@@ -13,8 +17,10 @@ function updateSchedule() {
     }
 }
 
-// 2. Chạy lần đầu tiên khi vừa load trang để hiển thị luôn lịch của option đang chọn mặc định
-updateSchedule();
+// === Note: Chờ Custom Event từ Server tải xong mới chạy lần đầu === //
+window.addEventListener('scheduleDataReady', updateSchedule);
 
-// 3. Lắng nghe sự kiện thay đổi: Cứ mỗi khi đổi ngày là tự động cập nhật, siêu nhẹ!
-day_select.addEventListener("change", updateSchedule);
+// Lắng nghe sự kiện thay đổi select box
+if (day_select) {
+    day_select.addEventListener("change", updateSchedule);
+}

@@ -398,7 +398,7 @@ ul {
 
     /* Cho 2 ô input chiếm hết hàng trên */
     .edit_tag .edit-name {
-        width: 55% !important;
+        width: 100% !important;
         font-size: 14px;
         padding: 6px !important;
     }
