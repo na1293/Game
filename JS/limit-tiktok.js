@@ -112,7 +112,7 @@ document.addEventListener('DOMContentLoaded', () => {
             currentCoins -= depositCoins;
             setCoins(currentCoins);
 
-            const limitMinutes = 3; // Xài TikTok 45p
+            const limitMinutes = 45; // Xài TikTok 45p
             const nowTime = new Date();
             const deadlineTimeMs = nowTime.getTime() + limitMinutes * 60 * 1000;
 
