@@ -4,11 +4,13 @@ window.alarmAudio = window.alarmAudio || new Audio("Music/audley_fergine-warning
 let timerDisplay = document.getElementById("timer-display");
 let startBtn = document.getElementById("start-btn");
 let resetBtn = document.getElementById("reset-btn");
+let breakBtn = document.getElementById("break-btn");
 let say = document.getElementById("say");
 let event_news = document.querySelector(".event_news");
 
 let timer;
 let isRunning = false;
+let isBreakMode = false; // false: Học (25p), true: Nghỉ (5p)
 let timeLeft = 25 * 60; 
 let sayst = typeof cau_noi_hay !== 'undefined' ? cau_noi_hay : ["Đang tải câu nói..."]; 
 let endTime; 
@@ -25,19 +27,13 @@ if ('Notification' in window && Notification.permission !== 'granted') {
 const schedule = scheduleData;
 
 function updateSchedule(day_week) {
-    // 2. Lấy danh sách tất cả các phần tử có class event_news
     const newsElements = document.querySelectorAll(".event_news");
-    
-    // 3. Lấy nội dung từ Object (fallback về thông báo lỗi nếu không tìm thấy)
     const content = schedule[day_week] || "Không có lịch học";
-    
-    // 4. Cập nhật cho tất cả (cả cái trong header và cái trong div)
     newsElements.forEach(el => {
         el.innerHTML = content;
     });
 }
 
-// Ví dụ: Lấy ngày hiện tại
 const today = new Date().getDay(); 
 updateSchedule(today);
 
@@ -90,11 +86,27 @@ function formatTime(seconds) {
     return `${minutes < 10 ? '0' : ''}${minutes}:${secondsLeft < 10 ? '0' : ''}${secondsLeft}`;
 }
 
+// ☕ HÀM KÍCH HOẠT CHẾ ĐỘ NGHỈ 5 PHÚT
+function startBreakMode() {
+    if (isRunning) {
+        clearInterval(timer);
+        isRunning = false;
+    }
+    isBreakMode = true;
+    timeLeft = 5 * 60;
+    if (timerDisplay) timerDisplay.textContent = formatTime(timeLeft);
+    if (startBtn) {
+        startBtn.textContent = "Bắt đầu nghỉ";
+        startBtn.style.background = "var(--success-gradient)";
+    }
+    document.title = "☕ Thời gian nghỉ ngơi";
+}
+
 function startTimer() {
     if (isRunning) {
         clearInterval(timer);
         isRunning = false;
-        startBtn.textContent = "Bắt đầu học";
+        startBtn.textContent = isBreakMode ? "Bắt đầu nghỉ" : "Bắt đầu học";
         startBtn.style.background = "var(--primary-gradient)";
     
         if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
@@ -127,45 +139,62 @@ function startTimer() {
 
             if (timeLeft <= 0) {
                 clearInterval(timer);
+                isRunning = false;
                 timeLeft = 0;
-                timerDisplay.textContent = formatTime(timeLeft);
+                if (timerDisplay) timerDisplay.textContent = formatTime(timeLeft);
 
-                console.log("🎯 Đã hoàn thành 25 phút học tập! Tự động cộng 1 quả cà chua.");
-                if (typeof tomato_now === "function") {
-                    if (typeof stopAllAudio === "function") stopAllAudio(); 
-                    tomato_now(); 
+                playAlarmSound();
+
+                if (!isBreakMode) {
+                    // 🎉 HỌC XONG 25P -> CỘNG 🍅 VÀ CHUYỂN SANG NGHỈ
+                    console.log("🎯 Đã hoàn thành 25 phút học tập!");
+                    if (typeof tomato_now === "function") {
+                        if (typeof stopAllAudio === "function") stopAllAudio(); 
+                        tomato_now(); 
+                    } else {
+                        let count = parseInt(localStorage.getItem('tomato_count')) || 0;
+                        count += 1;
+                        localStorage.setItem('tomato_count', count);
+                        const displayElement = document.getElementById("tomato-count");
+                        if (displayElement) displayElement.innerHTML = `${count}/10`;
+                    }
+                    
+                    startBreakMode();
+                    alert("🎉 Giỏi lắm! Đã hết 25 phút học. Giờ thì chuyển sang nghỉ 5 phút nhé!");
                 } else {
-                    let count = parseInt(localStorage.getItem('tomato_count')) || 0;
-                    count += 1;
-                    localStorage.setItem('tomato_count', count);
-                    const displayElement = document.getElementById("tomato-count");
-                    if (displayElement) displayElement.innerHTML = `${count}/10`;
+                    // ⚡ NGHỈ XONG 5P -> VỀ CHẾ ĐỘ HỌC BAN ĐẦU
+                    alert("⚡ Hết 5 phút nghỉ rồi! Sẵn sàng cho phiên học tiếp theo nhé.");
+                    resetTimer();
                 }
-
-                playAlarmSound(); 
-                setTimeout(() => { resetTimer(); }, 500);
             } else {
-                timerDisplay.textContent = formatTime(timeLeft);
-                document.title = `⏱️ ${formatTime(timeLeft)} - Ứng dụng tập trung`;
+                if (timerDisplay) timerDisplay.textContent = formatTime(timeLeft);
+                let modeText = isBreakMode ? "☕ Nghỉ ngơi" : "⏱️ Tập trung";
+                document.title = `${modeText} - ${formatTime(timeLeft)}`;
             }
         }, 1000);
+
         isRunning = true;
         startBtn.textContent = "Dừng lại";
         startBtn.style.background = "var(--danger-gradient)";
     }
 }
 
+// 🔄 HÀM RESET VỀ TRẠNG THÁI HỌC BAN ĐẦU
 function resetTimer() {
+    isBreakMode = false;
     timeLeft = 25 * 60;
     document.title = `Ứng dụng tập trung`;
     if (timerDisplay) timerDisplay.textContent = formatTime(timeLeft);
     if (isRunning) {
         clearInterval(timer);
         isRunning = false;
-        startBtn.textContent = "Bắt đầu học";
-        startBtn.style.background = "var(--success-gradient)";
-        releaseWakeLock();
     }
+    if (startBtn) {
+        startBtn.textContent = "Bắt đầu học";
+        startBtn.style.background = "var(--primary-gradient)";
+    }
+    releaseWakeLock();
+
     if (btnSleep) btnSleep.style.display = "inline-block"; 
 
     if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
@@ -173,8 +202,38 @@ function resetTimer() {
     }
 }
 
-if (startBtn) startBtn.addEventListener("click", startTimer);
-if (resetBtn) resetBtn.addEventListener("click", resetTimer);
+// SỰ KIỆN NÚT BẤM (CHỈ GÁN 1 LẦN DỰA TRÊN ONCLICK HOẶC ADDEVENTLISTENER)
+if (startBtn) startBtn.onclick = startTimer;
+if (resetBtn) resetBtn.onclick = resetTimer;
+if (breakBtn) breakBtn.onclick = startBreakMode;
+
+// SỰ KIỆN CHUYỂN TAB / CHUYỂN CỬA SỔ
+document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible' && isRunning) {
+        requestWakeLock();
+        let remainingTimeMs = endTime - Date.now();
+        if (remainingTimeMs <= 0) {
+            clearInterval(timer);
+            isRunning = false;
+            timeLeft = 0;
+            if (timerDisplay) timerDisplay.textContent = formatTime(timeLeft);
+            
+            playAlarmSound();
+
+            if (!isBreakMode) {
+                if (typeof tomato_now === "function") tomato_now();
+                alert(`Bạn đã hoàn thành phiên học 25 phút!`);
+                startBreakMode();
+            } else {
+                alert(`Đã hết thời gian nghỉ ngơi!`);
+                resetTimer();
+            }
+        } else {
+            timeLeft = Math.ceil(remainingTimeMs / 1000);
+            if (timerDisplay) timerDisplay.textContent = formatTime(timeLeft);
+        }
+    }
+});
 
 // Đếm ngược mốc thời gian lớn THPTQG 2027
 let targetDate = new Date('2027-06-12T00:00:00');
@@ -196,7 +255,7 @@ function updateCountdown() {
 }
 let interval = setInterval(updateCountdown, 1000);
 
-// === 🛏️ CẬP NHẬT TIMESAY: THIẾT LẬP KỶ LUẬT NGỦ LÚC 23H ĐỂ PHÁT TRIỂN CHIỀU CAO ===
+// === 🛏️ CẬP NHẬT TIMESAY ===
 function timesay() {
     let now = new Date();
     let hh = now.getHours();
@@ -213,7 +272,6 @@ function timesay() {
     if (!sayTimeEl || !talkEl) return;
 
     if (hh >= 23 || (hh >= 0 && hh <= 4)) { 
-        // 🚨 KHÓA QUY ĐỊNH BẮT BUỘC NGỦ ĐÚNG CHIỀU CAO & SKINCARE
         sayTimeEl.innerHTML = "🚨 ĐÃ ĐẾN GIỜ ĐI NGỦ! 🛌";
         talkEl.innerHTML = "Hiện tại đang rất muộn, vui lòng tắt máy đi ngủ! Học/ chơi thêm có thể suy giảm năng suất.";
     } else if (hh >= 5 && hh <= 6) {
@@ -280,7 +338,6 @@ function nghi_ngoi() {
     if (minutesStudied > 0 && minutesStudied <= 600) { 
         alert(`Đã thiết lập! Gặp lại bạn sau ${settime} phút.`);
         
-        // Gọi an toàn hàm playSelectedMusic từ music.js nếu có
         if (typeof playSelectedMusic === "function") {
             playSelectedMusic();
         }
@@ -343,25 +400,6 @@ function check() {
     }
 }
 document.addEventListener('fullscreenchange', () => { if (!document.fullscreenElement) check(); });
-
-document.addEventListener('visibilitychange', () => {
-    if (document.visibilityState === 'visible' && isRunning) {
-        requestWakeLock();
-        let remainingTimeMs = endTime - Date.now();
-        if (remainingTimeMs <= 0) {
-            clearInterval(timer);
-            timeLeft = 0;
-            timerDisplay.textContent = formatTime(timeLeft);
-            alert(`Bạn đã học chăm chỉ xong phiên rồi đó!`);
-            if (typeof tomato_now === "function") tomato_now();
-            playAlarmSound();
-            setTimeout(() => { resetTimer(); }, 500);
-        } else {
-            timeLeft = Math.ceil(remainingTimeMs / 1000);
-            timerDisplay.textContent = formatTime(timeLeft);
-        }
-    }
-});
 
 function moveHome() {
     const myButton = document.getElementById('move-home');

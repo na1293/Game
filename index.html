@@ -10,11 +10,14 @@
     <link rel="stylesheet" href="css/app.css">
     <link rel="stylesheet" href="css/main_app.css">
     <link rel="stylesheet" href="css/moon.css">
+    <link rel="stylesheet" href="css/pop-up-main.css">
 
     <!-- 1. Cấu hình & Dữ liệu TKB (Load trước) -->
     <script src="JS/FirstFile_schedule.js"></script>
     <script src="JS/time-table.js" defer></script>
     <script src="JS/u-read-json-time-table.js" defer></script>
+
+    <script src="JS/System_JS/pop-up.js" defer></script>
 
     <script src="https://cdn.jsdelivr.net/gh/na1293/my-tools@main/auto-storage.js"></script>
     <script src="JS/aod.js"></script>
@@ -36,6 +39,8 @@
     <script src="JS/music.js" defer></script>
     <script src="JS/dashboard_sort.js" defer></script>
     <script src="JS/class-user-and-lock.js" defer></script>
+
+    <script src="JS/limit-tiktok.js" defer></script>
 
     <!-- 3. Sử dụng main.js để nhận update (Nhúng với defer để đảm bảo các tệp trước đã khởi tạo xong) -->
     <script src="JS/main.js" defer></script>
@@ -103,8 +108,8 @@
                     <div class="tool-group">
                         <h3><span class="group-icon">📚</span> Học tập bứt phá</h3>
                         <ul class="link-grid-ui">
-                            <li><a href="#time-table">📆 Thời khóa biểu</a></li>
                             <li><a href="#pomodoro-timer-tool"><span class="icon">⏱️</span> Đồng hồ Pomodoro</a></li>
+                            <li><a href="#time-table">📆 Thời khóa biểu</a></li>
                             <li><a href="#music-play">🎶 Âm nhạc</a></li>
                             <li><a href="#pomodoro-happy"><span class="icon">🍅</span>Trồng cà chua</a></li>
                             <li><a href="#countdown-thptqg"><span class="icon">🎯</span> Đếm ngược THPTQG</a></li>
@@ -115,11 +120,12 @@
                 </section>
 
                 <div class="tool-group">
-                    <h3><span class="group-icon">🎮</span> Giải trí & Chill</h3>
+                    <h3><span class="group-icon">💪</span> Kỷ luật</h3>
                     <ul class="link-grid-ui">
                         <li><a href="#cute-mess"><span class="icon">💬</span> Lời nhắc từ hệ thống</a></li>
                         <li><a href="#new-feed"><span class="icon">📰</span> Tin tức mới nhất</a></li>
                         <li><a href="#learing-tool"><span class="icon">☀ </span> Thời tiết</a></li>
+                        <li><a href="#section-limit-tiktok"><span class="icon">🎵</span> Giới hạn TikTok</a></li>
                     </ul>
                 </div>
 
@@ -137,14 +143,22 @@
             </div>
 
             <div class="show-then" style="display: none;">
-        
+
+                <div class="pomodoro-timer" id="section-limit-tiktok">
+                    <h3>Giới hạn dùng TikTok</h3>
+                    <p>(Rèn tính tự giác và kỷ luật khi dùng MXH)</p>
+                    <p>(Phải cọc 30% xu ảo của bạn)</p>
+                    <button style="background-color: green; color: #ffffff;" id="limit-tiktok">Bắt đầu kỷ luật</button>
+                </div>
+                
                 <section id="section-learn">
 
                     <div class="pomodoro-timer" id="pomodoro-timer-tool">
                         <h2>⏱️ Đồng Hồ Pomodoro</h2>
                         <p id="timer-display">25:00</p>
                         <button id="start-btn" onclick="playsoundsth()">Bắt đầu học</button>
-                        <button id="reset-btn" onclick="stopsound()">Đặt lại</button>
+                        <button id="reset-btn" onclick="stopsound()">Học 25p</button>
+                        <button id="break-btn">Nghỉ 5p</button>
                     </div>
 
                     <div class="pomodoro-timer" id="countdown-thptqg">
