@@ -168,7 +168,7 @@ function startTimer() {
                 }
             } else {
                 if (timerDisplay) timerDisplay.textContent = formatTime(timeLeft);
-                let modeText = isBreakMode ? "☕ Nghỉ ngơi" : "⏱️ Tập trung";
+                let modeText = isBreakMode ? "☕" : "⏱️";
                 document.title = `${modeText} - ${formatTime(timeLeft)}`;
             }
         }, 1000);
