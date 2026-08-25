@@ -8,10 +8,19 @@ let breakBtn = document.getElementById("break-btn");
 let say = document.getElementById("say");
 let event_news = document.querySelector(".event_news");
 
+
+let setting_link = document.getElementById("setting-link");
+
 let timer;
 let isRunning = false;
 let isBreakMode = false; // false: Học (25p), true: Nghỉ (5p)
-let timeLeft = 25 * 60; 
+
+let pomodoroTime = Number(localStorage.getItem('pomodoroTime')) || 25;
+let breakTime = Number(localStorage.getItem('breakTime')) || 5;
+
+// 👉 THÊM KHAI BÁO BIẾN TIMELEFT Ở ĐÂY NHA:
+let timeLeft = pomodoroTime * 60; 
+
 let sayst = typeof cau_noi_hay !== 'undefined' ? cau_noi_hay : ["Đang tải câu nói..."]; 
 let endTime; 
 
@@ -88,14 +97,20 @@ function formatTime(seconds) {
 
 // ☕ HÀM KÍCH HOẠT CHẾ ĐỘ NGHỈ 5 PHÚT
 function startBreakMode() {
+    setting_link.style.display = "block";
+
     if (isRunning) {
         clearInterval(timer);
         isRunning = false;
     }
     isBreakMode = true;
-    timeLeft = 5 * 60;
+    timeLeft = breakTime * 60;
+    if (breakTime == "") {
+        timeLeft = 5 * 60;
+    }
     if (timerDisplay) timerDisplay.textContent = formatTime(timeLeft);
     if (startBtn) {
+
         startBtn.textContent = "Bắt đầu nghỉ";
         startBtn.style.background = "var(--success-gradient)";
     }
@@ -103,6 +118,9 @@ function startBreakMode() {
 }
 
 function startTimer() {
+
+    setting_link.style.display = "none";
+
     if (isRunning) {
         clearInterval(timer);
         isRunning = false;
@@ -160,6 +178,7 @@ function startTimer() {
                     }
                     
                     startBreakMode();
+                    playAlarmSound();
                     alert("🎉 Giỏi lắm! Đã hết 25 phút học. Giờ thì chuyển sang nghỉ 5 phút nhé!");
                 } else {
                     // ⚡ NGHỈ XONG 5P -> VỀ CHẾ ĐỘ HỌC BAN ĐẦU
@@ -181,24 +200,20 @@ function startTimer() {
 
 // 🔄 HÀM RESET VỀ TRẠNG THÁI HỌC BAN ĐẦU
 function resetTimer() {
+    // Cập nhật lại giá trị mới nhất từ localStorage trước khi reset
+    pomodoroTime = Number(localStorage.getItem('pomodoroTime')) || 25;
+    breakTime = Number(localStorage.getItem('breakTime')) || 5;
+
     isBreakMode = false;
-    timeLeft = 25 * 60;
+    timeLeft = pomodoroTime * 60;
+    
     document.title = `Ứng dụng tập trung`;
+    const timerDisplay = document.getElementById("timer-display");
     if (timerDisplay) timerDisplay.textContent = formatTime(timeLeft);
+    
     if (isRunning) {
         clearInterval(timer);
         isRunning = false;
-    }
-    if (startBtn) {
-        startBtn.textContent = "Bắt đầu học";
-        startBtn.style.background = "var(--primary-gradient)";
-    }
-    releaseWakeLock();
-
-    if (btnSleep) btnSleep.style.display = "inline-block"; 
-
-    if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
-        navigator.serviceWorker.controller.postMessage({ type: 'STOP_POMODORO' });
     }
 }
 
@@ -314,84 +329,95 @@ function nghi_ngoi() {
             }, 50);
         }).catch(e => console.log("Unlock audio lỗi ở chế độ tối giản:", e));
     }
-
-    let settime = prompt("Bạn muốn học/nghỉ ở chế độ tối giản bao nhiêu phút?\nBạn có thể đặt giờ học từ 25-50 phút để nhận cà chua\n\nNgoài ra, việc nghỉ ngơi từ 5-15p cũng rất tốt (Miễn là không sử dụng thiết bị điện tử)");
-    if (!settime) return;
-
-    let minutesStudied = parseFloat(settime);
-    if (isNaN(minutesStudied) || minutesStudied <= 0) {
-        alert("Vui lòng nhập số phút hợp lệ!");
-        return;
-    }
-
-    if (minutesStudied >= 240) {
-        alert("Hệ thống phát hiện thời gian quá dài (treo máy)! Phiên này sẽ KHÔNG được tính cà chua.");
-    } else if (minutesStudied >= 25) {
-        alert("Chế độ học trồng cà chua! Hãy tập trung cao độ để nhận 1 🍅 khi hết giờ.");
-    } else {
-        alert("Thời gian học ngắn quá (< 25 phút), chế độ tối giản này sẽ không tính cà chua nhé!");
-    }
     
-    let timeInMs = minutesStudied * 60 * 1000; 
-    let endTimeLocal = Date.now() + timeInMs; 
+    // BẮT ĐẦU SHOW POPUP
+    showTextPrompt(
+        "Hẹn giờ", 
+        "Hẹn tối thiểu 25p để có cà chua", 
+        function(val) {
+            // TOÀN BỘ LOGIC XỬ LÝ NẰM Ở ĐÂY (Khi người dùng bấm "Xác nhận")
+            let settime = val; 
 
-    if (minutesStudied > 0 && minutesStudied <= 600) { 
-        alert(`Đã thiết lập! Gặp lại bạn sau ${settime} phút.`);
-        
-        if (typeof playSelectedMusic === "function") {
-            playSelectedMusic();
-        }
-        
-        document.getElementById("AOD").style.color = "#fff";
-        document.getElementById("AOD").style.display = "flex";
-        document.getElementById("container").style.display = "none";
-        requestWakeLock();
+            if (!settime) return;
 
-        if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
-            navigator.serviceWorker.controller.postMessage({
-                type: 'START_POMODORO',
-                endTime: endTimeLocal
-            });
-        }
+            let minutesStudied = parseFloat(settime);
+            if (isNaN(minutesStudied) || minutesStudied <= 0) {
+                showPopup("Hẹn giờ Thất bại", "Vui lòng nhập số hợp lệ (Chỉ số)");
+                return;
+            }
 
-        if (countdownInterval) clearInterval(countdownInterval);
+            if (minutesStudied >= 240) {
+                showPopup("Từ chối", "Bạn treo máy quá lâu, không có cà chua");
+            } else if (minutesStudied >= 25) {
+                showPopup("Đang học", "Chế độ học trồng cà chua! Hãy tập trung cao độ để nhận 1 🍅 khi hết giờ.");
+            } else {
+                showPopup("Từ chối", "Thời gian dưới 25 phút sẽ không được tính cà chua.");
+            }
+            
+            let timeInMs = minutesStudied * 60 * 1000; 
+            let endTimeLocal = Date.now() + timeInMs; 
 
-        countdownInterval = setInterval(() => {
-            let remainingTime = endTimeLocal - Date.now();
-            if (remainingTime <= 0) {
-                clearInterval(countdownInterval);
-                document.getElementById("time-count-set").innerHTML = "00:00:00"; 
+            if (minutesStudied > 0 && minutesStudied <= 600) { 
+                showPopup("Bắt đầu học", `Đã thiết lập! Gặp lại bạn sau ${settime} phút.`);
+                
+                if (typeof playSelectedMusic === "function") {
+                    playSelectedMusic();
+                }
+                
+                document.getElementById("AOD").style.color = "#fff";
+                document.getElementById("AOD").style.display = "flex";
+                document.getElementById("container").style.display = "none";
+                requestWakeLock();
 
-                playAlarmSound();
-
-                if (minutesStudied >= 25 && minutesStudied < 240) {
-                    console.log("🎯 Hoàn thành phiên học tối giản! Cộng 1 quả cà chua.");
-                    if (typeof tomato_now === "function") {
-                        if (typeof stopAllAudio === "function") stopAllAudio();
-                        tomato_now(); 
-                    } else {
-                        let count = parseInt(localStorage.getItem('tomato_count')) || 0;
-                        count += 1;
-                        localStorage.setItem('tomato_count', count);
-                        const displayElement = document.getElementById("tomato-count");
-                        if (displayElement) displayElement.innerHTML = `${count}/10`;
-                    }
+                if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
+                    navigator.serviceWorker.controller.postMessage({
+                        type: 'START_POMODORO',
+                        endTime: endTimeLocal
+                    });
                 }
 
-                setTimeout(() => { 
-                    document.getElementById("AOD").style.display = "none";
-                    document.getElementById("container").style.display = "block";
-                    releaseWakeLock();
-                }, 5000); 
-                
-            } else {
-                let h = Math.floor(remainingTime / 3600000);
-                let m = Math.floor((remainingTime % 3600000) / 60000);
-                let s = Math.floor((remainingTime % 60000) / 1000); 
-                document.getElementById("time-count-set").innerHTML = `${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
+                if (countdownInterval) clearInterval(countdownInterval);
+
+                countdownInterval = setInterval(() => {
+                    let remainingTime = endTimeLocal - Date.now();
+                    if (remainingTime <= 0) {
+                        clearInterval(countdownInterval);
+                        document.getElementById("time-count-set").innerHTML = "00:00:00"; 
+
+                        playAlarmSound();
+
+                        if (minutesStudied >= 25 && minutesStudied < 240) {
+                            console.log("🎯 Hoàn thành phiên học tối giản! Cộng 1 quả cà chua.");
+                            if (typeof tomato_now === "function") {
+                                if (typeof stopAllAudio === "function") stopAllAudio();
+                                tomato_now(); 
+                            } else {
+                                let count = parseInt(localStorage.getItem('tomato_count')) || 0;
+                                count += 1;
+                                localStorage.setItem('tomato_count', count);
+                                const displayElement = document.getElementById("tomato-count");
+                                if (displayElement) displayElement.innerHTML = `${count}/10`;
+                            }
+                        }
+
+                        setTimeout(() => { 
+                            document.getElementById("AOD").style.display = "none";
+                            document.getElementById("container").style.display = "block";
+                            releaseWakeLock();
+                        }, 5000); 
+                        
+                    } else {
+                        let h = Math.floor(remainingTime / 3600000);
+                        let m = Math.floor((remainingTime % 3600000) / 60000);
+                        let s = Math.floor((remainingTime % 60000) / 1000); 
+                        document.getElementById("time-count-set").innerHTML = `${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
+                    }
+                }, 1000);
+            } else { 
+                showPopup("Từ chối", "Thời gian không hợp lý");
             }
-        }, 1000);
-    } else { alert("Thời gian nhập vào không hợp lý!"); }
+        } // KẾT THÚC CALLBACK
+    );
 }
 
 function check() {

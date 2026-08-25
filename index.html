@@ -42,6 +42,8 @@
 
     <script src="JS/limit-tiktok.js" defer></script>
 
+    <script src="JS/System_JS/setting_pomodoro.js" defer></script>
+
     <!-- 3. Sử dụng main.js để nhận update (Nhúng với defer để đảm bảo các tệp trước đã khởi tạo xong) -->
     <script src="JS/main.js" defer></script>
 
@@ -156,10 +158,15 @@
                     <div class="pomodoro-timer" id="pomodoro-timer-tool">
                         <h2>⏱️ Đồng Hồ Pomodoro</h2>
                         <p>(<a href="#music-tool-section-nav">Phát âm thanh</a> để app chạy nền)</p>
+                        <p id="setting-link">(Tùy chỉnh thời gian <a onclick="setting_pomodoro();" style="color: green; cursor: pointer;">tại đây</a>.)</p>
                         <p id="timer-display">25:00</p>
-                        <button id="start-btn" onclick="playsoundsth()">Bắt đầu học</button>
-                        <button id="reset-btn" onclick="stopsound()">Học 25p</button>
-                        <button id="break-btn">Nghỉ 5p</button>
+                        
+                        <!-- Ẩn dòng cài đặt khi Bắt đầu -->
+                        <button id="start-btn" onclick="playsoundsth(); start_focus();">Bắt đầu học</button>
+                        
+                        <!-- Hiện lại dòng cài đặt khi Reset/Đổi chế độ -->
+                        <button id="reset-btn" onclick="stopsound(); reset_focus();">Chế độ Học</button>
+                        <button id="break-btn" onclick="reset_focus();">Chế độ Nghỉ</button>
                     </div>
 
                     <div class="pomodoro-timer" id="countdown-thptqg">
