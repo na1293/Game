@@ -12,193 +12,69 @@
     <link rel="stylesheet" href="css/app.css">
 
     <style>
-        /* ==========================================
-        1. CORE & VARIABLES
-        ========================================== */
         :root {
-        --primary-gradient: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
-        --secondary-gradient: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
-        --success-gradient: linear-gradient(135deg, #10b981 0%, #059669 100%);
-        --bg-gradient: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
-        
-        --bg-card: #ffffff;
-        --text-color: #0f172a;
-        --text-muted: #64748b;
-        --border-color: #e2e8f0;
-        
-        --shadow-sm: 0 1px 3px rgba(0,0,0,0.1);
-        --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
-        --shadow-lg: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
-        
-        --radius-lg: 16px;
-        --radius-md: 10px;
+            --primary-gradient: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+            --secondary-gradient: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+            --success-gradient: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            --warning-gradient: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            --bg-gradient: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            
+            --bg-card: #ffffff;
+            --text-color: #0f172a;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
+            
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.1);
+            --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+            --radius-lg: 16px;
+            --radius-md: 10px;
         }
 
-        * {
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+        body { background: var(--bg-gradient); color: var(--text-color); min-height: 100vh; padding: 20px 12px; display: flex; justify-content: center; }
+        .container { width: 100%; max-width: 850px; display: flex; flex-direction: column; gap: 20px; }
 
-        body {
-        background: var(--bg-gradient);
-        color: var(--text-color);
-        min-height: 100vh;
-        padding: 20px 12px;
-        display: flex;
-        justify-content: center;
-        }
+        header { text-align: center; background: var(--bg-card); padding: 24px 20px; border-radius: var(--radius-lg); box-shadow: var(--shadow-md); border: 1px solid var(--border-color); }
+        header h1 { font-size: 1.6rem; font-weight: 800; background: var(--primary-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 8px; }
+        header hr { border: none; height: 1px; background: var(--border-color); margin: 10px 0; }
 
-        .container {
-        width: 100%;
-        max-width: 850px;
-        display: flex;
-        flex-direction: column;
-        gap: 20px;
-        }
+        .event_news_style { font-size: 0.85rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
 
-        /* ==========================================
-        2. HEADER & CARDS LAYOUT
-        ========================================== */
-        header {
-        text-align: center;
-        background: var(--bg-card);
-        padding: 24px 20px;
-        border-radius: var(--radius-lg);
-        box-shadow: var(--shadow-md);
-        border: 1px solid var(--border-color);
-        }
+        .pomodoro-timer { background: var(--bg-card); padding: 24px; border-radius: var(--radius-lg); box-shadow: var(--shadow-md); border: 1px solid var(--border-color); }
+        .pomodoro-timer h2 { font-size: 1.15rem; font-weight: 700; margin-bottom: 18px; display: flex; align-items: center; gap: 8px; border-bottom: 2px solid #f1f5f9; padding-bottom: 10px; }
 
-        header h1 {
-        font-size: 1.6rem;
-        font-weight: 800;
-        background: var(--primary-gradient);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        margin-bottom: 8px;
-        }
+        .days-selector-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(60px, 1fr)); gap: 8px; margin: 12px 0; }
+        .day-checkbox { background: #edf2f7; padding: 10px; border-radius: 10px; text-align: center; cursor: pointer; font-weight: 600; font-size: 0.85rem; user-select: none; transition: all 0.2s; border: 1px solid var(--border-color); }
+        .day-checkbox input { display: none; }
+        .day-checkbox:has(input:checked) { background: var(--primary-gradient); color: white; border-color: transparent; }
 
-        header hr {
-        border: none;
-        height: 1px;
-        background: var(--border-color);
-        margin: 10px 0;
-        }
+        .form-group { margin-bottom: 15px; text-align: left; }
+        .form-group label { display: block; font-size: 0.85rem; font-weight: 600; color: var(--text-muted); margin-bottom: 5px; }
 
-        .event_news_style {
-        font-size: 0.85rem;
-        font-weight: 600;
-        color: var(--text-muted);
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-        }
+        input[type="text"], input[type="number"], .select_ui { width: 100%; padding: 10px 14px; border-radius: var(--radius-md); border: 1px solid var(--border-color); background: #f8fafc; color: var(--text-color); font-size: 0.9rem; font-weight: 500; outline: none; }
+        input:focus, .select_ui:focus { border-color: #6366f1; background: #ffffff; box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15); }
 
-        .pomodoro-timer {
-        background: var(--bg-card);
-        padding: 24px;
-        border-radius: var(--radius-lg);
-        box-shadow: var(--shadow-md);
-        border: 1px solid var(--border-color);
-        }
+        button { background: var(--primary-gradient); color: white; border: none; padding: 12px 16px; border-radius: var(--radius-md); font-weight: 700; font-size: 0.9rem; cursor: pointer; transition: all 0.2s ease; box-shadow: var(--shadow-sm); }
+        button:hover { opacity: 0.92; transform: translateY(-1px); }
 
-        .pomodoro-timer h2 {
-        font-size: 1.15rem;
-        font-weight: 700;
-        margin-bottom: 18px;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        border-bottom: 2px solid #f1f5f9;
-        padding-bottom: 10px;
-        }
+        .btn-calc-submit { width: 100%; padding: 14px; font-size: 1.05rem; background: var(--success-gradient); margin-top: 10px; }
 
-        /* ==========================================
-        3. INPUTS & FORM CONTROLS
-        ========================================== */
-        input[type="text"],
-        input[type="number"],
-        .select_ui {
-        width: 100%;
-        padding: 10px 14px;
-        border-radius: var(--radius-md);
-        border: 1px solid var(--border-color);
-        background: #f8fafc;
-        color: var(--text-color);
-        font-size: 0.9rem;
-        font-weight: 500;
-        outline: none;
-        transition: all 0.2s ease;
-        }
+        .table-responsive { overflow-x: auto; margin-top: 15px; }
+        table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+        th, td { padding: 12px 10px; border-bottom: 1px solid var(--border-color); text-align: center; }
+        th { background-color: #f8fafc; color: var(--text-color); font-weight: 700; }
 
-        input:focus,
-        .select_ui:focus {
-        border-color: #6366f1;
-        background: #ffffff;
-        box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
-        }
+        .badge-best { background: var(--success-gradient); color: white; padding: 3px 8px; border-radius: 6px; font-size: 0.75rem; font-weight: bold; display: inline-block; margin-top: 4px; }
+        .text-danger { color: #e53e3e; font-weight: bold; }
+        .text-primary { color: #2b6cb0; font-weight: bold; }
 
-        button {
-        background: var(--primary-gradient);
-        color: white;
-        border: none;
-        padding: 12px 16px;
-        border-radius: var(--radius-md);
-        font-weight: 700;
-        font-size: 0.9rem;
-        cursor: pointer;
-        transition: all 0.2s ease;
-        box-shadow: var(--shadow-sm);
-        }
+        .recommend-box { background: #eff6ff; border: 1px solid #bfdbfe; border-radius: var(--radius-md); padding: 14px; margin-top: 15px; font-size: 0.9rem; color: #1e40af; display: none; }
+        .error-box { background: #fef2f2; border: 1px solid #fecaca; border-radius: var(--radius-md); padding: 14px; margin-top: 15px; font-size: 0.9rem; color: #991b1b; display: none; }
 
-        button:hover {
-        opacity: 0.92;
-        transform: translateY(-1px);
-        box-shadow: var(--shadow-md);
-        }
+        td button { background: #fee2e2; color: #dc2626; padding: 5px 10px; font-size: 0.8rem; border-radius: 6px; box-shadow: none; }
+        td button:hover { background: #ef4444; color: white; }
 
-        button:active {
-        transform: translateY(0);
-        }
-
-        /* ==========================================
-        4. TABLES & BUTTON ACTION
-        ========================================== */
-        td button {
-        background: #fee2e2;
-        color: #dc2626;
-        padding: 5px 10px;
-        font-size: 0.8rem;
-        border-radius: 6px;
-        box-shadow: none;
-        }
-
-        td button:hover {
-        background: #ef4444;
-        color: white;
-        }
-
-        footer {
-        text-align: center;
-        padding: 15px;
-        font-size: 0.8rem;
-        color: var(--text-muted);
-        font-weight: 500;
-        }
-
-        /* Responsive Tweak */
-        @media (max-width: 640px) {
-        body {
-            padding: 10px 6px;
-        }
-        .pomodoro-timer {
-            padding: 16px;
-        }
-        th, td {
-            padding: 8px 6px;
-            font-size: 0.82rem;
-        }
-        }
+        footer { text-align: center; padding: 15px; font-size: 0.8rem; color: var(--text-muted); font-weight: 500; }
     </style>
 </head>
 <body>
@@ -214,7 +90,7 @@
 
     <!-- 1. KHAI BÁO NHU CẦU SỬ DỤNG -->
     <div class="pomodoro-timer">
-        <h2>🗓️ 1. Lịch & Nhu Cầu Data</h2>
+        <h2>Lịch & Nhu Cầu Data</h2>
         
         <div class="form-group">
             <label>Chọn các ngày cần dùng Data trong tuần:</label>
@@ -231,28 +107,33 @@
 
         <div class="form-group">
             <label for="gb-per-day">Nhu cầu GB / Ngày làm việc:</label>
-            <input type="number" id="gb-per-day" value="1" min="0.5" step="0.5" onchange="runAnalysis()">
+            <input type="number" id="gb-per-day" value="7" min="0.1" max="101" step="0.5">
         </div>
 
         <div class="form-group">
-            <label for="timeframe">🗓️ Mốc thời gian xem dự toán:</label>
-            <select id="timeframe" class="select_ui" onchange="runAnalysis()">
+            <label for="timeframe">Mốc thời gian xem dự toán:</label>
+            <select id="timeframe" class="select_ui">
                 <option value="7">1 Tuần (7 ngày)</option>
                 <option value="30" selected>1 Tháng (30 ngày)</option>
                 <option value="90">1 Quý (90 ngày - 3 tháng)</option>
                 <option value="365">1 Năm (365 ngày)</option>
             </select>
         </div>
+
+        <!-- NÚT OK BẮT ĐẦU TÍNH TOÁN -->
+        <button class="btn-calc-submit" onclick="runAnalysis(); document.getElementById('main')?.scrollIntoView({ behavior: 'smooth' });">
+            Tính Toán Chi Phí Tối Ưu
+        </button>
     </div>
 
     <!-- 2. QUẢN LÝ GÓI CƯỚC -->
     <div class="pomodoro-timer">
-        <h2>📦 2. Danh Sách Gói Cước & Combos</h2>
+        <h2>Danh Sách Gói Cước & Combos</h2>
         
-        <div class="pkg-grid">
+        <div class="pkg-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px;">
             <div class="form-group">
                 <label>Tên Gói</label>
-                <input type="text" id="pkg-name" placeholder="VD: Gói ST90K">
+                <input type="text" id="pkg-name" placeholder="VD: ST90K">
             </div>
             <div class="form-group">
                 <label>Giá (VNĐ)</label>
@@ -271,7 +152,7 @@
             </div>
             <div class="form-group">
                 <label>Dung Lượng (GB)</label>
-                <input type="number" id="pkg-gb" placeholder="3 (Tổng) hoặc 1 (/Ngày)">
+                <input type="number" id="pkg-gb" placeholder="3">
             </div>
         </div>
         <button id="add-todo-btn" onclick="addPackage()" style="width: 100%; margin-top: 10px;">➕ Thêm Gói Mới</button>
@@ -294,18 +175,22 @@
     </div>
 
     <!-- 3. KẾT QUẢ SO SÁNH -->
-    <div class="pomodoro-timer">
-        <h2>📊 3. Bảng So Sánh Tối Ưu Chi Phí</h2>
+    <div class="pomodoro-timer" id="main">
+        <h2>Bảng So Sánh Chung</h2>
+        
+        <div id="recommend-box" class="recommend-box"></div>
+        <div id="error-box" class="error-box"></div>
+
         <div class="table-responsive">
             <table id="result-table">
                 <thead>
                     <tr>
-                        <th>Gói / Combo</th>
+                        <th>Gói / Phương Án</th>
+                        <th>Số Lượng Gói Cần Mua</th>
                         <th>Tổng Chi Phí</th>
                         <th>Trung Bình / Tuần</th>
-                        <th>GB Đã Dùng</th>
                         <th>GB Bỏ Phí</th>
-                        <th>Đọng Vốn</th>
+                        <th>Đánh Giá</th>
                     </tr>
                 </thead>
                 <tbody></tbody>
@@ -342,7 +227,6 @@ function renderPackages() {
             </tr>
         `;
     });
-    runAnalysis();
 }
 
 function addPackage() {
@@ -352,7 +236,7 @@ function addPackage() {
     const type = document.getElementById('pkg-type').value;
     const gb = parseFloat(document.getElementById('pkg-gb').value);
 
-    if(!name || !price || !cycle || !gb) return alert("Vui lòng nhập đầy đủ thông tin gói!");
+    if(!name || isNaN(price) || isNaN(cycle) || isNaN(gb)) return alert("Vui lòng nhập đầy đủ thông tin gói!");
 
     packages.push({ id: Date.now(), name, price, cycle, type, gb });
     
@@ -371,51 +255,84 @@ function deletePackage(id) {
 
 function runAnalysis() {
     const selectedDays = Array.from(document.querySelectorAll('#days-selector input:checked')).map(cb => parseInt(cb.value));
-    const reqGB = parseFloat(document.getElementById('gb-per-day').value) || 1;
+    const reqGB = parseFloat(document.getElementById('gb-per-day').value) || 0;
     const timeframeDays = parseInt(document.getElementById('timeframe').value);
 
+    const errorBox = document.getElementById('error-box');
+    const recommendBox = document.getElementById('recommend-box');
+    const tbody = document.querySelector('#result-table tbody');
+
+    errorBox.style.display = 'none';
+    recommendBox.style.display = 'none';
+    tbody.innerHTML = '';
+
+    if (selectedDays.length === 0) {
+        errorBox.innerHTML = "Bạn chưa chọn ngày nào cần sử dụng Data!";
+        errorBox.style.display = 'block';
+        return;
+    }
+
+    if (reqGB <= 0.5) {
+        errorBox.innerHTML = "Nhu cầu GB/ngày phải lớn hơn 500MB!";
+        errorBox.style.display = 'block';
+        return;
+    }
+
+    if (reqGB >= 50) {
+        errorBox.innerHTML = `<b>Cảnh báo nhu cầu cực lớn (${reqGB} GB/ngày):</b> Sử dụng 4G/5G ở mức này rất tốn kém! Bạn nên ưu tiên lắp Wifi cố định.`;
+        errorBox.style.display = 'block';
+    }
+
+    if (reqGB >= 100) {
+        errorBox.innerHTML = `<b>Số quá lớn, bạn có thể cân nhắc chuyển qua Wifi</b>`;
+        errorBox.style.display = 'block';
+        return;
+    }
+
     let schedule = [];
+    let totalWorkDays = 0;
     for(let i = 0; i < timeframeDays; i++) {
         let dayOfWeek = (i + 1) % 7;
         let isWorkDay = selectedDays.includes(dayOfWeek);
+        if (isWorkDay) totalWorkDays++;
         schedule.push({ day: i + 1, isWorkDay, reqGB: isWorkDay ? reqGB : 0 });
     }
-
-    const tbody = document.querySelector('#result-table tbody');
-    tbody.innerHTML = '';
 
     let results = [];
 
     packages.forEach(pkg => {
+        let multiplier = 1;
         let totalCost = 0;
         let totalProvidedGB = 0;
-        let totalUsedGB = 0;
+        let totalUsedGB = totalWorkDays * reqGB;
+        let totalPurchases = 0;
 
         if (pkg.type === 'daily_limit') {
-            let purchases = Math.ceil(timeframeDays / pkg.cycle);
-            totalCost = purchases * pkg.price;
-            totalProvidedGB = purchases * pkg.cycle * pkg.gb;
-
-            schedule.forEach(s => {
-                if(s.isWorkDay) {
-                    totalUsedGB += Math.min(s.reqGB, pkg.gb);
-                }
-            });
+            // NEO GIỚI HẠN: Ép số gói phải mua song song để đáp ứng đúng reqGB mỗi ngày
+            multiplier = Math.ceil(reqGB / pkg.gb);
+            let purchasesPerSub = Math.ceil(timeframeDays / pkg.cycle);
+            totalPurchases = purchasesPerSub * multiplier;
+            totalCost = totalPurchases * pkg.price;
+            totalProvidedGB = purchasesPerSub * pkg.cycle * (pkg.gb * multiplier);
         } else {
+            // Cơ chế gói dồn (Bucket)
             let activeUntil = -1;
             let currentBucketGB = 0;
 
             for(let i = 0; i < timeframeDays; i++) {
                 if(schedule[i].isWorkDay) {
                     if(i > activeUntil || currentBucketGB < schedule[i].reqGB) {
-                        totalCost += pkg.price;
-                        totalProvidedGB += pkg.gb;
-                        currentBucketGB = pkg.gb;
+                        let neededGB = schedule[i].reqGB - (i <= activeUntil ? currentBucketGB : 0);
+                        let packsNeeded = Math.ceil(neededGB / pkg.gb);
+                        
+                        totalPurchases += packsNeeded;
+                        totalCost += packsNeeded * pkg.price;
+                        totalProvidedGB += packsNeeded * pkg.gb;
+                        currentBucketGB = (i <= activeUntil ? currentBucketGB : 0) + (packsNeeded * pkg.gb);
                         activeUntil = i + pkg.cycle - 1;
                     }
                     
                     let used = Math.min(schedule[i].reqGB, currentBucketGB);
-                    totalUsedGB += used;
                     currentBucketGB -= used;
                 }
             }
@@ -424,44 +341,61 @@ function runAnalysis() {
         let wastedGB = Math.max(0, totalProvidedGB - totalUsedGB);
         let weeklyAvgCost = Math.round((totalCost / timeframeDays) * 7);
 
-        let capitalLock = "Linh hoạt";
-        if (pkg.price >= 300000) capitalLock = "Nặng (>300K)";
-        else if (pkg.price >= 90000) capitalLock = "Vừa (90K)";
-
         results.push({
             name: pkg.name,
+            type: pkg.type,
+            multiplier: multiplier,
+            totalPurchases: totalPurchases,
             cost: totalCost,
             weeklyAvg: weeklyAvgCost,
             providedGB: totalProvidedGB,
             usedGB: totalUsedGB,
-            wastedGB: wastedGB.toFixed(1),
-            capitalLock: capitalLock
+            wastedGB: wastedGB.toFixed(1)
         });
     });
 
-    let minCost = Math.min(...results.map(r => r.cost));
+    if (results.length === 0) {
+        errorBox.innerHTML = "❌ Không có gói cước nào đáp ứng được nhu cầu!";
+        errorBox.style.display = 'block';
+        return;
+    }
+
+    results.sort((a, b) => a.cost - b.cost);
+    let minCost = results[0].cost;
+
+    // Đề xuất chiến lược theo Ngắn hạn / Dài hạn
+    let isShortTerm = timeframeDays <= 7;
+    let recommendText = `<b>Đề xuất (${isShortTerm ? 'Ngắn hạn' : 'Dài hạn'} - ${timeframeDays} ngày):</b> `;
+    if (isShortTerm) {
+        recommendText += `Với nhu cầu ngắn hạn, chọn phương án có tổng chi phí thấp nhất để tối ưu dòng tiền, tránh bị đọng vốn.`;
+    } else {
+        recommendText += `Khi đăng ký dài hạn, ưu tiên chọn gói Daily Limit đáp ứng đủ ${reqGB} GB/ngày để tránh việc phải mua nhân bản quá nhiều gói nhỏ.`;
+    }
+    recommendBox.innerHTML = recommendText;
+    recommendBox.style.display = 'block';
 
     results.forEach(r => {
         const isBest = r.cost === minCost;
+        let qtyText = r.type === 'daily_limit' 
+            ? `${r.totalPurchases} lượt (${r.multiplier} gói chạy song song)` 
+            : `${r.totalPurchases} gói`;
+
         tbody.innerHTML += `
             <tr>
                 <td style="text-align:left;">
                     <b>${r.name}</b> ${isBest ? '<br><span class="badge-best">TỐI ƯU NHẤT</span>' : ''}
                 </td>
+                <td>${qtyText}</td>
                 <td class="text-primary">${r.cost.toLocaleString()}đ</td>
                 <td>${r.weeklyAvg.toLocaleString()}đ</td>
-                <td>${r.usedGB} GB</td>
                 <td class="text-danger">${r.wastedGB} GB</td>
-                <td>${r.capitalLock}</td>
+                <td>${isBest ? 'Tiết kiệm nhất' : (r.cost > minCost * 1.5 ? 'Phí quá đắt' : 'Linh hoạt')}</td>
             </tr>
         `;
     });
-}
+};
 
-document.querySelectorAll('#days-selector input').forEach(cb => {
-    cb.addEventListener('change', runAnalysis);
-});
-
+// Khởi tạo hiển thị danh sách ban đầu (Không tự chạy tính toán)
 renderPackages();
 </script>
 
