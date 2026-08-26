@@ -75,6 +75,68 @@
         });
     }
 </script>
+
+<!-- ==== Linh hoạt menu ==== -->
+<style>
+    /* Ẩn danh sách công cụ mặc định */
+    .tool-group .link-grid-ui {
+        display: none;
+        transition: all 0.3s ease-in-out;
+    }
+
+    /* Khi nhóm có class 'active' thì hiện danh sách */
+    .tool-group.active .link-grid-ui {
+        display: grid; /* hoặc block/flex tùy CSS cũ của bạn */
+    }
+
+    /* Thêm con trỏ tay & hiệu ứng cho tiêu đề dễ bấm */
+    .tool-group h3 {
+        cursor: pointer;
+        user-select: none;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    /* Mũi tên chỉ xuống/lên cho xịn */
+    .tool-group h3::after {
+        content: "▼";
+        font-size: 0.8em;
+        transition: transform 0.3s;
+    }
+
+    .tool-group.active h3::after {
+        transform: rotate(180deg);
+    }
+</style>
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+    const toolGroups = document.querySelectorAll(".tool-group");
+
+    // Mặc định mở nhóm đầu tiên cho học sinh đỡ bỡ ngỡ
+    if (toolGroups.length > 0) {
+        toolGroups[0].classList.add("active");
+    }
+
+    toolGroups.forEach(group => {
+        const header = group.querySelector("h3");
+        
+        header.addEventListener("click", () => {
+            // Đóng tất cả các nhóm khác (nếu muốn dạng Accordion chuẩn)
+            toolGroups.forEach(g => {
+                if (g !== group) g.classList.remove("active");
+            });
+
+            // Bật / tắt nhóm hiện tại
+            group.classList.toggle("active");
+        });
+    });
+});
+</script>
+
+<!-- ==== ==End== ==== -->
+
 </head>
 <body>
     <div id="work-mode">
@@ -139,7 +201,8 @@
                         <li><a href="#birthday-section-fr"><span class="icon">🎁</span> Sinh nhật sắp tới</a></li>
                         <li><a href="#todo-list"><span class="icon">📝</span> Danh sách việc cần làm</a></li>
                         <li><a href="#class-user-section"><span class="icon">📆</span> Bạn học lớp mấy?</a></li>
-                         <li><a href="#birthday-section"><span class="icon">😎</span> Chỉnh sinh nhật</a></li>
+                        <li><a href="#birthday-section"><span class="icon">😎</span> Chỉnh sinh nhật</a></li>
+                        <li><a href="wifi.html"><span class="icon">♟</span> Tìm gói data mạng rẻ nhất</a></li>
                     </ul>
                 </div>
             </div>
@@ -160,13 +223,9 @@
                         <p>(<a href="#music-tool-section-nav">Phát âm thanh</a> để app chạy nền)</p>
                         <p id="setting-link">(Tùy chỉnh thời gian <a onclick="setting_pomodoro();" style="color: green; cursor: pointer;">tại đây</a>.)</p>
                         <p id="timer-display">25:00</p>
-                        
-                        <!-- Ẩn dòng cài đặt khi Bắt đầu -->
-                        <button id="start-btn" onclick="playsoundsth(); start_focus();">Bắt đầu học</button>
-                        
-                        <!-- Hiện lại dòng cài đặt khi Reset/Đổi chế độ -->
-                        <button id="reset-btn" onclick="stopsound(); reset_focus();">Chế độ Học</button>
-                        <button id="break-btn" onclick="reset_focus();">Chế độ Nghỉ</button>
+                        <button id="start-btn" onclick="playsoundsth();">Bắt đầu học</button>
+                        <button id="reset-btn" onclick="stopsound()">Chế độ Học</button>
+                        <button id="break-btn">Chế độ Nghỉ</button>
                     </div>
 
                     <div class="pomodoro-timer" id="countdown-thptqg">
