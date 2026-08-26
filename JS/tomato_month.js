@@ -55,7 +55,8 @@ async function fetchLatestPriceFromServer() {
 // 💰 Bán bất cứ lúc nào (Đã thắt chặt bảo mật - Kiểm tra giá tươi lần 2)
 async function sellTomatoesAnytime() {
     if (tomato_count_backend <= 0) {
-        alert("🍅 Bạn chưa có quả cà chua nào trong kho để bán hết á sốp!");
+        // alert("🍅 Bạn chưa có quả cà chua nào trong kho để bán hết á sốp!");
+        showPopup("Thông báo", "🍅 Bạn chưa có quả cà chua nào trong kho để bán hết á sốp!");
         return;
     }
 

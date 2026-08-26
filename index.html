@@ -12,6 +12,8 @@
     <link rel="stylesheet" href="css/moon.css">
     <link rel="stylesheet" href="css/pop-up-main.css">
 
+    <script src="JS/todo-list.js" defer></script>
+
     <!-- 1. Cấu hình & Dữ liệu TKB (Load trước) -->
     <script src="JS/FirstFile_schedule.js"></script>
     <script src="JS/time-table.js" defer></script>
@@ -158,7 +160,7 @@
                 <h3 id="say">Đang tải câu nói truyền cảm hứng...</h3>
                 <hr>
                 <strong class="event_news event_news_style">Lịch học hôm nay</strong>
-                <button onclick="location.reload()">Tải lại</button>
+                <button onclick="location.reload()" id="button-update">Tải lại</button>
             </header>
             
             <div class="pomodoro-timer tools-dashboard">
@@ -283,12 +285,13 @@
                             <button id="add-todo-btn">Thêm</button>
                         </div>
 
-                        <div class="todo-container">
+                        <div class="todo-container" style="margin-top: 10px;">
                             <button id="export-btn-todo">Xuất dữ liệu</button>
                             <button id="import-btn-todo">Nhập dữ liệu</button>
+                            <input type="file" id="import-file-input" accept=".json" style="display: none;">
                         </div>
 
-                        <ul id="todo-list" style="list-style-type: none; text-align: left;"></ul>
+                        <ul id="todo-list" style="list-style-type: none; text-align: left; padding: 0; margin-top: 15px;"></ul>
                     </div>
 
                 </section>
@@ -483,7 +486,7 @@
                 sessionStorage.clear();
                 alert('✨ Đã xóa toàn bộ dữ liệu và khôi phục cài đặt gốc!');
             } else {
-                alert('❌ Mã xác nhận không đúng. Hành động đã bị hủy.');
+                showPopup("Từ chối", "Không thể khôi phục cài đặt gốc.");
             }
         });
     </script>

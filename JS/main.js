@@ -1,3 +1,5 @@
+window.addEventListener('DOMContentLoaded', () => {
+
 const updateBtn = document.querySelector('button-update');
 
 let newWorker;
@@ -49,4 +51,6 @@ updateBtn.addEventListener('click', () => {
       });
     }
   }
+});
+
 });
