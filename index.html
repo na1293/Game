@@ -17,7 +17,8 @@
     <script src="JS/todo-list.js" defer></script>
 
     <!-- 1. Cấu hình & Dữ liệu TKB (Load trước) -->
-    <script src="JS/FirstFile_schedule.js"></script>
+    <script src="JS/API_call/api_call.js" defer></script>
+    <script type="module" src="JS/FirstFile_schedule.js"></script>
     <script src="JS/time-table.js" defer></script>
     <script src="JS/u-read-json-time-table.js" defer></script>
 
@@ -59,29 +60,28 @@
     <link rel="manifest" href="./manifest.json">
     <meta name="mobile-web-app-capable" content="yes">
 
+    <!-- Chỉ giữ lại 1 đoạn script đăng ký Service Worker chuẩn -->
     <script>
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                const swPath = './sw.js?v=3'; 
-                navigator.serviceWorker.register(swPath) 
-                .then(reg => console.log('Đăng ký SW thành công rùi nè! 🎉', reg))
-                .catch(err => console.error('Đăng ký SW thất bại rồi cứu với: 💥', err));
-            });
-        }
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js')
+            .then(reg => console.log('SW registered! 🎉', reg))
+            .catch(err => console.error('SW register error: 💥', err));
+        });
+    }
     </script>
 </head>
 
+<!-- Dùng 1 đoạn đăng ký SW duy nhất này -->
 <script>
-    if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-            // Tự động lấy đường dẫn tương đối chính xác dựa trên thư mục hiện tại
-            const swPath = './sw.js?v=3'; 
-            
-            navigator.serviceWorker.register(swPath) 
-            .then(reg => console.log('Đăng ký SW thành công rùi nè! 🎉', reg))
-            .catch(err => console.error('Đăng ký SW thất bại rồi cứu với: 💥', err));
-        });
-    }
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      // Bỏ luôn phần query ?v=3 nếu không cần thiết, hoặc giữ nguyên nhưng KHÔNG lặp lại
+      navigator.serviceWorker.register('./sw.js')
+        .then(reg => console.log('SW registered thành công! 🎉', reg))
+        .catch(err => console.error('SW register error: 💥', err));
+    });
+  }
 </script>
 
 <!-- ==== Linh hoạt menu ==== -->
@@ -145,6 +145,44 @@
 
 <!-- ==== ==End== ==== -->
 
+<script>
+async function reloadAndClearCache() {
+    // Hiển thị hộp thoại xác nhận (Yes/No - OK/Cancel)
+    const result = confirm("Bạn có chắc chắn muốn thực hiện hành động này không? (Có thể không dùng offline được)");
+
+    if (result) {
+
+    } else {
+        return;
+    }
+
+    // Nếu Offline -> Cảnh báo ngay, giữ nguyên Cache
+    if (!navigator.onLine) {
+        alert('⚠️ Bạn đang Offline! Hãy bật mạng để tải bản cập nhật mới nhé.');
+        return;
+    }
+
+    try {
+        // Thử ping nhẹ để kiểm tra mạng thực tế
+        await fetch(window.location.pathname, { cache: 'no-store' });
+
+        // Xóa SW cũ & Cache API
+        if ('serviceWorker' in navigator) {
+            const registrations = await navigator.serviceWorker.getRegistrations();
+            for (let reg of registrations) await reg.unregister();
+        }
+        if ('caches' in window) {
+            const cacheNames = await caches.keys();
+            await Promise.all(cacheNames.map(name => caches.delete(name)));
+        }
+
+        window.location.reload();
+    } catch (e) {
+        alert('🌐 Mạng không ổn định, chưa thể cập nhật!');
+    }
+}
+</script>
+
 </head>
 <body>
 
@@ -197,7 +235,10 @@
                 <h3 id="say">Đang tải câu nói truyền cảm hứng...</h3>
                 <hr>
                 <strong class="event_news event_news_style">Lịch học hôm nay</strong>
-                <button onclick="location.reload()" id="button-update">Tải lại</button>
+                <button onclick="window.location.reload()">Tải lại</button>
+                <button onclick="reloadAndClearCache()" style="padding: 10px 15px; cursor: pointer;">
+                    Cập nhật (Cần mạng)
+                </button>
             </header>
             
             <div class="pomodoro-timer tools-dashboard">

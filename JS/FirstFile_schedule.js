@@ -28,35 +28,49 @@
 //   "6": "Sáng: Thể chất; Chiều: Chuyên đề Văn, GDDP"
 // }
 
-window.scheduleData = window.scheduleData || {
-  "0": "Lỗi, hãy thử tải lại hoặc đổi mạng",
-  "1": "Lỗi, hãy thử tải lại hoặc đổi mạng",
-  "2": "Lỗi, hãy thử tải lại hoặc đổi mạng",
-  "3": "Lỗi, hãy thử tải lại hoặc đổi mạng",
-  "4": "Lỗi, hãy thử tải lại hoặc đổi mạng",
-  "5": "Lỗi, hãy thử tải lại hoặc đổi mạng",
-  "6": "Lỗi, hãy thử tải lại hoặc đổi mạng"
+import { GIST_API_URL } from './API_call/api_call.js'; // Khai báo file
+
+// 1. KHỞI TẠO TỪ LOCALSTORAGE TRƯỚC (Tránh chớp giao diện lỗi)
+const savedSchedule = localStorage.getItem("user_schedule");
+
+window.scheduleData = savedSchedule ? JSON.parse(savedSchedule) : {
+  "0": "Lỗi, hãy kết nối mạng để tải thời khóa biểu lần đầu",
+  "1": "Lỗi, hãy kết nối mạng để tải thời khóa biểu lần đầu",
+  "2": "Lỗi, hãy kết nối mạng để tải thời khóa biểu lần đầu",
+  "3": "Lỗi, hãy kết nối mạng để tải thời khóa biểu lần đầu",
+  "4": "Lỗi, hãy kết nối mạng để tải thời khóa biểu lần đầu",
+  "5": "Lỗi, hãy kết nối mạng để tải thời khóa biểu lần đầu",
+  "6": "Lỗi, hãy kết nối mạng để tải thời khóa biểu lần đầu"
+};
+
+// Bắn event ngay nếu đã có sẵn dữ liệu cũ trong LocalStorage để UI dựng liền không phải chờ Fetch
+if (savedSchedule) {
+  window.dispatchEvent(new Event('scheduleDataReady'));
 }
 
+// 2. GỌI API ĐỂ CẬP NHẬT DỮ LIỆU MỚI NHẤT
 async function fetchScheduleFromOnline() {
-    const API_URL = "https://gist.githubusercontent.com/na1293/672cb87bee7c50dd3c0c00a94a7de134/raw/scheduleAPI.json";
+    const API_URL = `${GIST_API_URL}?t=${Date.now()}`; // URL API lấy dữ liệu JSON
 
     try {
+        // cache: 'no-cache' ép trình duyệt phải hỏi Server xem có file mới không
         const response = await fetch(API_URL, { cache: 'no-cache' });
         if (!response.ok) throw new Error("Lỗi Server");
 
         const data = await response.json();
+        
+        // Cập nhật bộ nhớ tạm & LocalStorage
         window.scheduleData = data;
         localStorage.setItem("user_schedule", JSON.stringify(data));
-    } catch (error) {
-        console.warn("Lỗi fetch API, dùng cache/offline:", error);
-        const cached = localStorage.getItem("user_schedule");
-        if (cached) window.scheduleData = JSON.parse(cached);
-    } finally {
-        // Bắt buộc bắn event này khi tải xong
+
+        // Bắn event báo UI cập nhật bản mới nhất
         window.dispatchEvent(new Event('scheduleDataReady'));
+        
+    } catch (error) {
+        console.warn("Không thể lấy dữ liệu mới từ Server, dùng bản cache LocalStorage hiện tại:", error);
+        // Nếu lỗi thì giữ nguyên window.scheduleData đã load từ LocalStorage ở trên
     }
 }
 
-// Gọi fetch
+// Chạy fetch ngầm
 fetchScheduleFromOnline();
