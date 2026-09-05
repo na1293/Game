@@ -1,0 +1,138 @@
+/* Layout Overlay Apple */
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(12px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  box-sizing: border-box;
+}
+
+/* Card 90% siêu sạch */
+.popup-card {
+  position: relative;
+  width: 90vw;
+  height: 90vh;
+  background: #ffffff;
+  border-radius: 40px;
+  padding: 32px 20px;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.3);
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  animation: slideUpApple 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.glance-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* 1. Bộ chọn ngày tối giản sát mép trên */
+.day-switcher {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 10px;
+}
+
+.select_ui {
+  font-size: 1.4rem;
+  font-weight: 700;
+  padding: 8px 18px;
+  border-radius: 16px;
+  border: none;
+  background-color: #f2f2f7;
+  color: #007aff;
+  outline: none;
+  cursor: pointer;
+  text-align: center;
+}
+
+.nav-btn {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: none;
+  background: #f2f2f7;
+  color: #1c1c1e;
+  font-size: 1.4rem;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.nav-btn:active {
+  background: #007aff;
+  color: #fff;
+  transform: scale(0.92);
+}
+
+/* 2. Hero Section: Nơi chứa danh sách môn học - Siêu bự */
+.schedule-hero {
+  flex: 1;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px 10px;
+}
+
+.schedule-text {
+  font-size: clamp(2rem, 5vw + 1rem, 3.5rem); /* Tự co giãn cực to theo độ phân giải */
+  font-weight: 800;
+  color: #1c1c1e;
+  text-align: center;
+  line-height: 1.4;
+  letter-spacing: -0.5px;
+  word-break: break-word;
+}
+
+/* Phân tách các môn bằng màu nhấn nếu chuỗi có dấu phẩy/gạch đứng */
+.schedule-text span {
+  color: #007aff;
+}
+
+/* Nút Đóng */
+.close-btn {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #f2f2f7;
+  border: none;
+  font-size: 24px;
+  color: #8e8e93;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+
+@keyframes slideUpApple {
+  0% { transform: translateY(100%); opacity: 0; }
+  100% { transform: translateY(0); opacity: 1; }
+}
+
+/* Mặc định ẩn Pop-up */
+#pop-up-animation-full-screen {
+    display: none; /* Khi mở sẽ dùng JS đổi thành flex */
+}

@@ -18,15 +18,25 @@
 // FirstFile_schedule.js
 
 // Luôn khởi tạo biến global trước
+// window.scheduleData = window.scheduleData || {
+//   "0": "Nghỉ ngơi, thư giãn hoặc làm bài tập.",
+//   "1": "Toán, Toán, Anh, KTPL, Chào cờ",
+//   "2": "Quốc Phòng, Địa, Địa, Sử, HĐTN",
+//   "3": "Tin, Sử, Sử, Toán, KTPL",
+//   "4": "Toán, Lý, Tin, Văn, Văn",
+//   "5": "Lý, Văn, Anh, Anh, Sinh Hoạt",
+//   "6": "Sáng: Thể chất; Chiều: Chuyên đề Văn, GDDP"
+// }
+
 window.scheduleData = window.scheduleData || {
-    0: "Chủ Nhật: Nghỉ ngơi",
-    1: "Thứ Hai: Chưa có lịch",
-    2: "Thứ Ba: Chưa có lịch",
-    3: "Thứ Tư: Chưa có lịch",
-    4: "Thứ Năm: Chưa có lịch",
-    5: "Thứ Sáu: Chưa có lịch",
-    6: "Thứ Bảy: Chưa có lịch"
-};
+  "0": "Lỗi, hãy thử tải lại hoặc đổi mạng",
+  "1": "Lỗi, hãy thử tải lại hoặc đổi mạng",
+  "2": "Lỗi, hãy thử tải lại hoặc đổi mạng",
+  "3": "Lỗi, hãy thử tải lại hoặc đổi mạng",
+  "4": "Lỗi, hãy thử tải lại hoặc đổi mạng",
+  "5": "Lỗi, hãy thử tải lại hoặc đổi mạng",
+  "6": "Lỗi, hãy thử tải lại hoặc đổi mạng"
+}
 
 async function fetchScheduleFromOnline() {
     const API_URL = "https://gist.githubusercontent.com/na1293/672cb87bee7c50dd3c0c00a94a7de134/raw/scheduleAPI.json";
