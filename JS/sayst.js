@@ -8,7 +8,6 @@ let cau_noi_hay = [
     "Học không phải là việc lấp đầy một cái xô, mà là thắp sáng một ngọn lửa. - Plutarch",
     "Nhà trường cho chúng ta bài học trước rồi mới kiểm tra. Cuộc đời bắt chúng ta kiểm tra trước rồi mới rút ra bài học. - Tom Bodett",
     "Ta chưa từng thấy ai không giữ được lòng liêm khiết mà có thể dạy người khác thành bậc chính nhân quân tử - Chu Văn An",
-    "Tôi không thất bại, tôi chỉ tìm ra 10.000 cách không hoạt động. - Thomas Edison",
     
     // === Yêu Bản Thân & Định Hình Phong Cách === //
     "Hãy là chính mình, những người khác đã là người khác rồi. - Oscar Wilde",
@@ -27,12 +26,11 @@ let cau_noi_hay = [
 
     // === Nỗ Lực & Vượt Qua Thử Thách === //
     "Không sợ bạn đi chậm, chỉ sợ bạn đứng yên. - Khuyết danh",
-    "Nỗ lực tạo nên con người bạn. Nếu bạn không cố gắng hết sức ngay bây giờ, bạn sẽ hối hận vào một ngày nào đó. Đừng nghĩ rằng đã quá muộn; hãy tiếp tục cố gắng. Cho dù mất thời gian, việc luyện tập sẽ giúp mọi thứ tốt hơn. - Jungkook (Em út vàng)",
+    "Nỗ lực tạo nên con người bạn. Nếu bạn không cố gắng hết sức ngay bây giờ, bạn sẽ hối hận vào một ngày nào đó. Đừng nghĩ rằng đã quá muộn; hãy tiếp tục cố gắng. Cho dù mất thời gian, việc luyện tập sẽ giúp mọi thứ tốt hơn. - Jungkook",
     "Đừng bao giờ từ bỏ ước mơ của bạn. Hãy tiếp tục cố gắng, và một ngày nào đó, bạn sẽ đạt được những điều tuyệt vời. - V (BTS)",
     "Nếu bạn không thể bay, hãy chạy. Nếu không thể chạy, hãy đi bộ. Hôm nay chúng ta bước đi, ngày mai chúng ta sẽ chạy. - Martin Luther King Jr.",
     "Thất bại là mẹ của thành công - Thành ngữ Việt Nam",
     "Bất luận ngày mai có ra sao, việc của bạn hôm nay chính là nỗ lực tích lũy năng lượng, để bản thân có đủ tư cách lựa chọn cuộc sống mình mong muốn. - Khuyết danh",
-    "Giá trị của bạn không nằm ở việc bạn đứng thứ mấy trong lớp, mà nằm ở việc bạn có dám đứng lên sau mỗi lần vấp ngã hay không. - Khuyết danh",
     "Tôi chưa từng thất bại. Tôi chỉ là đã tìm ra 10.000 cách không hoạt động. - Thomas Edison",
     "Đừng bao giờ cúi đầu. Hãy luôn ngẩng cao. Nhìn thẳng vào mắt thế giới. - Helen Keller",
     "Đời người phải trải qua giông tố nhưng không được cúi đầu trước giông tố. - BS.Đặng Thùy Trâm",
@@ -46,15 +44,10 @@ let cau_noi_hay = [
     "Khi bạn gặp phải khó khăn, hãy biến nó thành động lực. Đừng bao giờ chọn con đường dễ dàng nhất, hãy chọn con đường giúp bạn học hỏi được nhiều nhất. - Elon Musk",
 
     // === Cuộc Sống & Hạnh Phúc === //
-    "Bạn biết tính năng đổi cà chua lấy xu chứ? Đó không phải là để xếp hạng năng lực của bạn, mà là để bạn thấy cả hành trình mình đã đi bao xa. - App học tập",
-    "Khi bạn còn nhỏ, sự yêu thương của bố mẹ là lá chắn bảo vệ bạn. Khi bạn lớn lên, sự vững vàng của bạn là chỗ dựa bình yên cho bố mẹ",
-    "Bạn có thấy kỳ diệu không? Bạn có thể gặp một người bạn tốt, thời cơ tốt, đó là điều may mắn. Để giữ được, tất cả là ở bạn.",
     "Đôi khi, nhìn bạn bè tiến lên phía trước khiến tôi cảm thấy lo lắng... nhưng tôi nhanh chóng nhận ra rằng tốc độ của họ không phải là tốc độ của tôi. Mỗi khi điều đó xảy ra, điều giúp tôi tiếp tục tiến lên chính là lời hứa với bản thân rằng 'cứ từ từ thôi'. - Jin (BTS)",
     "Nhưng tôi tin rằng ngay cả những thứ vô dụng cũng có mục đích! Tôi nghĩ chúng ta cần những ngày mà người khác cho là lãng phí để sau này có thể tập trung vào những việc hữu ích hơn. - Jin (BTS)",
     "Những ai không có ước mơ thì cũng không sao. Không sao cả nếu bạn không có ước mơ. Điều quan trọng là bạn phải hạnh phúc. - Suga (BTS)",
     "No matter how hard it is right now, think of how the result will make you feel. - Jimin (BTS)",
-    "Truyền thông có thể đưa tin về ai đó rất giỏi. Nhưng đó là điều họ muốn bạn thấy, phía sau họ, trên con đường họ đi có thể không hề có thảm đỏ.",
-    "Điểm số chỉ phản ánh năng lực tại một thời điểm cố định. Nhưng không có nghĩa là bạn không thể thay đổi. Bạn tiếp xúc, làm việc với môn học nào đó càng lâu, điểm số của bạn chắc chắn tăng. Quan trọng là ở bạn",
     "Hãy sống như hoa dại, dù khắc nhiệt nhưng kiên cường - Khuyết danh",
     "Chỉ cần thay đổi góc nhìn, bạn sẽ thấy cả thế giới khác đi. - Khuyết danh",
     "Đừng bao giờ đánh giá thấp sức mạnh của một nụ cười. - Khuyết danh",
@@ -74,4 +67,9 @@ let cau_noi_hay = [
     "Hạnh phúc không phải là thứ bạn phải đạt được. Bạn có thể cảm thấy hạnh phúc ngay trong quá trình tiến đến mục tiêu của mình - Kim Nam Joon (RM của BTS)",
     "Không có định nghĩa nào cho sự hoàn hảo, vậy hãy cứ là chính mình thôi - RM (Kim Namjoon - BTS)",
     "Đừng bao giờ so sánh mình với bất kỳ ai trên đời, nếu làm vậy, bạn đang tự hạ thấp mình đấy - Bill Gates",
+
+    // === Hoạt hình và chữa lành === //
+    "Cậu là một trải nghiệm. Hãy chắc chắn rằng cậu là một trải nghiệm tốt. - Garnet (Bộ phim Steven Universe)",
+    "Nếu cậu luôn thay đổi để người khác thích mình, cậu sẽ không bao giờ biết được mình thực sự là ai - Steven Universe",
+    "Cậu không thể quay lại quá khứ và thay đổi cách nó bắt đầu, nhưng cậu có thể thay đổi cách nó kết thúc - Steven Universe",
 ];
