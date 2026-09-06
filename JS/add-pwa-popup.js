@@ -12,8 +12,9 @@ const pwaDetailsHTML = `
     
     <div style="background: #f7fafc; padding: 10px 12px; border-radius: 8px; border-left: 4px solid #10b981;">
       <strong style="color: #10b981; display: block; margin-bottom: 4px;">⚡ App này nhẹ như nào?</strong>
-      • Dung lượng <b>chưa tới 1MB</b> (nhẹ hơn 1 bức ảnh).<br>
-      • Không tốn dung lượng máy, không chạy ngầm hao pin.
+      • Vì là web app (PWA), dung lượng <b>chưa tới 1MB</b> (nhẹ hơn 1 cả một bức ảnh).<br>
+      • Không tốn thêm dung lượng máy đáng kể. <br>
+      • Được cô lập bởi trình duyệt nên nhẹ và an toàn.
     </div>
   </div>
 `;
