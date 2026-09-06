@@ -240,8 +240,12 @@ async function reloadAndClearCache() {
                 <button onclick="reloadAndClearCache()" style="padding: 10px 15px; cursor: pointer;">
                     Cập nhật (Cần mạng)
                 </button>
+                <!-- Nút Tải xuống sẽ kích hoạt lại Pop-up khi click -->
+                <button id="btn-download-pwa" style="display: none;" onclick="openPwaPrompt(true)">
+                    Tải xuống
+                </button>
             </header>
-            
+
             <div class="pomodoro-timer tools-dashboard">
                 <h2>Công cụ thông minh</h2>
                 <div style="text-align: center;">
