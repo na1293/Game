@@ -31,21 +31,23 @@
 
     <!-- 2. UI TKB & Các tiện ích khác -->
     <script src="JS/learn_app.js" defer></script>
-    <!-- <script src="JS/notification.js" defer></script>
-    <script src="JS/search.js" defer></script> -->
+    <script src="JS/notification.js" defer></script>
+    <script src="JS/search.js" defer></script>
     <script src="JS/sayst.js"></script>
-    <!-- <script src="JS/birthday.js"></script> -->
+    <script src="JS/birthday.js"></script>
     <script src="JS/btday-fr.js" defer></script>
     <script src="JS/getData.js"></script>
     <script src="JS/storage.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/lunar-javascript/lunar.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.2/Sortable.min.js"></script>
     <!-- <script src="JS/moon.js" defer></script> -->
-    <!-- <script src="JS/data_read_brth.js" defer></script> -->
-    <!-- <script src="JS/tomato_month.js"></script> -->
+    <script src="JS/data_read_brth.js" defer></script>
+    <script src="JS/tomato_month.js"></script>
     <script src="JS/music.js" defer></script>
     <!-- <script src="JS/dashboard_sort.js" defer></script> -->
     <!-- <script src="JS/class-user-and-lock.js" defer></script> -->
+
+    <script src="JS/UI_hide_wifi-check.js" defer></script>
 
     <script src="JS/time-table-pop-up-good-ui.js"></script>
     <script src="JS/add-pwa-popup.js"></script>
@@ -351,7 +353,7 @@ async function reloadAndClearCache() {
                         </div>
 
                         <button id="sell-anytime-btn" onclick="sellTomatoesAnytime()" style="background: var(--success-gradient); margin-top: 10px;">Bán cà chua lấy xu 💰</button>
-                        <button onclick="alert('Chứ mỗi 25p học liên tục (Mà không thoát app) thì bạn sẽ nhận 1 cà chua.')">Cách lấy cà chua</button>
+                        <button onclick="showPopup('Hướng dẫn', 'Chứ mỗi 25p học liên tục (Mà không thoát app) thì bạn sẽ nhận 1 cà chua.')">Cách lấy cà chua</button>
                     </div>
 
                     <div class="pomodoro-timer" id="cute-mess">
@@ -482,20 +484,6 @@ async function reloadAndClearCache() {
                     </div>
 
                 </section>
-
-                <div class="pomodoro-timer" style="text-align: left;" id="new-feed">
-                    <h2>📢 Bản Tin Lớp Học</h2>
-                    <hr>
-                    <div class="news-container">
-                        <h3 id="news-title" style="color: #4c51bf; margin-top: 5px;">Đang tải tiêu đề...</h3>
-                        <p id="news-content" style="font-size: 0.95rem; line-height: 1.5; color: #2d3748; background: #f7fafc; padding: 10px; border-radius: 8px;">Đang tải nội dung bản tin...</p>
-                        <hr>
-                        <p id="news-author">Tác giả: --</p>
-                        <p id="news-date">Ngày đăng: --</p>
-                    </div>
-                    <button onclick="getNewsData()" style="margin-top: 15px; width: 100%;">Cập nhật bản tin</button>
-                    <button onclick="window.open('https://khaosat.me/survey/6a302090a838d1cf4ff591e1')" style="margin-top: 15px; width: 100%;">Đăng bài</button>
-                </div>
                 
                 <!-- <div class="pomodoro-timer" id="time-table">
                     <h2>Thời khóa biểu chi tiết</h2>
