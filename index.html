@@ -14,6 +14,8 @@
 
     <link rel="stylesheet" href="css/time-table-pop-up-good-ui.css">
 
+    <script src="JS/break_time_when.js" defer></script>
+
     <script src="JS/todo-list.js" defer></script>
 
     <!-- 1. Cấu hình & Dữ liệu TKB (Load trước) -->
@@ -221,7 +223,7 @@ async function reloadAndClearCache() {
 
     <div id="work-mode">
     
-        <!-- <button onclick="nghi_ngoi()" id="btn-sleep">⏱️ Chế độ tối giản</button> -->
+        <button onclick="nghi_ngoi()" id="btn-sleep">Chế độ tối giản</button>
         <button id="move-home">Lên trên</button>
 
         <div id="AOD">
@@ -229,7 +231,6 @@ async function reloadAndClearCache() {
                 <h1 id="time-count-set">00:00:00</h1>
                 <h1 id="now-set">00:00</h1>
             </div>
-            <button id="btn-toggle-aod-view" onclick="toggleAodVisibility()">🔒 Tạm ẩn đồng hồ</button>
         </div>
 
         <div class="container" id="container">
@@ -262,7 +263,7 @@ async function reloadAndClearCache() {
                             <li><a href="#pomodoro-timer-tool"><span class="icon">⏱️</span> Đồng hồ Pomodoro</a></li>    
                             <li><a href="#time-table">📆 Thời khóa biểu</a></li>
                             <li><a href="#music-play">🎶 Âm nhạc</a></li>
-                            <li><a href="#pomodoro-happy"><span class="icon">🍅</span>Trồng cà chua</a></li>
+                            <!-- <li><a href="#pomodoro-happy"><span class="icon">🍅</span>Trồng cà chua</a></li> -->
                             <!-- <li><a href="#countdown-thptqg"><span class="icon">🎯</span> Đếm ngược THPTQG</a></li> -->
                             <!-- <li><a href="#search-engine-tool"><span class="icon">🔍</span> Công cụ tìm kiếm</a></li> -->
                             <!-- <li><a href="#learing-tool"><span class="icon">📖</span> Công cụ học tập</a></li> -->
@@ -273,7 +274,7 @@ async function reloadAndClearCache() {
                 <div class="tool-group">
                     <h3><span class="group-icon">💪</span> Kỷ luật</h3>
                     <ul class="link-grid-ui">
-                        <!-- <li><a href="#cute-mess"><span class="icon">💬</span> Lời nhắc từ hệ thống</a></li> -->
+                        <li><a href="#cute-mess"><span class="icon">💬</span> Lời nhắc từ hệ thống</a></li>
                         <!-- <li><a href="#new-feed"><span class="icon">📰</span> Tin tức mới nhất</a></li> -->
                         <li><a href="#learing-tool"><span class="icon">☀ </span> Thời tiết</a></li>
                         <!-- <li><a href="#section-limit-tiktok"><span class="icon">🎵</span> Giới hạn TikTok</a></li> -->
@@ -290,6 +291,7 @@ async function reloadAndClearCache() {
                         <!-- <li><a href="#class-user-section"><span class="icon">📆</span> Bạn học lớp mấy?</a></li> -->
                         <!-- <li><a href="#birthday-section"><span class="icon">😎</span> Chỉnh sinh nhật</a></li> -->
                         <!-- <li><a href="wifi.html"><span class="icon">♟</span> Tìm gói data mạng rẻ nhất</a></li> -->
+                        <li><a href="#break-time-when"><span class="icon">⏰</span> Thời gian nghỉ</a></li>
                     </ul>
                 </div>
             </div>
@@ -377,6 +379,13 @@ async function reloadAndClearCache() {
                         </div>
 
                         <ul id="todo-list" style="list-style-type: none; text-align: left; padding: 0; margin-top: 15px;"></ul>
+                    </div>
+
+                    <div class="pomodoro-timer" id="break-time-when">
+                        <h2>Thời gian nghỉ</h2>
+                        <label for="time">Mấy giờ vào tiết? (Tiết 1)</label>
+                        <input type="time" id="element-time-id-break-time" value="13:10">
+                        <button onclick="send_time_id_break_time_when()">Gửi</button>
                     </div>
 
                 </section>
@@ -532,11 +541,10 @@ async function reloadAndClearCache() {
         <!-- Comming soon -->
     </div>
 
-    <!-- <footer>
+    <footer>
         <p>© 2026 Không gian làm việc tối giản & tập trung cao độ</p>
         <a href="" id="reset-settings">Khôi phục cài đặt gốc</a>
-        <p style="color: gray;">(Xu không có giá trị trao đổi)</p>
-    </footer> -->
+    </footer>
 
     <script>
         let reset_settings = document.getElementById('reset-settings');

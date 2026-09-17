@@ -192,27 +192,97 @@ button:active {
     transform: scale(0.98);
 }
 
-/* Nút chế độ tối giản nổi ở góc */
+/* Gộp thuộc tính chung - Phong cách Liquid Glass (Chữ Đen) */
 #btn-sleep, #move-home {
     position: fixed;
+    bottom: 25px;
     z-index: 99;
-    background: #1a202c;
-    color: white;
-    border-radius: 30px;
-    padding: 12px 20px;
-    font-size: 0.9rem;
-    box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+    
+    /* 1. Nền kính sáng để nổi chữ đen */
+    background: rgba(255, 255, 255, 0.45); 
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    
+    /* 2. Màu chữ ĐEN chuẩn & Viền kính tối nhẹ */
+    color: #000000;
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    
+    /* 3. Bo góc mềm như giọt nước */
+    border-radius: 50px;
+    
+    /* 4. Đổ bóng tạo khối Liquid 3D cho nền sáng */
+    box-shadow: 
+        0 8px 32px rgba(0, 0, 0, 0.12),            /* Bóng đổ nền */
+        inset 0 2px 4px rgba(255, 255, 255, 0.8),  /* Vệt sáng mép trên */
+        inset 0 -2px 4px rgba(0, 0, 0, 0.15);      /* Bóng chìm mép dưới */
+
+    /* Định dạng nút */
+    padding: 12px 24px;
+    font-size: 0.95rem;
+    font-weight: 600; /* Tăng độ dày chữ một chút cho nét */
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    
+    /* Transition hiệu ứng lỏng */
+    transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+    overflow: hidden;
 }
 
-/* Vẫn giữ nguyên độ cao để 2 nút thẳng hàng ngang */
-#btn-sleep, #move-home {
-    position: fixed; 
-    bottom: 25px;    
-}
-
-/* Nút Sleep chuyển sang bên TRÁI */
+/* Vị trí riêng từng nút */
 #btn-sleep {
     left: 25px;
+}
+
+#move-home {
+    right: 25px; /* Thêm vị trí bên phải cho nút home luôn cho chuẩn */
+}
+
+/* Hiệu ứng Hover - Nút sáng bừng và phồng nhẹ */
+#btn-sleep:hover, #move-home:hover {
+    background: rgba(255, 255, 255, 0.7);
+    color: #000000;
+    box-shadow: 
+        0 12px 35px rgba(0, 0, 0, 0.18),
+        inset 0 3px 6px rgba(255, 255, 255, 0.9),
+        inset 0 -3px 6px rgba(0, 0, 0, 0.2);
+    transform: translateY(-3px) scale(1.02);
+}
+
+/* Hiệu ứng Active - Nhấn chìm */
+#btn-sleep:active, #move-home:active {
+    transform: translateY(1px) scale(0.98);
+    background: rgba(255, 255, 255, 0.55);
+    box-shadow: 
+        0 4px 15px rgba(0, 0, 0, 0.1),
+        inset 0 1px 3px rgba(255, 255, 255, 0.5),
+        inset 0 -1px 3px rgba(0, 0, 0, 0.15);
+}
+
+/* Hiệu ứng ánh sáng lỏng chảy qua khi hover */
+#btn-sleep::after, #move-home::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -150%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(
+        135deg, 
+        rgba(255, 255, 255, 0) 0%, 
+        rgba(255, 255, 255, 0.2) 40%, 
+        rgba(255, 255, 255, 0.6) 50%, 
+        rgba(255, 255, 255, 0.2) 60%, 
+        rgba(255, 255, 255, 0) 100%
+    );
+    transform: rotate(45deg);
+    transition: all 0.6s ease;
+    opacity: 0;
+}
+
+#btn-sleep:hover::after, #move-home:hover::after {
+    left: 100%;
+    opacity: 1;
 }
 
 /* Nút Home chuyển sang bên PHẢI */
