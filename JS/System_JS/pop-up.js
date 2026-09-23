@@ -1,4 +1,4 @@
-// pop-up.js - Phiên bản sửa triệt để lỗi liệt nút & lỗi không nhập/chọn được
+// pop-up.js - Phiên bản Liquid Glassmorphism Siêu Thực & Tối Ưu Tương Tác
 
 const popupHTML = `
   <div id="global-popup" class="popup-overlay">
@@ -6,9 +6,9 @@ const popupHTML = `
       <h1 id="popup-title">Tiêu đề</h1>
       <p id="popup-text">Nội dung</p>
 
-      <div id="popup-input-container" style="margin: 1rem 0;"></div>
+      <div id="popup-input-container" style="margin: 1.2rem 0 0 0;"></div>
 
-      <div class="popup-actions" style="display: flex; gap: 10px; justify-content: center; margin-top: 1.5rem;">
+      <div class="popup-actions">
         <button id="popup-btn-cancel" class="popup-btn secondary" style="display: none;">Hủy</button>
         <button id="popup-btn-confirm" class="popup-btn primary">Đóng</button>
       </div>
@@ -17,38 +17,133 @@ const popupHTML = `
 `;
 
 const popupCSS = `
+  /* 1. Overlay: Trong suốt hoàn toàn, xóa bỏ hiệu ứng mờ ảo phía sau */
   .popup-overlay {
     position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0,0,0,0.5); backdrop-filter: blur(4px);
+    background: transparent; /* Xóa màu nền tối */
+    backdrop-filter: none; /* Xóa mờ nền phía sau */
+    -webkit-backdrop-filter: none;
     display: flex; justify-content: center; align-items: center;
-    opacity: 0; visibility: hidden; transition: opacity 0.25s, visibility 0.25s; z-index: 99999;
+    opacity: 0; visibility: hidden; 
+    transition: opacity 0.3s cubic-bezier(0.25, 1, 0.5, 1), visibility 0.3s; 
+    z-index: 99999;
+    pointer-events: none; /* Tránh cản trở click khi ẩn */
   }
-  .popup-overlay.active { opacity: 1; visibility: visible; }
+  
+  .popup-overlay.active { 
+    opacity: 1; 
+    visibility: visible; 
+    pointer-events: auto; 
+  }
+
+  /* 2. Main Popup Content: Liquid Glass 3D Siêu Thực */
   .popup-content {
-    background: white; padding: 2rem; border-radius: 12px;
-    max-width: 500px; width: 90%; text-align: center;
-    transform: scale(0.9); transition: transform 0.25s;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-    pointer-events: auto; /* Đảm bảo nhận tương tác */
+    /* Nền kính lỏng sáng & Đọc chữ đen chuẩn */
+    background: rgba(255, 255, 255, 0.55); 
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    
+    color: #000000;
+    border: 1px solid rgba(255, 255, 255, 0.7);
+    border-radius: 28px; /* Bo góc giọt nước */
+    padding: 2rem;
+    max-width: 460px; width: 88%;
+    text-align: center;
+    
+    /* Hiệu ứng bóng nổi 3D & khúc xạ ánh sáng lỏng */
+    box-shadow: 
+      0 20px 50px rgba(0, 0, 0, 0.15),
+      inset 0 2px 3px rgba(255, 255, 255, 0.9),
+      inset 0 -2px 5px rgba(0, 0, 0, 0.08);
+
+    /* Animation biến dạng giọt nước khi xuất hiện */
+    transform: scale(0.85) translateY(20px);
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    pointer-events: auto;
   }
-  .popup-overlay.active .popup-content { transform: scale(1); }
-  
+
+  .popup-overlay.active .popup-content { 
+    transform: scale(1) translateY(0); 
+  }
+
+  /* Định dạng Tiêu đề & Nội dung */
+  #popup-title {
+    margin: 0 0 0.5rem 0;
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: #000000;
+    letter-spacing: -0.3px;
+  }
+
+  #popup-text {
+    margin: 0;
+    font-size: 0.98rem;
+    color: #222222;
+    line-height: 1.5;
+  }
+
+  /* 3. Input & Select: Đồng bộ phong cách Kính lỏng chìm */
   .popup-control {
-    width: 100%; padding: 0.75rem; border: 1px solid #ccc;
-    border-radius: 8px; font-size: 1rem; outline: none; box-sizing: border-box;
-    background: #fff; color: #333; display: block;
+    width: 100%; padding: 0.8rem 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    border-radius: 16px;
+    font-size: 0.95rem; outline: none; box-sizing: border-box;
+    background: rgba(255, 255, 255, 0.5);
+    color: #000000; display: block;
+    backdrop-filter: blur(8px);
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.06);
+    transition: all 0.25s ease;
   }
-  .popup-control:focus { border-color: #007bff; box-shadow: 0 0 5px rgba(0,123,255,0.3); }
-  
+
+  .popup-control:focus { 
+    background: rgba(255, 255, 255, 0.85);
+    border-color: rgba(0, 122, 255, 0.6); 
+    box-shadow: 0 0 12px rgba(0, 122, 255, 0.25), inset 0 1px 2px rgba(0,0,0,0.05); 
+  }
+
+  /* 4. Action Buttons Container */
+  .popup-actions {
+    display: flex; gap: 12px; justify-content: center; margin-top: 1.8rem;
+  }
+
+  /* 5. Liquid Buttons */
   .popup-btn {
-    padding: 0.6rem 1.2rem; border: none; border-radius: 6px;
-    font-size: 1rem; cursor: pointer; transition: background 0.2s;
+    padding: 10px 22px; 
+    border-radius: 50px; /* Nút hình viên thuốc / giọt nước */
+    font-size: 0.9rem; font-weight: 600;
+    cursor: pointer; 
     user-select: none;
+    letter-spacing: 0.3px;
+    transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+    outline: none;
   }
-  .popup-btn.primary { background: #007bff; color: white; }
-  .popup-btn.primary:hover { background: #0056b3; }
-  .popup-btn.secondary { background: #6c757d; color: white; }
-  .popup-btn.secondary:hover { background: #5a6268; }
+
+  /* Primary Button (Nổi bật) */
+  .popup-btn.primary { 
+    background: rgba(0, 122, 255, 0.85); 
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    box-shadow: 0 6px 20px rgba(0, 122, 255, 0.35), inset 0 1px 2px rgba(255, 255, 255, 0.6);
+  }
+  .popup-btn.primary:hover { 
+    background: rgba(0, 122, 255, 1);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 122, 255, 0.45), inset 0 1px 2px rgba(255, 255, 255, 0.8);
+  }
+  .popup-btn.primary:active { transform: translateY(0); }
+
+  /* Secondary Button (Kính trong nhẹ) */
+  .popup-btn.secondary { 
+    background: rgba(255, 255, 255, 0.4); 
+    color: #000000;
+    border: 1px solid rgba(255, 255, 255, 0.7);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05), inset 0 1px 2px rgba(255, 255, 255, 0.8);
+  }
+  .popup-btn.secondary:hover { 
+    background: rgba(255, 255, 255, 0.7);
+    transform: translateY(-2px);
+  }
+  .popup-btn.secondary:active { transform: translateY(0); }
 `;
 
 function initPopup() {
@@ -63,23 +158,23 @@ function initPopup() {
   const overlay = document.getElementById('global-popup');
   if (overlay) {
     overlay.addEventListener('click', (e) => {
+      // Click ra ngoài vùng popup-content sẽ đóng
       if (e.target === overlay) window.closePopup();
     });
   }
 }
 
-// Hàm đóng Popup chung
+// Hàm đóng Popup
 window.closePopup = function() {
   const overlay = document.getElementById('global-popup');
   if (overlay) overlay.classList.remove('active');
 };
 
-// Hàm reset nút bấm để xóa sạch event listener cũ (Tránh bị liệt nút)
+// Hàm reset nút bấm (Chống đè event listener)
 function setupButtons(showCancel, confirmText, cancelText, onConfirm) {
   let btnConfirm = document.getElementById('popup-btn-confirm');
   let btnCancel = document.getElementById('popup-btn-cancel');
 
-  // Clone node để xóa sạch các sự kiện onclick trước đó
   const newConfirm = btnConfirm.cloneNode(true);
   const newCancel = btnCancel.cloneNode(true);
   
@@ -97,7 +192,7 @@ function setupButtons(showCancel, confirmText, cancelText, onConfirm) {
   };
 }
 
-// 1. Popup Thông báo (Cơ bản)
+// 1. Popup Thông báo
 window.showPopup = function(title, text, btnText = "Đóng") {
   initPopup();
 
@@ -128,11 +223,10 @@ window.showTextPrompt = function(title, placeholder, onConfirm) {
 
   document.getElementById('global-popup').classList.add('active');
 
-  // Delay nhỏ để đảm bảo DOM hiển thị xong mới Focus vào ô nhập
   setTimeout(() => {
     const input = document.getElementById('popup-text-input');
     if (input) input.focus();
-  }, 100);
+  }, 120);
 };
 
 // 3. Popup Dropdown List

@@ -193,7 +193,7 @@ button:active {
 }
 
 /* Gộp thuộc tính chung - Phong cách Liquid Glass (Chữ Đen) */
-#btn-sleep, #move-home {
+#btn-sleep, #move-hom {
     position: fixed;
     bottom: 25px;
     z-index: 99;
