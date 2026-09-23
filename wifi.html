@@ -41,7 +41,7 @@
         .event_news_style { font-size: 0.85rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
 
         .pomodoro-timer { background: var(--bg-card); padding: 24px; border-radius: var(--radius-lg); box-shadow: var(--shadow-md); border: 1px solid var(--border-color); }
-        .pomodoro-timer h2 { font-size: 1.15rem; font-weight: 700; margin-bottom: 18px; display: flex; align-items: center; gap: 8px; border-bottom: 2px solid #f1f5f9; padding-bottom: 10px; }
+        .pomodoro-timer h2 { font-size: 1.15rem; font-weight: 700; margin-bottom: 18px; display: flex; align-items: center; justify-content: space-between; border-bottom: 2px solid #f1f5f9; padding-bottom: 10px; }
 
         .days-selector-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(60px, 1fr)); gap: 8px; margin: 12px 0; }
         .day-checkbox { background: #edf2f7; padding: 10px; border-radius: 10px; text-align: center; cursor: pointer; font-weight: 600; font-size: 0.85rem; user-select: none; transition: all 0.2s; border: 1px solid var(--border-color); }
@@ -57,6 +57,8 @@
         button { background: var(--primary-gradient); color: white; border: none; padding: 12px 16px; border-radius: var(--radius-md); font-weight: 700; font-size: 0.9rem; cursor: pointer; transition: all 0.2s ease; box-shadow: var(--shadow-sm); }
         button:hover { opacity: 0.92; transform: translateY(-1px); }
 
+        .btn-secondary { background: var(--secondary-gradient); }
+        .btn-warning { background: var(--warning-gradient); }
         .btn-calc-submit { width: 100%; padding: 14px; font-size: 1.05rem; background: var(--success-gradient); margin-top: 10px; }
 
         .table-responsive { overflow-x: auto; margin-top: 15px; }
@@ -74,6 +76,9 @@
         td button { background: #fee2e2; color: #dc2626; padding: 5px 10px; font-size: 0.8rem; border-radius: 6px; box-shadow: none; }
         td button:hover { background: #ef4444; color: white; }
 
+        .btn-group-io { display: flex; gap: 8px; font-size: 0.8rem; }
+        .btn-group-io button { padding: 6px 12px; font-size: 0.8rem; }
+
         footer { text-align: center; padding: 15px; font-size: 0.8rem; color: var(--text-muted); font-weight: 500; }
     </style>
 </head>
@@ -83,7 +88,7 @@
     <header>
         <h1>Tìm gói cước tối ưu</h1>
         <hr>
-        <div class="event_news_style">Tối ưu chi phí - Né tư bản bóc lột</div>
+        <div class="event_news_style">Công cụ tối ưu hóa</div>
         <hr>
         <button onclick="window.location.href='index.html'">Quay lại</button>
     </header>
@@ -116,6 +121,8 @@
                 <option value="7">1 Tuần (7 ngày)</option>
                 <option value="30" selected>1 Tháng (30 ngày)</option>
                 <option value="90">1 Quý (90 ngày - 3 tháng)</option>
+                <option value="180">6 Tháng (180 ngày)</option>
+                <option value="360">12 Tháng (360 ngày)</option>
                 <option value="365">1 Năm (365 ngày)</option>
             </select>
         </div>
@@ -128,7 +135,14 @@
 
     <!-- 2. QUẢN LÝ GÓI CƯỚC -->
     <div class="pomodoro-timer">
-        <h2>Danh Sách Gói Cước & Combos</h2>
+        <h2>
+            <span>Danh Sách Gói Cước & Combos</span>
+            <div class="btn-group-io">
+                <button class="btn-secondary" onclick="exportConfig()">📤 Xuất Cấu Hình</button>
+                <button class="btn-warning" onclick="importConfig()">📥 Nhập Cấu Hình</button>
+                <input type="file" id="import-file" style="display: none;" accept=".json" onchange="handleFileSelect(event)">
+            </div>
+        </h2>
         
         <div class="pkg-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px;">
             <div class="form-group">
@@ -209,7 +223,6 @@ let packages = [
     { id: 2, name: "Gói 15K", price: 15000, cycle: 3, type: "bucket", gb: 3 },
     { id: 3, name: "Combo (15K + 7K)", price: 22000, cycle: 4, type: "bucket", gb: 4 },
     { id: 4, name: "Gói 90K", price: 90000, cycle: 30, type: "daily_limit", gb: 1 },
-    { id: 5, name: "Gói 375K", price: 375000, cycle: 90, type: "daily_limit", gb: 7 }
 ];
 
 function renderPackages() {
@@ -251,6 +264,45 @@ function addPackage() {
 function deletePackage(id) {
     packages = packages.filter(p => p.id !== id);
     renderPackages();
+}
+
+// XUẤT CẤU HÌNH CÁC GÓI CƯỚC RA FILE JSON
+function exportConfig() {
+    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(packages, null, 2));
+    const downloadAnchor = document.createElement('a');
+    downloadAnchor.setAttribute("href", dataStr);
+    downloadAnchor.setAttribute("download", "goi_cuoc_config.json");
+    document.body.appendChild(downloadAnchor);
+    downloadAnchor.click();
+    downloadAnchor.remove();
+}
+
+// KÍCH HOẠT CHỌN FILE NHẬP CẤU HÌNH
+function importConfig() {
+    document.getElementById('import-file').click();
+}
+
+// XỬ LÝ ĐỌC FILE JSON KHI NGƯỜI DÙNG TẢI LÊN
+function handleFileSelect(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        try {
+            const importedData = JSON.parse(e.target.result);
+            if (Array.isArray(importedData)) {
+                packages = importedData;
+                renderPackages();
+                alert("Nhập cấu hình gói cước thành công!");
+            } else {
+                alert("File không đúng định dạng!");
+            }
+        } catch (err) {
+            alert("Đã xảy ra lỗi khi đọc file JSON!");
+        }
+    };
+    reader.readAsText(file);
 }
 
 function runAnalysis() {
@@ -308,14 +360,12 @@ function runAnalysis() {
         let totalPurchases = 0;
 
         if (pkg.type === 'daily_limit') {
-            // NEO GIỚI HẠN: Ép số gói phải mua song song để đáp ứng đúng reqGB mỗi ngày
             multiplier = Math.ceil(reqGB / pkg.gb);
             let purchasesPerSub = Math.ceil(timeframeDays / pkg.cycle);
             totalPurchases = purchasesPerSub * multiplier;
             totalCost = totalPurchases * pkg.price;
             totalProvidedGB = purchasesPerSub * pkg.cycle * (pkg.gb * multiplier);
         } else {
-            // Cơ chế gói dồn (Bucket)
             let activeUntil = -1;
             let currentBucketGB = 0;
 
@@ -363,7 +413,6 @@ function runAnalysis() {
     results.sort((a, b) => a.cost - b.cost);
     let minCost = results[0].cost;
 
-    // Đề xuất chiến lược theo Ngắn hạn / Dài hạn
     let isShortTerm = timeframeDays <= 7;
     let recommendText = `<b>Đề xuất (${isShortTerm ? 'Ngắn hạn' : 'Dài hạn'} - ${timeframeDays} ngày):</b> `;
     if (isShortTerm) {
@@ -395,7 +444,7 @@ function runAnalysis() {
     });
 };
 
-// Khởi tạo hiển thị danh sách ban đầu (Không tự chạy tính toán)
+// Khởi tạo hiển thị danh sách ban đầu
 renderPackages();
 </script>
 

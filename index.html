@@ -384,7 +384,12 @@ async function reloadAndClearCache() {
                     <div class="pomodoro-timer" id="break-time-when">
                         <h2>Thời gian nghỉ</h2>
                         <label for="time">Mấy giờ vào tiết? (Tiết 1)</label>
-                        <input type="time" id="element-time-id-break-time" value="13:10">
+
+                        <select class="select_ui" id="element-time-id-break-time">
+                            <option value="7:20">Sáng (7:15 truy bài)</option>
+                            <option value="13:10">Chiều (13:05 truy bài)</option>
+                        </select>
+
                         <button onclick="send_time_id_break_time_when()">Gửi</button>
                     </div>
 

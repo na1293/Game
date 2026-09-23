@@ -38,7 +38,7 @@ function send_time_id_break_time_when() {
 
     // Xử lý khi giờ hiện tại chưa tới giờ học đã nhập
     if (totalMinutes < 0) {
-        showPopup("Thông báo", `Chưa tới giờ học! Tiết 1 bắt đầu lúc ${time_value}. ${finishTime} sẽ tan học.`);
+        showPopup("Thông báo", `Chưa tới giờ học! Tiết 1 bắt đầu lúc ${time_value}. Tan học lúc ${finishTime}`);
         return;
     }
 
