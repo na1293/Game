@@ -2,24 +2,130 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quản Lý Đọc Sách</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Sổ Tay Đọc Sách</title>
+    
+    <!-- Các khai báo chuẩn theo đúng yêu cầu -->
     <link rel="stylesheet" href="css/main_app.css">
+    <!-- <link rel="stylesheet" href="css/styles.css"> -->
     <script src="JS/System_JS/pop-up.js" defer></script>
     <script src="Book_save_prj_JS/book.js" defer></script>
 </head>
+
+<style>
+    .reader-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 12px;
+    margin-bottom: 12px;
+    border-bottom: 1px dashed #e2e8f0;
+}
+
+.reader-card-header h3 {
+    margin: 0;
+    font-size: 1.05rem;
+}
+
+/* Tối ưu item từng cuốn sách trong danh sách */
+.book-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #f8fafc;
+    padding: 10px 14px;
+    border-radius: 12px;
+    margin-bottom: 10px;
+    border: 1px solid #edf2f7;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Hiệu ứng Hover phồng nhẹ chuẩn mượt */
+.book-item:hover {
+    background: #ffffff;
+    border-color: #cbd5e1;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.book-item:last-child {
+    margin-bottom: 0;
+}
+
+/* Thông tin sách (Tên + Số trang) */
+.book-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.book-info strong {
+    color: #1e293b;
+    font-size: 0.95rem;
+    font-weight: 600;
+}
+
+/* Cụm nút thao tác (Edit / Xóa) */
+.book-actions {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+/* Nút Chỉnh Sửa */
+.btn-edit-item {
+    background: #e2e8f0 !important;
+    color: #334155 !important;
+    padding: 6px 12px !important;
+    font-size: 0.8rem !important;
+    border-radius: 8px !important;
+    margin: 0 !important;
+    box-shadow: none !important;
+}
+
+.btn-edit-item:hover {
+    background: #cbd5e1 !important;
+    color: #0f172a !important;
+}
+
+/* Override lại nút xóa cho gọn gàng */
+.del-btn-todo {
+    margin: 0 !important;
+    border-radius: 8px !important;
+    box-shadow: none !important;
+}
+
+/* --- Responsive chuẩn đét cho màn hình điện thoại nhỏ --- */
+@media screen and (max-width: 480px) {
+    .book-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .book-actions {
+        width: 100%;
+        justify-content: flex-end;
+    }
+
+    .book-actions button {
+        flex: 1;
+        text-align: center;
+    }
+}
+</style>
+
 <body>
     <div class="container">
         <header>
             <h1>Sổ Tay Theo Dõi Đọc Sách</h1>
-            <div class="event_news_style">Hệ thống quản lý hồ sơ đọc sách</div>
-            <button onclick="window.history.back()">Quay lại</button>
+            <div class="event_news_style">Quản lý hồ sơ đọc sách</div>
         </header>
 
         <!-- Khối 1: Nhập dữ liệu sách mới -->
         <div class="pomodoro-timer">
             <h2>Thêm Sách Mới</h2>
-            <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 15px;">
+            <div class="input-form-group">
                 <input type="text" id="reader-name" placeholder="Tên người đọc..." />
                 <input type="text" id="book-title" placeholder="Tên sách..." />
                 <input type="number" id="book-pages" placeholder="Số trang..." min="1" />
@@ -40,8 +146,8 @@
         <!-- Khối 3: Quản lý Lưu / Ghi đè và Nhập/Xuất file -->
         <div class="pomodoro-timer">
             <h2>Lưu và Quản Lý File</h2>
-            <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 10px;">
-                <button onclick="saveOverFile()" style="background: var(--primary-gradient); color: white;">Lưu và Ghi Đè File</button>
+            <div class="mobile-btn-group">
+                <button onclick="saveOverFile()" style="background: var(--primary-gradient); color: white;">Lưu & Ghi Đè File</button>
                 <button onclick="exportJSON()" style="background: #4a5568; color: white;">Tải File Mới</button>
                 <button onclick="document.getElementById('import-file').click()" style="background: #718096; color: white;">Nhập File</button>
                 <input type="file" id="import-file" accept=".json" style="display: none;" onchange="importJSON(event)">

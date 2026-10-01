@@ -1,5 +1,5 @@
 let readersData = JSON.parse(localStorage.getItem('readers_book_data')) || [];
-let fileHandle = null; // Lưu handle của file để hỗ trợ ghi đè trực tiếp
+let fileHandle = null; // Lưu handle của file để ghi đè trực tiếp mà không tải lại
 
 // --- 1. THÊM SÁCH VÀO HỒ SƠ ---
 function addBookRecord() {
@@ -95,13 +95,13 @@ function renderData() {
             booksHTML = '<p style="font-size: 0.85rem; color: var(--text-muted);">Chưa có sách trong hồ sơ.</p>';
         } else {
             booksHTML = reader.books.map(book => `
-                <li style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; background: #fff; padding: 8px 12px; border-radius: 8px; border: 1px solid #e2e8f0;">
-                    <div>
-                        <strong style="color: #2d3748;">Tên sách: ${book.title}</strong> 
+                <li class="book-item">
+                    <div class="book-info">
+                        <strong>Tên sách: ${book.title}</strong> 
                         <span style="font-size: 0.85rem; color: var(--text-muted);">(${book.pages} trang)</span>
                     </div>
-                    <div>
-                        <button onclick="editBook('${reader.id}', '${book.id}')" style="padding: 4px 8px; font-size: 0.8rem; background: #edf2f7; color: #2d3748;">Edit</button>
+                    <div class="book-actions">
+                        <button onclick="editBook('${reader.id}', '${book.id}')" class="btn-edit-item">Edit</button>
                         <button onclick="deleteBook('${reader.id}', '${book.id}')" class="del-btn-todo">Xóa</button>
                     </div>
                 </li>
@@ -109,7 +109,7 @@ function renderData() {
         }
 
         readerCard.innerHTML = `
-            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #edf2f7; padding-bottom: 8px; margin-bottom: 10px;">
+            <div class="reader-card-header">
                 <h3 style="font-size: 1.1rem; color: #2b6cb0;">Hồ sơ: <span class="highlight">${reader.readerName}</span></h3>
                 <button onclick="deleteReader('${reader.id}')" class="del-btn-todo">Xóa Hồ Sơ</button>
             </div>
@@ -122,7 +122,7 @@ function renderData() {
     });
 }
 
-// --- 5. CHỈNH SỬA & XÓA SÁCH (DÙNG POP-UP ĐỂ NHẬP / XÁC NHẬN BẰNG CONFIRM) ---
+// --- 5. CHỈNH SỬA & XÓA SÁCH (SỬ DỤNG POP-UP VÀ CONFIRM) ---
 function editBook(readerId, bookId) {
     const reader = readersData.find(r => r.id === readerId);
     if (!reader) return;
@@ -160,7 +160,7 @@ function editBook(readerId, bookId) {
     }
 }
 
-// Xóa sách với bước xác nhận
+// Xóa sách với bước hỏi xác nhận bằng confirm
 function deleteBook(readerId, bookId) {
     const isConfirmed = confirm("Bạn có chắc chắn muốn xóa cuốn sách này không?");
     if (!isConfirmed) return;
@@ -174,7 +174,7 @@ function deleteBook(readerId, bookId) {
     if (typeof showPopup === "function") showPopup("Thông báo", "Đã xóa sách khỏi hồ sơ!");
 }
 
-// Xóa toàn bộ hồ sơ người đọc với bước xác nhận
+// Xóa hồ sơ với bước hỏi xác nhận bằng confirm
 function deleteReader(readerId) {
     const isConfirmed = confirm("Cảnh báo: Hành động này sẽ xóa toàn bộ hồ sơ và danh sách sách của người đọc này. Bạn có chắc không?");
     if (!isConfirmed) return;
@@ -186,7 +186,7 @@ function deleteReader(readerId) {
     if (typeof showPopup === "function") showPopup("Thông báo", "Đã xóa hồ sơ người đọc!");
 }
 
-// --- 6. GHI ĐÈ TRỰC TIẾP LÊN FILE THỰC TẾ (KHÔNG TẢI FILE MỚI VỀ) ---
+// --- 6. GHI ĐÈ TRỰC TIẾP LÊN FILE THỰC TẾ ---
 async function saveOverFile() {
     const dataStr = JSON.stringify(readersData, null, 2);
 
@@ -219,7 +219,7 @@ async function saveOverFile() {
     }
 }
 
-// Xuất file tải về truyền thống (Fallback)
+// Tải file xuống theo cách truyền thống
 function exportJSON() {
     const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(readersData, null, 2));
     const downloadAnchor = document.createElement('a');
@@ -230,7 +230,7 @@ function exportJSON() {
     downloadAnchor.remove();
 }
 
-// Nhập file và cập nhật fileHandle để hỗ trợ ghi đè tiếp
+// Nhập dữ liệu từ file JSON
 async function importJSON(event) {
     const file = event.target.files[0];
     if (!file) return;
@@ -255,7 +255,7 @@ async function importJSON(event) {
     reader.readAsText(file);
 }
 
-// Khởi chạy khi load trang
+// Khởi chạy ứng dụng
 document.addEventListener('DOMContentLoaded', function() {
     updateFilterOptions();
     renderData();
