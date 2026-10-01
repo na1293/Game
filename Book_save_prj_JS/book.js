@@ -48,7 +48,7 @@ function saveToLocal() {
     localStorage.setItem('readers_book_data', JSON.stringify(readersData));
 }
 
-// --- 3. CẬP NHẬT DANH SÁCH LỌC (SELECT DROPDOWN) ---
+// --- 3. SELECT DROPDOWN ---
 function updateFilterOptions() {
     const select = document.getElementById('reader-filter-select');
     const currentValue = select.value;
@@ -82,44 +82,46 @@ function renderData() {
 
     if (filteredReaders.length === 0) {
         container.innerHTML = '<p style="text-align: center; color: var(--text-muted); padding: 15px;">Chưa có dữ liệu hồ sơ.</p>';
-        return;
+    } else {
+        filteredReaders.forEach(reader => {
+            const readerCard = document.createElement('div');
+            readerCard.className = 'can-le';
+            readerCard.style.marginBottom = '15px';
+
+            let booksHTML = '';
+            if (reader.books.length === 0) {
+                booksHTML = '<p style="font-size: 0.85rem; color: var(--text-muted);">Chưa có sách trong hồ sơ.</p>';
+            } else {
+                booksHTML = reader.books.map(book => `
+                    <li class="book-item">
+                        <div class="book-info">
+                            <strong>Tên sách: ${book.title}</strong> 
+                            <span style="font-size: 0.85rem; color: var(--text-muted);">(${book.pages} trang)</span>
+                        </div>
+                        <div class="book-actions">
+                            <button onclick="editBook('${reader.id}', '${book.id}')" class="btn-edit-item">Edit</button>
+                            <button onclick="deleteBook('${reader.id}', '${book.id}')" class="del-btn-todo">Xóa</button>
+                        </div>
+                    </li>
+                `).join('');
+            }
+
+            readerCard.innerHTML = `
+                <div class="reader-card-header">
+                    <h3 style="font-size: 1.1rem; color: #2b6cb0;">Hồ sơ: <span class="highlight">${reader.readerName}</span></h3>
+                    <button onclick="deleteReader('${reader.id}')" class="del-btn-todo">Xóa Hồ Sơ</button>
+                </div>
+                <ul style="list-style: none; padding-left: 0;">
+                    ${booksHTML}
+                </ul>
+            `;
+
+            container.appendChild(readerCard);
+        });
     }
 
-    filteredReaders.forEach(reader => {
-        const readerCard = document.createElement('div');
-        readerCard.className = 'can-le';
-        readerCard.style.marginBottom = '15px';
-
-        let booksHTML = '';
-        if (reader.books.length === 0) {
-            booksHTML = '<p style="font-size: 0.85rem; color: var(--text-muted);">Chưa có sách trong hồ sơ.</p>';
-        } else {
-            booksHTML = reader.books.map(book => `
-                <li class="book-item">
-                    <div class="book-info">
-                        <strong>Tên sách: ${book.title}</strong> 
-                        <span style="font-size: 0.85rem; color: var(--text-muted);">(${book.pages} trang)</span>
-                    </div>
-                    <div class="book-actions">
-                        <button onclick="editBook('${reader.id}', '${book.id}')" class="btn-edit-item">Edit</button>
-                        <button onclick="deleteBook('${reader.id}', '${book.id}')" class="del-btn-todo">Xóa</button>
-                    </div>
-                </li>
-            `).join('');
-        }
-
-        readerCard.innerHTML = `
-            <div class="reader-card-header">
-                <h3 style="font-size: 1.1rem; color: #2b6cb0;">Hồ sơ: <span class="highlight">${reader.readerName}</span></h3>
-                <button onclick="deleteReader('${reader.id}')" class="del-btn-todo">Xóa Hồ Sơ</button>
-            </div>
-            <ul style="list-style: none; padding-left: 0;">
-                ${booksHTML}
-            </ul>
-        `;
-
-        container.appendChild(readerCard);
-    });
+    // Tự động cuộn mượt xuống khu vực hiển thị danh sách hồ sơ
+    container.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 // --- 5. CHỈNH SỬA & XÓA SÁCH (SỬ DỤNG POP-UP VÀ CONFIRM) ---

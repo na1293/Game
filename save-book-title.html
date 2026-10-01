@@ -10,6 +10,7 @@
     <!-- <link rel="stylesheet" href="css/styles.css"> -->
     <script src="JS/System_JS/pop-up.js" defer></script>
     <script src="Book_save_prj_JS/book.js" defer></script>
+    <script src="css/app.css"></script>
 </head>
 
 <style>
@@ -120,6 +121,7 @@
         <header>
             <h1>Sổ Tay Theo Dõi Đọc Sách</h1>
             <div class="event_news_style">Quản lý hồ sơ đọc sách</div>
+            <button onclick="window.location.href='index.html'">Quay lại</button>
         </header>
 
         <!-- Khối 1: Nhập dữ liệu sách mới -->
@@ -127,7 +129,9 @@
             <h2>Thêm Sách Mới</h2>
             <div class="input-form-group">
                 <input type="text" id="reader-name" placeholder="Tên người đọc..." />
+                <p>.</p>
                 <input type="text" id="book-title" placeholder="Tên sách..." />
+                <p>.</p>
                 <input type="number" id="book-pages" placeholder="Số trang..." min="1" />
                 <button id="add-btn" onclick="addBookRecord()">Thêm Lưu Trữ</button>
             </div>
@@ -136,10 +140,11 @@
         <!-- Khối 2: Lọc danh sách theo hồ sơ dạng Dropdown (Kiểu YouTube) -->
         <div class="pomodoro-timer">
             <h2>Chọn Hồ Sơ Người Đọc</h2>
-            <div style="margin-top: 10px;">
-                <select id="reader-filter-select" class="select_ui" onchange="renderData()">
+            <div style="margin-top: 10px; display: flex; gap: 10px; align-items: center;">
+                <select id="reader-filter-select" class="select_ui" style="flex: 1;">
                     <option value="ALL">Hiện tất cả hồ sơ</option>
                 </select>
+                <button id="btn-filter" onclick="renderData()" style="padding: 8px 16px; margin: 0; white-space: nowrap;">Lọc</button>
             </div>
         </div>
 
