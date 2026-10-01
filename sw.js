@@ -8,6 +8,7 @@ const STATIC_ASSETS = [
   './game.html',
   '.wifi.html',
   './manifest.json',
+  './save-book-title.html',
   
   // CSS
   './css/app.css',
@@ -29,7 +30,9 @@ const STATIC_ASSETS = [
   './JS/getData.js',
   './JS/storage.js',
   './JS/System_JS/setting_pomodoro.js',
-  './JS/main.js'
+  './JS/main.js',
+  './JS/Book_save_prj_JS/book.js',
+  './JS/System_JS/pop-up.js',
 ];
 
 // 1. Cài đặt Service Worker & Pre-cache an toàn

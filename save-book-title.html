@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản Lý Đọc Sách</title>
+    <link rel="stylesheet" href="css/main_app.css">
+    <script src="JS/System_JS/pop-up.js" defer></script>
+    <script src="Book_save_prj_JS/book.js" defer></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Sổ Tay Theo Dõi Đọc Sách</h1>
+            <div class="event_news_style">Hệ thống quản lý hồ sơ đọc sách</div>
+            <button onclick="window.history.back()">Quay lại</button>
+        </header>
+
+        <!-- Khối 1: Nhập dữ liệu sách mới -->
+        <div class="pomodoro-timer">
+            <h2>Thêm Sách Mới</h2>
+            <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 15px;">
+                <input type="text" id="reader-name" placeholder="Tên người đọc..." />
+                <input type="text" id="book-title" placeholder="Tên sách..." />
+                <input type="number" id="book-pages" placeholder="Số trang..." min="1" />
+                <button id="add-btn" onclick="addBookRecord()">Thêm Lưu Trữ</button>
+            </div>
+        </div>
+
+        <!-- Khối 2: Lọc danh sách theo hồ sơ dạng Dropdown (Kiểu YouTube) -->
+        <div class="pomodoro-timer">
+            <h2>Chọn Hồ Sơ Người Đọc</h2>
+            <div style="margin-top: 10px;">
+                <select id="reader-filter-select" class="select_ui" onchange="renderData()">
+                    <option value="ALL">Hiện tất cả hồ sơ</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Khối 3: Quản lý Lưu / Ghi đè và Nhập/Xuất file -->
+        <div class="pomodoro-timer">
+            <h2>Lưu và Quản Lý File</h2>
+            <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 10px;">
+                <button onclick="saveOverFile()" style="background: var(--primary-gradient); color: white;">Lưu và Ghi Đè File</button>
+                <button onclick="exportJSON()" style="background: #4a5568; color: white;">Tải File Mới</button>
+                <button onclick="document.getElementById('import-file').click()" style="background: #718096; color: white;">Nhập File</button>
+                <input type="file" id="import-file" accept=".json" style="display: none;" onchange="importJSON(event)">
+            </div>
+        </div>
+
+        <!-- Khối 4: Hiển thị hồ sơ đã lọc -->
+        <div class="pomodoro-timer" style="text-align: left;">
+            <h2 style="justify-content: flex-start;">Danh Sách Hồ Sơ</h2>
+            <div id="reader-list-container" style="margin-top: 15px;">
+                <!-- Nội dung được sinh ra từ Javascript -->
+            </div>
+        </div>
+    </div>
+</body>
+</html>
