@@ -40,50 +40,96 @@
   justify-content: space-between;
 }
 
-/* 1. Bộ chọn ngày tối giản sát mép trên */
+/* ===== 1. Bộ chọn ngày — nút TO, dễ bấm ===== */
 .day-switcher {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 20px;
   margin-top: 10px;
 }
 
 .select_ui {
-  font-size: 1.4rem;
+  font-size: clamp(1.2rem, 3vw, 1.6rem);
   font-weight: 700;
-  padding: 8px 18px;
-  border-radius: 16px;
+  padding: 14px 24px;
+  border-radius: 20px;
   border: none;
   background-color: #f2f2f7;
   color: #007aff;
   outline: none;
   cursor: pointer;
   text-align: center;
+  min-width: 100px;
+  transition: all 0.2s ease;
 }
 
 .nav-btn {
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
+  /* FIX: kích thước cố định, không dùng % của cha */
+  min-width: 64px;
+  min-height: 64px;
+  width: 64px;
+  height: 64px;
+  border-radius: 18px;
   border: none;
-  background: #f2f2f7;
-  color: #1c1c1e;
-  font-size: 1.4rem;
+  background: #007aff;
+  color: #ffffff;
+  font-size: 1.6rem;
   font-weight: bold;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   transition: all 0.2s ease;
+  /* Tăng vùng chạm cho mobile */
+  touch-action: manipulation;
 }
 
 .nav-btn:active {
-  background: #007aff;
-  color: #fff;
+  background: #0056cc;
   transform: scale(0.92);
 }
 
-/* 2. Hero Section: Nơi chứa danh sách môn học - Siêu bự */
+/* ===== Mobile: tăng thêm kích thước nút ===== */
+@media (max-width: 768px) {
+  .day-switcher {
+    gap: 16px;
+  }
+
+  .select_ui {
+    font-size: 1.3rem;
+    padding: 16px 20px;
+    min-width: 120px;
+    border-radius: 16px;
+  }
+
+  .nav-btn {
+    /* 48px+ là chuẩn Apple cho vùng chạm tối thiểu */
+    width: 72px;
+    height: 72px;
+    min-width: 72px;
+    min-height: 72px;
+    border-radius: 20px;
+    font-size: 1.8rem;
+  }
+}
+
+/* ===== PC: nút có thể to hơn ===== */
+@media (min-width: 1024px) {
+  .nav-btn {
+    width: 72px;
+    height: 72px;
+    min-width: 72px;
+    min-height: 72px;
+    font-size: 1.8rem;
+  }
+
+  .select_ui {
+    font-size: 1.4rem;
+    padding: 16px 28px;
+  }
+}
+
+/* 2. Hero Section */
 .schedule-hero {
   flex: 1;
   width: 100%;
@@ -94,7 +140,7 @@
 }
 
 .schedule-text {
-  font-size: clamp(2rem, 5vw + 1rem, 3.5rem); /* Tự co giãn cực to theo độ phân giải */
+  font-size: clamp(2rem, 5vw + 1rem, 3.5rem);
   font-weight: 800;
   color: #1c1c1e;
   text-align: center;
@@ -103,7 +149,6 @@
   word-break: break-word;
 }
 
-/* Phân tách các môn bằng màu nhấn nếu chuỗi có dấu phẩy/gạch đứng */
 .schedule-text span {
   color: #007aff;
 }
@@ -113,8 +158,10 @@
   position: absolute;
   top: 24px;
   right: 24px;
-  width: 40px;
-  height: 40px;
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  min-height: 44px;
   border-radius: 50%;
   background: #f2f2f7;
   border: none;
@@ -125,6 +172,12 @@
   align-items: center;
   justify-content: center;
   z-index: 10;
+  transition: all 0.2s ease;
+}
+
+.close-btn:active {
+  background: #e5e5ea;
+  transform: scale(0.92);
 }
 
 @keyframes slideUpApple {
@@ -132,7 +185,6 @@
   100% { transform: translateY(0); opacity: 1; }
 }
 
-/* Mặc định ẩn Pop-up */
 #pop-up-animation-full-screen {
-    display: none; /* Khi mở sẽ dùng JS đổi thành flex */
+    display: none;
 }

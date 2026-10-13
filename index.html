@@ -77,6 +77,21 @@
     </script>
 </head>
 
+<!-- ------------------------ -->
+<!-- ------------------------ -->
+<!-- CỰC KỲ QUAN TRỌNG ĐỂ VÁ LỖI MỞ POP-UP THÌ KHÔNG HIỆN THỜI KHÓA BIỂU -->
+<style>
+    /* Ghi đè CSS từ pop-up.js riêng cho khung thời khóa biểu */
+    #pop-up-animation-full-screen.popup-overlay {
+        opacity: 1 !important;
+        visibility: visible !important;
+        pointer-events: auto !important;
+        background: rgba(0, 0, 0, 0.5) !important; /* Tạo lớp nền mờ tối lịch sự */
+    }
+</style>
+<!-- ------------------------ -->
+<!-- ------------------------ --> 
+
 <!-- Dùng 1 đoạn đăng ký SW duy nhất này -->
 <script>
   if ('serviceWorker' in navigator) {
