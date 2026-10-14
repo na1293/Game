@@ -1,0 +1,52 @@
+/* Vùng chứa ảnh đại diện (Avatar) */
+.avatar {
+    width: 100px;
+    height: 100px;
+    margin: 0 auto 20px auto;
+    border-radius: 50%; /* Bo tròn khung */
+    overflow: hidden; /* Cắt phần ảnh thừa bên ngoài vòng tròn */
+    border: 3px solid #e0e0e0;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Định dạng hình ảnh bên trong avatar */
+.avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Giúp ảnh không bị méo khi co giãn */
+}
+
+/* Định dạng tiêu đề chữ chào mừng */
+h2 {
+    color: #333333;
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin: 0;
+}
+
+/* Điểm nhấn cho tên người dùng */
+#user-name {
+    color: #ff6b6b; /* Màu đỏ hồng cam tạo điểm nhấn */
+    font-weight: 700;
+}
+
+#user-name {
+    cursor: pointer; /* Biến con trỏ chuột thành hình bàn tay khi rà vào tên */
+    border-bottom: 1px dashed #ff6b6b; /* Tạo đường gạch chân đứt nét nhẹ dưới tên */
+    padding-bottom: 2px;
+    transition: color 0.2s ease;
+}
+
+#user-name:hover {
+    color: #ff4747; /* Đổi màu đậm hơn một chút khi rê chuột vào */
+}
+
+.avatar {
+    /* ...các thuộc tính cũ giữ nguyên... */
+    cursor: pointer; /* Biến con trỏ chuột thành hình bàn tay khi rà vào ảnh */
+    transition: opacity 0.2s ease;
+}
+
+.avatar:hover {
+    opacity: 0.8; /* Làm mờ nhẹ ảnh khi rê chuột vào để báo hiệu có thể click */
+}

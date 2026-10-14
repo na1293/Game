@@ -11,12 +11,15 @@
     <link rel="stylesheet" href="css/main_app.css">
     <link rel="stylesheet" href="css/moon.css">
     <link rel="stylesheet" href="css/pop-up-main.css">
+    <link rel="stylesheet" href="css/avatar.css">
 
     <link rel="stylesheet" href="css/time-table-pop-up-good-ui.css">
 
     <script src="JS/break_time_when.js" defer></script>
 
     <script src="JS/todo-list.js" defer></script>
+
+    <script src="JS/UX_JS/avatar.js" defer></script>
 
     <!-- 1. Cấu hình & Dữ liệu TKB (Load trước) -->
     <script src="JS/API_call/api_call.js" defer></script>
@@ -205,6 +208,99 @@ async function reloadAndClearCache() {
 
 </head>
 <body>
+
+    <div class="container" id="container">
+        <div class="pomodoro-timer">
+            <div class="avatar">
+                <img src="https://i.pinimg.com/736x/5d/f1/7e/5df17e438cdaf23a2fa03cead5260a19.jpg" alt="User" id="avatar">
+            </div>
+
+            <h2>Xin chào <span id="user-name">Người dùng</span></h2>
+        </div>
+    </div>
+    
+    <!-- Input ẩn dùng để kích hoạt trình chọn tệp của hệ thống -->
+    <input type="file" id="image-input" accept="image/*" style="display: none;">
+
+    <script>
+        const avatarContainer = document.querySelector('.avatar');
+        const avatarImg = document.getElementById('avatar');
+        const imageInput = document.getElementById('image-input');
+
+        // Tự động tải ảnh từ LocalStorage khi vừa load trang
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedAvatar = localStorage.getItem('user_avatar');
+            if (savedAvatar) {
+                avatarImg.src = savedAvatar;
+            }
+        });
+
+        // Khi click vào vùng Avatar -> Kích hoạt input file ẩn
+        avatarContainer.addEventListener('click', () => {
+            imageInput.click();
+        });
+
+        // Xử lý khi chọn xong ảnh
+        imageInput.addEventListener('change', function() {
+            const file = this.files[0]; 
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const img = new Image();
+                img.src = e.target.result;
+
+                img.onload = function() {
+                    // Tạo một Canvas để xử lý nén ảnh
+                    const canvas = document.createElement('canvas');
+                    const ctx = canvas.getContext('2d');
+
+                    // Thiết lập kích thước tối đa cho ảnh avatar (Ví dụ: 400x400 pixel là quá đủ nét)
+                    const MAX_WIDTH = 400;
+                    const MAX_HEIGHT = 400;
+                    let width = img.width;
+                    let height = img.height;
+
+                    // Tính toán tỷ lệ để ảnh không bị méo hoặc kéo dãn
+                    if (width > height) {
+                        if (width > MAX_WIDTH) {
+                            height *= MAX_WIDTH / width;
+                            width = MAX_WIDTH;
+                        }
+                    } else {
+                        if (height > MAX_HEIGHT) {
+                            width *= MAX_HEIGHT / height;
+                            height = MAX_HEIGHT;
+                        }
+                    }
+
+                    canvas.width = width;
+                    canvas.height = height;
+
+                    // Vẽ ảnh lên canvas theo kích thước mới
+                    ctx.drawImage(img, 0, 0, width, height);
+
+                    // Tiến hành xuất ảnh thành chuỗi Base64 với chất lượng nén giảm còn 75% (0.75)
+                    // Việc giảm này giúp dung lượng giảm mạnh nhưng ảnh nhìn vẫn rất sắc nét
+                    const compressedBase64 = canvas.toDataURL('image/jpeg', 0.75);
+
+                    // Hiển thị ảnh đã nén lên giao diện
+                    avatarImg.src = compressedBase64;
+
+                    // Lưu vào LocalStorage cực kỳ an toàn vì dung lượng lúc này rất nhỏ (chỉ khoảng 50KB - 200KB)
+                    try {
+                        localStorage.setItem('user_avatar', compressedBase64);
+                    } catch (error) {
+                        alert('Không thể lưu ảnh do bộ nhớ trình duyệt đã đầy!');
+                        console.error('LocalStorage Error:', error);
+                    }
+                };
+            };
+
+            reader.readAsDataURL(file);
+        });
+    </script>
+
 
     <div id="pop-up-animation-full-screen" class="popup-overlay">
         <div class="popup-card">
