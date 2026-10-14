@@ -440,33 +440,3 @@ moveHome();
 
 // =========================== //
 
-// 1. Lấy phần tử tên người dùng ngoài giao diện
-const userNameSpan = document.getElementById('user-name');
-
-// 2. Tự động kiểm tra và tải tên từ LocalStorage khi vừa load trang
-window.addEventListener('DOMContentLoaded', () => {
-    const savedName = localStorage.getItem('user_name');
-    if (savedName) {
-        userNameSpan.textContent = savedName;
-    }
-});
-
-// 3. Khi người dùng click vào tên -> Hiển thị khung nhập chữ (Pop-up)
-userNameSpan.addEventListener('click', () => {
-    // Gọi hàm từ thư viện Pop-up của bạn
-    showTextPrompt("Đổi tên người dùng", "Nhập tên mới của bạn...", function(value) {
-        // Kiểm tra nếu người dùng có nhập chữ và không chỉ toàn dấu cách
-        if (value && value.trim() !== "") {
-            const newName = value.trim();
-
-            // Cập nhật tên mới ngay lập tức lên giao diện
-            userNameSpan.textContent = newName;
-
-            // Lưu tên mới vào LocalStorage dưới key 'user_name'
-            localStorage.setItem('user_name', newName);
-
-            // Hiển thị thông báo thành công (sử dụng hàm thông báo từ tài liệu của bạn)
-            showPopup("Thành công", "Tên của bạn đã được cập nhật!");
-        }
-    });
-});
