@@ -48,10 +48,45 @@ updateSchedule(today);
 
 // =========================================== //
 
-function getRandom(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
-if(document.getElementById("say") && sayst.length > 0) {
-    document.getElementById("say").innerHTML = sayst[getRandom(0, sayst.length - 1)];
+// Biến cờ chặn spam (Throttle)
+let dang_cho = false; 
+// Mảng lưu trữ các câu nói chưa được đọc
+let mang_chua_doc = []; 
+
+function Bat_dau_cau_noi() {
+    // 1. Chặn spam click quá nhanh (giới hạn 300ms mỗi lần đổi)
+    if (dang_cho) return; 
+
+    const phan_tu_say = document.getElementById("say");
+    if (phan_tu_say && sayst.length > 0) {
+        
+        // 2. Nếu mảng chưa đọc bị rỗng (lần đầu chạy hoặc đã bấm hết sạch câu nói)
+        if (mang_chua_doc.length === 0) {
+            // Copy lại toàn bộ mảng gốc sayst
+            mang_chua_doc = [...sayst]; 
+        }
+
+        // 3. Lấy ngẫu nhiên 1 câu trong mảng chưa đọc
+        const vi_tri_random = Math.floor(Math.random() * mang_chua_doc.length);
+        // Cắt câu đó ra khỏi mảng chưa đọc (hàm splice vừa lấy ra vừa xóa luôn)
+        const cau_duoc_chon = mang_chua_doc.splice(vi_tri_random, 1)[0];
+
+        // 4. Cập nhật giao diện
+        phan_tu_say.innerHTML = cau_duoc_chon;
+
+        // 5. Khóa nút trong 300ms để chống lag DOM
+        dang_cho = true;
+        setTimeout(() => {
+            dang_cho = false;
+        }, 300);
+    }
 }
+
+// Chạy lần đầu tiên khi tải trang
+if(document.getElementById("say") && sayst.length > 0) {
+    Bat_dau_cau_noi();
+}
+
 
 // 🔊 HÀM BÁO THỨC PHÁT NHẠC TỪ FILE + RUNG 5 GIÂY
 function playAlarmSound() {

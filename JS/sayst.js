@@ -1,14 +1,4 @@
 let cau_noi_hay = [
-    // === Học Tập & Tư Duy === //
-    "Trí tuệ không phải sản phẩm của trường lớp, mà là kết quả của nỗ lực học hỏi suốt đời. - Albert Einstein",
-    "Con đường đến thành công là con đường của sự học tập, sự phát triển và không ngừng cố gắng. - Oprah Winfrey",
-    "Học không phải là học thuộc lòng sự thật, mà là rèn luyện tư duy để suy nghĩ. - Albert Einstein",
-    "Bản thân việc học là một quá trình tự khám phá, chứ không phải là sự áp đặt từ bên ngoài. - Noam Chomsky",
-    "Rễ của giáo dục thì đắng cay, nhưng quả của nó lại ngọt ngào. - Aristotle",
-    "Học không phải là việc lấp đầy một cái xô, mà là thắp sáng một ngọn lửa. - Plutarch",
-    "Nhà trường cho chúng ta bài học trước rồi mới kiểm tra. Cuộc đời bắt chúng ta kiểm tra trước rồi mới rút ra bài học. - Tom Bodett",
-    "Ta chưa từng thấy ai không giữ được lòng liêm khiết mà có thể dạy người khác thành bậc chính nhân quân tử - Chu Văn An",
-    
     // === Yêu Bản Thân & Định Hình Phong Cách === //
     "Hãy là chính mình, những người khác đã là người khác rồi. - Oscar Wilde",
     "Bạn chính là người định nghĩa cuộc đời mình. Đừng để người khác viết kịch bản cho bạn. - Oprah Winfrey",
@@ -16,32 +6,23 @@ let cau_noi_hay = [
     "Sự hiện diện của bạn có thể mang lại hạnh phúc cho người khác. Tôi hy vọng bạn sẽ nhớ kỹ điều đó. - Jin (BTS)",
     "Bạn không cần phải ao ước cuộc sống của người khác, bởi mỗi người đều có ánh dương chiếu rọi, mỗi người đều có ánh hào quang 'độc nhất vô nhị' của bản thân.",
     "Không có định nghĩa nào cho sự hoàn hảo cả, bạn chính là người tự đặt ra tiêu chuẩn cho riêng mình. - RM (BTS)",
-    "Bạn không cần phải hoàn hảo để được yêu thương. Chỉ cần là chính mình, với tất cả những khiếm khuyết, bạn đã là một phiên bản tuyệt vời nhất rồi - IU (Nữ hoàng K-pop)",
+    "Bạn không cần phải hoàn hảo để được yêu thương. Chỉ cần là chính mình, với tất cả những khiếm khuyết, bạn đã là một phiên bản tuyệt vời nhất rồi - IU",
     "Người duy nhất tôi cần phải vượt qua chính là bản thân tôi của ngày hôm qua. - G-Dragon",
     "Your time is limited, so don't waste it living someone else's life. - Steve Jobs",
-    "Love myself, love my fans, love my music. That’s all that matters. - Min Yoongi (Suga - BTS)",
-    "Your best is enough - Corgi",
+    "Love myself, love my fans, love my music. That’s all that matters. - Suga - BTS",
     "Việc chăm sóc bản thân không chỉ là vẻ bề ngoài, đó là cách bạn tôn trọng chính hành trình mình đang đi. - Kim Bum",
-    "Tôi luôn muốn thể hiện những khía cạnh khác nhau của bản thân. - Kim Bum",
 
     // === Nỗ Lực & Vượt Qua Thử Thách === //
-    "Không sợ bạn đi chậm, chỉ sợ bạn đứng yên. - Khuyết danh",
     "Nỗ lực tạo nên con người bạn. Nếu bạn không cố gắng hết sức ngay bây giờ, bạn sẽ hối hận vào một ngày nào đó. Đừng nghĩ rằng đã quá muộn; hãy tiếp tục cố gắng. Cho dù mất thời gian, việc luyện tập sẽ giúp mọi thứ tốt hơn. - Jungkook",
     "Đừng bao giờ từ bỏ ước mơ của bạn. Hãy tiếp tục cố gắng, và một ngày nào đó, bạn sẽ đạt được những điều tuyệt vời. - V (BTS)",
     "Nếu bạn không thể bay, hãy chạy. Nếu không thể chạy, hãy đi bộ. Hôm nay chúng ta bước đi, ngày mai chúng ta sẽ chạy. - Martin Luther King Jr.",
-    "Thất bại là mẹ của thành công - Thành ngữ Việt Nam",
     "Bất luận ngày mai có ra sao, việc của bạn hôm nay chính là nỗ lực tích lũy năng lượng, để bản thân có đủ tư cách lựa chọn cuộc sống mình mong muốn. - Khuyết danh",
-    "Tôi chưa từng thất bại. Tôi chỉ là đã tìm ra 10.000 cách không hoạt động. - Thomas Edison",
-    "Đừng bao giờ cúi đầu. Hãy luôn ngẩng cao. Nhìn thẳng vào mắt thế giới. - Helen Keller",
-    "Đời người phải trải qua giông tố nhưng không được cúi đầu trước giông tố. - BS.Đặng Thùy Trâm",
     "Giữa những ngày rực lửa này, mình vẫn thấy lòng mình trong sáng và tràn đầy niềm tin... Niềm tin ấy là sức mạnh giúp mình vượt qua tất cả. - BS.Đặng Thùy Trâm",
-    "Tôi chỉ có hai quy tắc: Làm tất cả những gì bạn có thể và làm tốt nhất có thể. Đó là cách duy nhất để bạn cảm thấy tự hào về bản thân - Ông KFC (Đại tá Sanders)",
-    "Nếu muốn ngồi ở nơi không ai ngồi được, thì phải chịu được những cảm giác không ai chịu được. - Sơn Tùng M-TP (Đã sửa lại)",
+    "Nếu muốn ngồi ở nơi không ai ngồi được, thì phải chịu được những cảm giác không ai chịu được. - Sơn Tùng M-TP",
     "Dù có bị từ chối 100 lần, tôi vẫn sẽ tiếp tục thử lần thứ 101. Tôi chưa bao giờ từ bỏ ước mơ diễn xuất, ngay cả trong những lúc khó khăn nhất. - Byeon Woo Seok (Nam diễn viên Hàn Quốc từng bị từ chối 100 lần suốt 9 năm trước khi nổi tiếng)",
-    "Tôi đã làm được, bạn cũng có thể làm được. - H'Hen Niê",
     "Cách tốt nhất để bắt đầu là ngừng nói và hãy bắt tay vào làm - Walt Disney",
     "Bạn không cần phải giỏi mới được bắt đầu, nhưng bạn phải bắt đầu thì mới giỏi được. - Zig Ziglar",
-    "Khi bạn gặp phải khó khăn, hãy biến nó thành động lực. Đừng bao giờ chọn con đường dễ dàng nhất, hãy chọn con đường giúp bạn học hỏi được nhiều nhất. - Elon Musk",
+    "Đừng nói cho người khác biết ước mơ của bạn là gì. Hãy hành động và cho họ thấy kết quả - Lisa (Blackpink)",
 
     // === Cuộc Sống & Hạnh Phúc === //
     "Đôi khi, nhìn bạn bè tiến lên phía trước khiến tôi cảm thấy lo lắng... nhưng tôi nhanh chóng nhận ra rằng tốc độ của họ không phải là tốc độ của tôi. Mỗi khi điều đó xảy ra, điều giúp tôi tiếp tục tiến lên chính là lời hứa với bản thân rằng 'cứ từ từ thôi'. - Jin (BTS)",
@@ -49,22 +30,21 @@ let cau_noi_hay = [
     "Những ai không có ước mơ thì cũng không sao. Không sao cả nếu bạn không có ước mơ. Điều quan trọng là bạn phải hạnh phúc. - Suga (BTS)",
     "No matter how hard it is right now, think of how the result will make you feel. - Jimin (BTS)",
     "Hãy sống như hoa dại, dù khắc nhiệt nhưng kiên cường - Khuyết danh",
-    "Chỉ cần thay đổi góc nhìn, bạn sẽ thấy cả thế giới khác đi. - Khuyết danh",
-    "Đừng bao giờ đánh giá thấp sức mạnh của một nụ cười. - Khuyết danh",
-    "Chúng ta không thể đánh vần chữ L-O-V-E mà không có ‘V’ - V (BTS)",
     "Bạn không thể bước vào cuộc đời của một ai đó, khiến họ cảm thấy đặc biệt, rồi rời đi. - V (BTS)",
     "Khi mọi thứ trở nên khó khăn, hãy dừng lại một chút và nhìn lại xem bạn đã đi được bao xa. Đừng quên nó đáng giá như thế nào. Bạn là bông hoa đẹp nhất, hơn bất kỳ ai khác trên thế giới này. - V (BTS)",
     "Cuộc sống là một tác phẩm điêu khắc mà bạn tạo ra khi bạn mắc sai lầm và học hỏi từ chúng. - BTS",
     "Đừng lo lắng về những gì người khác nói. Hãy tin vào chính mình và làm những gì bạn muốn. Tương lai của bạn nằm trong tay bạn chứ không phải ai khác - J-hope (BTS)",
-    "Đừng hối hận vì những gì đã qua trong quá khứ. Hãy lấy nó làm bài học để tạo nên một tương lai tốt đẹp hơn - Golden Maknae",
+    "Đừng hối hận vì những gì đã qua trong quá khứ. Hãy lấy nó làm bài học để tạo nên một tương lai tốt đẹp hơn - Jungkook",
+
     "Tôi không biết thế giới nhìn nhận mình thế nào, nhưng đối với chính mình, tôi chỉ là một cậu bé đang chơi trên bờ biển, thỉnh thoảng tìm được một viên sỏi nhẵn hơn hay một vỏ sò đẹp hơn... trong khi đại dương chân lý vĩ đại vẫn còn ẩn giấu trước mắt. - Isaac Newton",
     "Phát ngôn ra một lời nói rất dễ, nhưng biết khi nào cần im lặng để lắng nghe, để thấu hiểu và để không gây tổn thương cho người khác lại là bài học lớn nhất của một đời người. - Ernest Hemingway",
     "Tuổi tác thật sự của một con người không đo bằng số năm họ sống trên đời, mà đo bằng ngọn lửa nhiệt huyết và lý tưởng trong trái tim họ. - Gabriel García Márquez",
     "Cuộc sống không phải là chờ đợi cơn bão đi qua, mà là học cách nhảy múa trong mưa - Vivian Greene",
-    "Trưởng thành là khi ta nhận ra, thế giới này không xoay quanh mình, và cũng chẳng có ai thực sự đứng đợi ta ở cuối con đường - Ai đó",
+    "Trưởng thành là khi ta nhận ra, thế giới này không xoay quanh mình, và cũng chẳng có ai thực sự đứng đợi ta ở cuối con đường. - Khuyết danh",
+
     "Dù có chuyện gì xảy ra đi chăng nữa, tôi vẫn luôn tin rằng bản thân mình đã làm hết sức có thể. Nếu kết quả không như ý, thì ít nhất tôi cũng không có gì phải hối tiếc vì đã không buông bỏ - Lee Dong-wook",
     "Hãy cứ chậm lại một chút. Thế giới này vận hành quá nhanh, nhưng điều đó không có nghĩa là bạn cũng phải vội vã đánh mất bản thân mình. - Lee Dong-wook",
-    "Hạnh phúc không phải là thứ bạn phải đạt được. Bạn có thể cảm thấy hạnh phúc ngay trong quá trình tiến đến mục tiêu của mình - Kim Nam Joon (RM của BTS)",
+    "Hạnh phúc không phải là thứ bạn phải đạt được. Bạn có thể cảm thấy hạnh phúc ngay trong quá trình tiến đến mục tiêu của mình - RM của BTS",
     "Không có định nghĩa nào cho sự hoàn hảo, vậy hãy cứ là chính mình thôi - RM (Kim Namjoon - BTS)",
     "Đừng bao giờ so sánh mình với bất kỳ ai trên đời, nếu làm vậy, bạn đang tự hạ thấp mình đấy - Bill Gates",
 
@@ -72,4 +52,5 @@ let cau_noi_hay = [
     "Cậu là một trải nghiệm. Hãy chắc chắn rằng cậu là một trải nghiệm tốt. - Garnet (Bộ phim Steven Universe)",
     "Nếu cậu luôn thay đổi để người khác thích mình, cậu sẽ không bao giờ biết được mình thực sự là ai - Steven Universe",
     "Cậu không thể quay lại quá khứ và thay đổi cách nó bắt đầu, nhưng cậu có thể thay đổi cách nó kết thúc - Steven Universe",
+
 ];
