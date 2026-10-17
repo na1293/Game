@@ -53,28 +53,31 @@ let dang_cho = false;
 // Mảng lưu trữ các câu nói chưa được đọc
 let mang_chua_doc = []; 
 
-function Bat_dau_cau_noi() {
-    // 1. Chặn spam click quá nhanh (giới hạn 300ms mỗi lần đổi)
-    if (dang_cho) return; 
+let current_index = null; // Lưu vị trí (ID) của câu hiện tại trong mảng sayst
+let saved_quote_ids = JSON.parse(localStorage.getItem('saved_quotes')) || []; // Danh sách các ID đã lưu
 
+function Bat_dau_cau_noi() {
+    if (dang_cho) return; 
+    
     const phan_tu_say = document.getElementById("say");
     if (phan_tu_say && sayst.length > 0) {
         
-        // 2. Nếu mảng chưa đọc bị rỗng (lần đầu chạy hoặc đã bấm hết sạch câu nói)
         if (mang_chua_doc.length === 0) {
-            // Copy lại toàn bộ mảng gốc sayst
             mang_chua_doc = [...sayst]; 
         }
 
-        // 3. Lấy ngẫu nhiên 1 câu trong mảng chưa đọc
         const vi_tri_random = Math.floor(Math.random() * mang_chua_doc.length);
-        // Cắt câu đó ra khỏi mảng chưa đọc (hàm splice vừa lấy ra vừa xóa luôn)
-        const cau_duoc_chon = mang_chua_doc.splice(vi_tri_random, 1)[0];
+        const cau_duoc_chon = mang_chua_doc[vi_tri_random];
+        
+        // Lấy vị trí gốc trong mảng sayst làm ID nhận diện
+        current_index = sayst.indexOf(cau_duoc_chon); 
 
-        // 4. Cập nhật giao diện
+        mang_chua_doc.splice(vi_tri_random, 1);
         phan_tu_say.innerHTML = cau_duoc_chon;
 
-        // 5. Khóa nút trong 300ms để chống lag DOM
+        // Cập nhật lại chữ trên nút dựa vào trạng thái đã lưu hay chưa
+        cap_nhat_trang_thai_nut();
+
         dang_cho = true;
         setTimeout(() => {
             dang_cho = false;
@@ -82,11 +85,54 @@ function Bat_dau_cau_noi() {
     }
 }
 
-// Chạy lần đầu tiên khi tải trang
-if(document.getElementById("say") && sayst.length > 0) {
-    Bat_dau_cau_noi();
+function luu_cau_noi() {
+    if (current_index === null) return;
+
+    const btn = document.getElementById("btn-save-quote");
+    const vi_tri_da_luu = saved_quote_ids.indexOf(current_index);
+
+    if (vi_tri_da_luu === -1) {
+        // Chưa lưu -> Thêm vào danh sách và đổi nút thành "Bỏ Lưu"
+        saved_quote_ids.push(current_index);
+        if (btn) btn.innerText = "Bỏ Lưu";
+    } else {
+        // Đã lưu rồi -> Xóa khỏi danh sách và đổi nút về "Lưu câu nói"
+        saved_quote_ids.splice(vi_tri_da_luu, 1);
+        if (btn) btn.innerText = "Lưu câu nói";
+    }
+
+    // Lưu vào localStorage để lần sau load lại trang vẫn giữ nguyên
+    localStorage.setItem('saved_quotes', JSON.stringify(saved_quote_ids));
 }
 
+function cap_nhat_trang_thai_nut() {
+    const btn = document.getElementById("btn-save-quote");
+    if (!btn) return;
+    
+    if (saved_quote_ids.includes(current_index)) {
+        btn.innerText = "Bỏ Lưu";
+    } else {
+        btn.innerText = "Lưu câu nói";
+    }
+}
+
+// Chạy lần đầu tiên khi tải trang
+document.addEventListener("DOMContentLoaded", () => {
+    // Nếu có câu đã lưu trước đó, ưu tiên hiển thị câu đã lưu gần nhất
+    if (saved_quote_ids.length > 0 && document.getElementById("say")) {
+        current_index = saved_quote_ids[saved_quote_ids.length - 1];
+        if (sayst[current_index]) {
+            document.getElementById("say").innerHTML = sayst[current_index];
+            cap_nhat_trang_thai_nut();
+            return;
+        }
+    }
+    
+    // Nếu không có gì được lưu, chạy bốc thăm bình thường
+    if (document.getElementById("say") && sayst.length > 0) {
+        Bat_dau_cau_noi();
+    }
+});
 
 // 🔊 HÀM BÁO THỨC PHÁT NHẠC TỪ FILE + RUNG 5 GIÂY
 function playAlarmSound() {

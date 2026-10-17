@@ -23,6 +23,12 @@ let cau_noi_hay = [
     "Cách tốt nhất để bắt đầu là ngừng nói và hãy bắt tay vào làm - Walt Disney",
     "Bạn không cần phải giỏi mới được bắt đầu, nhưng bạn phải bắt đầu thì mới giỏi được. - Zig Ziglar",
     "Đừng nói cho người khác biết ước mơ của bạn là gì. Hãy hành động và cho họ thấy kết quả - Lisa (Blackpink)",
+    "Nếu thế giới có quay lưng với bạn, thì việc của bạn là quay lại tự ôm lấy chính mình và kiên cường bước tiếp - Mỹ Tâm",
+    "Hạnh phúc đôi khi chỉ là khi ta biết đủ. Bớt mong cầu một chút, bớt so sánh một chút, tự nhiên tâm mình sẽ bình yên - Hà Anh Tuấn",
+    "Nếu cảm thấy bản thân không đủ tốt, hãy nhớ rằng bạn chỉ là một người bình thường đang cố gắng hết sức. Khó khăn không định nghĩa bạn, cách bạn đối xử tốt với chính mình mới quyết định điều đó",
+    "Đừng bao giờ cúi đầu. Hãy luôn ngẩng cao. Nhìn thẳng vào thế giới. Khó khăn là để vượt qua, không phải để bạn tự hạ thấp giá trị của mình",
+    "Thành công không phải là đích đến cuối cùng, thất bại cũng không phải là dấu chấm hết: lòng can đảm để tiếp tục đi tiếp mới là điều quan trọng nhất",
+    "Bất kỳ ai cũng có thể bỏ cuộc, đó là việc dễ nhất trên đời. Nhưng việc giữ vững tinh thần khi mọi người xung quanh đều hiểu nếu bạn gục ngã, đó mới là sức mạnh thực sự",
 
     // === Cuộc Sống & Hạnh Phúc === //
     "Đôi khi, nhìn bạn bè tiến lên phía trước khiến tôi cảm thấy lo lắng... nhưng tôi nhanh chóng nhận ra rằng tốc độ của họ không phải là tốc độ của tôi. Mỗi khi điều đó xảy ra, điều giúp tôi tiếp tục tiến lên chính là lời hứa với bản thân rằng 'cứ từ từ thôi'. - Jin (BTS)",

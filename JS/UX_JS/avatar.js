@@ -15,6 +15,12 @@ userNameSpan.addEventListener('click', () => {
     // Gọi hàm hiện khung nhập chữ từ thư viện Pop-up của bạn
     showTextPrompt("Đổi tên người dùng", "Nhập tên mới của bạn...", function(value) {
         
+        // Kiểm tra độ dài tên
+        if (value.length > 12) {
+            showPopup("Thất bại", "Tên quá dài")
+            return;
+        }
+
         // Kiểm tra xem người dùng có nhập chữ hay không
         if (value && value.trim() !== "") {
             const newName = value.trim(); // Loại bỏ khoảng trắng thừa ở hai đầu

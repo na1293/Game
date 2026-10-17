@@ -1,4 +1,4 @@
-/* --- CSS PHÂN LOẠI DANH MỤC DASHBOARD --- */
+/* --- CSS PHÂN LOẠI DANH MỤC DASHBOARD (Phiên bản nút to, dễ bấm) --- */
 .tools-dashboard {
     text-align: left !important;
     padding: 24px !important;
@@ -21,25 +21,25 @@
 
 /* Tiêu đề nhóm (Học tập, Giải trí, Tiện ích) */
 .tool-group h3 {
-    font-size: 1rem;
+    font-size: 1.05rem;
     font-weight: 700;
     color: var(--text-color);
-    margin-bottom: 12px;
+    margin-bottom: 14px;
     display: flex;
     align-items: center;
-    border-bottom: 1px dashed rgba(113, 128, 150, 0.2); /* Đường gạch nhẹ phân vùng */
-    padding-bottom: 6px;
+    border-bottom: 1px dashed rgba(113, 128, 150, 0.2);
+    padding-bottom: 8px;
 }
 
 .tool-group h3 .group-icon {
-    margin-right: 6px;
+    margin-right: 8px;
 }
 
 /* Hệ thống hiển thị dạng lưới 2 cột */
 .link-grid-ui {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
+    gap: 12px; /* Tăng khoảng cách giữa các nút cho thoáng */
     list-style: none !important;
     padding-left: 0 !important;
 }
@@ -48,24 +48,25 @@
     margin: 0 !important;
 }
 
-/* Thẻ link liên kết */
+/* Thẻ link liên kết - Phóng to, dày dặn để dễ bấm */
 .link-grid-ui li a {
     display: flex;
     align-items: center;
-    padding: 10px 12px;
+    padding: 14px 16px; /* Tăng padding để nút to và thoải mái hơn */
     background: var(--bg-color, #f7fafc);
     color: var(--text-color, #2d3748) !important;
     text-decoration: none;
-    font-size: 0.88rem;
-    font-weight: 500;
-    border-radius: 8px;
-    border: 1px solid rgba(0, 0, 0, 0.02);
+    font-size: 0.95rem; /* Tăng nhẹ cỡ chữ */
+    font-weight: 600; /* Làm đậm hơn xíu cho dễ đọc */
+    border-radius: 12px; /* Bo góc mềm mại, hiện đại hơn */
+    border: 1px solid rgba(0, 0, 0, 0.03);
     transition: all 0.2s ease-in-out;
+    min-height: 52px; /* Đảm bảo chiều cao chuẩn để bấm không bị hụt trên mobile */
 }
 
 .link-grid-ui li a .icon {
-    margin-right: 6px;
-    font-size: 1rem;
+    margin-right: 10px;
+    font-size: 1.2rem; /* Phóng to icon cho bắt mắt */
     transition: transform 0.2s ease;
 }
 
@@ -73,12 +74,12 @@
 .link-grid-ui li a:hover {
     background: var(--card-bg, #ffffff);
     border-color: #4299e1;
-    box-shadow: 0 4px 12px rgba(66, 153, 225, 0.1);
-    transform: translateY(-1.5px);
+    box-shadow: 0 6px 16px rgba(66, 153, 225, 0.15);
+    transform: translateY(-2px);
 }
 
 .link-grid-ui li a:hover .icon {
-    transform: scale(1.2);
+    transform: scale(1.15);
 }
 
 /* Tự động co về 1 cột trên màn hình điện thoại nhỏ */
