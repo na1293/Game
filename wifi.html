@@ -221,42 +221,84 @@
 let packages = [
     { id: 1, name: "Gói 7K", price: 7000, cycle: 1, type: "bucket", gb: 1 },
     { id: 2, name: "Gói 15K", price: 15000, cycle: 3, type: "bucket", gb: 3 },
-    { id: 3, name: "Combo (15K + 7K)", price: 22000, cycle: 4, type: "bucket", gb: 4 },
+    { id: 3, name: "Combo", price: 22000, cycle: 4, type: "bucket", gb: 4 },
     { id: 4, name: "Gói 90K", price: 90000, cycle: 30, type: "daily_limit", gb: 1 },
 ];
 
+// RENDER AN TOÀN TUYỆT ĐỐI CHỐNG XSS
 function renderPackages() {
     const tbody = document.querySelector('#pkg-table tbody');
     tbody.innerHTML = '';
+    
     packages.forEach(pkg => {
-        tbody.innerHTML += `
-            <tr>
-                <td><b>${pkg.name}</b></td>
-                <td>${pkg.price.toLocaleString()}đ</td>
-                <td>${pkg.cycle} ngày</td>
-                <td>${pkg.type === 'bucket' ? 'Dồn chu kỳ' : 'Reset ngày'}</td>
-                <td>${pkg.gb} GB ${pkg.type === 'daily_limit' ? '/ngày' : ''}</td>
-                <td><button onclick="deletePackage(${pkg.id})">Xóa</button></td>
-            </tr>
-        `;
+        const tr = document.createElement('tr');
+
+        const tdName = document.createElement('td');
+        const b = document.createElement('b');
+        b.textContent = pkg.name; // Chống XSS
+        tdName.appendChild(b);
+
+        const tdPrice = document.createElement('td');
+        tdPrice.textContent = pkg.price.toLocaleString() + 'đ';
+
+        const tdCycle = document.createElement('td');
+        tdCycle.textContent = pkg.cycle + ' ngày';
+
+        const tdType = document.createElement('td');
+        tdType.textContent = (pkg.type === 'bucket' ? 'Dồn chu kỳ' : 'Reset ngày');
+
+        const tdGb = document.createElement('td');
+        tdGb.textContent = pkg.gb + ' GB ' + (pkg.type === 'daily_limit' ? '/ngày' : '');
+
+        const tdAction = document.createElement('td');
+        const btn = document.createElement('button');
+        btn.textContent = 'Xóa';
+        btn.onclick = () => deletePackage(pkg.id);
+        tdAction.appendChild(btn);
+
+        tr.appendChild(tdName);
+        tr.appendChild(tdPrice);
+        tr.appendChild(tdCycle);
+        tr.appendChild(tdType);
+        tr.appendChild(tdGb);
+        tr.appendChild(tdAction);
+
+        tbody.appendChild(tr);
     });
 }
 
 function addPackage() {
-    const name = document.getElementById('pkg-name').value;
-    const price = parseFloat(document.getElementById('pkg-price').value);
-    const cycle = parseInt(document.getElementById('pkg-cycle').value);
-    const type = document.getElementById('pkg-type').value;
-    const gb = parseFloat(document.getElementById('pkg-gb').value);
+    const nameInput = document.getElementById('pkg-name');
+    const priceInput = document.getElementById('pkg-price');
+    const cycleInput = document.getElementById('pkg-cycle');
+    const typeInput = document.getElementById('pkg-type');
+    const gbInput = document.getElementById('pkg-gb');
 
-    if(!name || isNaN(price) || isNaN(cycle) || isNaN(gb)) return alert("Vui lòng nhập đầy đủ thông tin gói!");
+    const name = nameInput.value.trim();
+    const price = parseFloat(priceInput.value);
+    const cycle = parseInt(cycleInput.value);
+    const type = typeInput.value;
+    const gb = parseFloat(gbInput.value);
+
+    if (!name || isNaN(price) || isNaN(cycle) || isNaN(gb)) {
+        return showPopup("Lỗi", "Vui lòng nhập đầy đủ thông tin gói cước!");
+    }
+
+    // THÊM: Kiểm tra giới hạn tên gói tối đa 10 ký tự ở UI
+    if (name.length > 10) {
+        return showPopup("Lỗi", "Tên gói cước chỉ được tối đa 10 ký tự thôi nha!");
+    }
+
+    if (packages.length >= 30) {
+        return showPopup("Lỗi", "Danh sách đã đạt giới hạn tối đa 30 gói cước!");
+    }
 
     packages.push({ id: Date.now(), name, price, cycle, type, gb });
     
-    document.getElementById('pkg-name').value = '';
-    document.getElementById('pkg-price').value = '';
-    document.getElementById('pkg-cycle').value = '';
-    document.getElementById('pkg-gb').value = '';
+    nameInput.value = '';
+    priceInput.value = '';
+    cycleInput.value = '';
+    gbInput.value = '';
 
     renderPackages();
 }
@@ -291,15 +333,31 @@ function handleFileSelect(event) {
     reader.onload = function(e) {
         try {
             const importedData = JSON.parse(e.target.result);
-            if (Array.isArray(importedData)) {
-                packages = importedData;
-                renderPackages();
-                alert("Nhập cấu hình gói cước thành công!");
-            } else {
-                alert("File không đúng định dạng!");
+            
+            if (!Array.isArray(importedData)) {
+                return showPopup("Lỗi", "Cấu trúc tệp không hợp lệ: Bắt buộc phải là một mảng dữ liệu gói cước!");
             }
+            if (importedData.length > 30) {
+                return showPopup("Lỗi", "Tệp tin vượt quá giới hạn tối đa cho phép là 30 gói cước!");
+            }
+
+            // Kiểm tra cấu trúc chi tiết từng phần tử + Giới hạn tên gói <= 10 ký tự
+            for (let item of importedData) {
+                if (!item || typeof item !== 'object' ||
+                    typeof item.name !== 'string' || item.name.length > 10 || // Check độ dài tên <= 10
+                    typeof item.price !== 'number' || isNaN(item.price) ||
+                    typeof item.cycle !== 'number' || isNaN(item.cycle) ||
+                    typeof item.type !== 'string' || !['bucket', 'daily_limit'].includes(item.type) ||
+                    typeof item.gb !== 'number' || isNaN(item.gb)) {
+                    return showPopup("Lỗi", "Phát hiện tên gói quá dài (>10 ký tự), sai kiểu dữ liệu hoặc lỗi cấu trúc trong tệp JSON. Từ chối nạp!");
+                }
+            }
+
+            packages = importedData;
+            renderPackages();
+            showPopup("Thành công", "Nhập cấu hình gói cước thành công!");
         } catch (err) {
-            alert("Đã xảy ra lỗi khi đọc file JSON!");
+            showPopup("Lỗi", "Tệp tin JSON bị lỗi cú pháp hoặc không thể giải mã nội dung!");
         }
     };
     reader.readAsText(file);
@@ -414,7 +472,7 @@ function runAnalysis() {
     let minCost = results[0].cost;
 
     let isShortTerm = timeframeDays <= 7;
-    let recommendText = `<b>Đề xuất (${isShortTerm ? 'Ngắn hạn' : 'Dài hạn'} - ${timeframeDays} ngày):</b> `;
+    let recommendText = `<b>Đề xuất (${isShortTerm ? 'Ngắn hạn' : 'Dài hạn'} ${timeframeDays} ngày):</b> `;
     if (isShortTerm) {
         recommendText += `Với nhu cầu ngắn hạn, chọn phương án có tổng chi phí thấp nhất để tối ưu dòng tiền, tránh bị đọng vốn.`;
     } else {
@@ -429,23 +487,64 @@ function runAnalysis() {
             ? `${r.totalPurchases} lượt (${r.multiplier} gói chạy song song)` 
             : `${r.totalPurchases} gói`;
 
-        tbody.innerHTML += `
-            <tr>
-                <td style="text-align:left;">
-                    <b>${r.name}</b> ${isBest ? '<br><span class="badge-best">TỐI ƯU NHẤT</span>' : ''}
-                </td>
-                <td>${qtyText}</td>
-                <td class="text-primary">${r.cost.toLocaleString()}đ</td>
-                <td>${r.weeklyAvg.toLocaleString()}đ</td>
-                <td class="text-danger">${r.wastedGB} GB</td>
-                <td>${isBest ? 'Tiết kiệm nhất' : (r.cost > minCost * 1.5 ? 'Phí quá đắt' : 'Linh hoạt')}</td>
-            </tr>
-        `;
+        const tr = document.createElement('tr');
+
+        const tdName = document.createElement('td');
+        tdName.style.textAlign = 'left';
+        const b = document.createElement('b');
+        b.textContent = r.name;
+        tdName.appendChild(b);
+
+        if (isBest) {
+            tdName.appendChild(document.createElement('br'));
+            const badge = document.createElement('span');
+            badge.className = 'badge-best';
+            badge.textContent = 'TỐI ƯU NHẤT';
+            tdName.appendChild(badge);
+        }
+
+        const tdQty = document.createElement('td');
+        tdQty.textContent = qtyText;
+
+        const tdCost = document.createElement('td');
+        tdCost.className = 'text-primary';
+        tdCost.textContent = r.cost.toLocaleString() + 'đ';
+
+        const tdWeekly = document.createElement('td');
+        tdWeekly.textContent = r.weeklyAvg.toLocaleString() + 'đ';
+
+        const tdWasted = document.createElement('td');
+        tdWasted.className = 'text-danger';
+        tdWasted.textContent = r.wastedGB + ' GB';
+
+        const tdStatus = document.createElement('td');
+        tdStatus.textContent = isBest ? 'Tiết kiệm nhất' : (r.cost > minCost * 1.5 ? 'Phí quá đắt' : 'Linh hoạt');
+
+        tr.appendChild(tdName);
+        tr.appendChild(tdQty);
+        tr.appendChild(tdCost);
+        tr.appendChild(tdWeekly);
+        tr.appendChild(tdWasted);
+        tr.appendChild(tdStatus);
+
+        tbody.appendChild(tr);
     });
 };
 
 // Khởi tạo hiển thị danh sách ban đầu
 renderPackages();
+</script>
+
+<script>
+    console.log(
+        "%cDỪNG LẠI", 
+        "color: red; font-size: 24px; font-weight: bold;"
+        );
+
+        console.log(
+        "%c Đây là công cụ dành cho nhà phát triển. Nếu có ai bảo bạn dán bất cứ thứ gì vào đây, KHÔNG THỰC HIỆN điều đó", 
+        "color: red; font-size: 24px; font-weight: bold;"
+        );
 </script>
 
 </body>

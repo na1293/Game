@@ -351,8 +351,8 @@ async function reloadAndClearCache() {
                 <hr>
                 <strong class="event_news event_news_style">Lịch học hôm nay</strong>
                 <button onclick="luu_cau_noi()" id="btn-save-quote">Lưu câu nói</button>
-                <hr>
                 <button onclick="Bat_dau_cau_noi()">Câu nói khác</button>
+                <hr>
                 <button onclick="window.location.reload()">Tải lại</button>
                 <button onclick="reloadAndClearCache()" style="padding: 10px 15px; cursor: pointer;">
                     Cập nhật
@@ -489,7 +489,7 @@ async function reloadAndClearCache() {
 
                         <div class="todo-container" style="margin-top: 10px;">
                             <button id="export-btn-todo">Xuất dữ liệu</button>
-                            <button id="import-btn-todo">Nhập dữ liệu</button>
+                            <button id="import-btn-todo" onclick="showPopup('Cảnh báo', 'Hãy chắc chắn rằng file bạn chọn từ nguồn chính thức đáng tin cậy', 'Đã hiểu')">Nhập dữ liệu</button>
                             <input type="file" id="import-file-input" accept=".json" style="display: none;">
                         </div>
 
@@ -605,7 +605,7 @@ async function reloadAndClearCache() {
                             <button id="addBtn">Thêm</button>
                         </div>
                         <div class="todo-container">
-                            <button id="import_data_brth">Nhập dữ liệu</button>
+                            <button id="import_data_brth" onclick="showPopup('Cảnh báo', 'Hãy chắc chắn rằng file bạn chọn từ nguồn chính thức đáng tin cậy', 'Đã hiểu')">Nhập dữ liệu</button>
                             <button id="export_data_brth">Xuất dữ liệu</button>
                         </div>
                         
@@ -904,6 +904,18 @@ async function reloadAndClearCache() {
             }
         });
     });
+    </script>
+
+    <script>
+        console.log(
+            "%cDỪNG LẠI", 
+            "color: red; font-size: 24px; font-weight: bold;"
+            );
+
+            console.log(
+            "%c Đây là công cụ dành cho nhà phát triển. Nếu có ai bảo bạn dán bất cứ thứ gì vào đây, KHÔNG THỰC HIỆN điều đó", 
+            "color: red; font-size: 24px; font-weight: bold;"
+            );
     </script>
 </body>
 </html>

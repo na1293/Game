@@ -10,25 +10,31 @@ document.addEventListener("DOMContentLoaded", () => {
     const inputFile = document.getElementById('input-file');
     const todoList = document.getElementById('todo-list');
 
-    // FIX LỖI "Unexpected end of JSON input": Bọc try-catch khi parse LocalStorage
+    // === VÁ 1: GIỚI HẠN UI MAXLENGTH NGAY TRÊN Ô INPUT ===
+    if (scheduleInput) {
+        scheduleInput.maxLength = 30; // Khóa cứng tối đa 30 ký tự ngay trên giao diện
+    }
+
+    // Tải và validate dữ liệu từ LocalStorage
     let scheduleArray = [];
     try {
         const rawData = localStorage.getItem(STORAGE_KEY);
         if (rawData && rawData.trim() !== "") {
-            scheduleArray = JSON.parse(rawData);
+            const parsed = JSON.parse(rawData);
+            if (Array.isArray(parsed)) {
+                // Kiểm tra cấu trúc và giới hạn khi load từ bộ nhớ lên
+                for (let item of parsed) {
+                    if (!item || typeof item !== "object" || typeof item.subject !== "string" || item.subject.length > 30) {
+                        throw new Error("Dữ liệu trong bộ nhớ không hợp lệ hoặc vượt quá 30 ký tự!");
+                    }
+                }
+                scheduleArray = parsed.slice(0, 20); // Giới hạn cứng tối đa 20 task
+            }
         }
     } catch (e) {
-        console.warn("Dữ liệu LocalStorage bị lỗi, reset mảng mới:", e);
+        console.warn("Dữ liệu LocalStorage bị lỗi hoặc vi phạm giới hạn, reset mảng mới:", e);
         scheduleArray = [];
-    }
-
-    // Nắn dữ liệu nếu người dùng từng lưu dạng Object cũ
-    if (!Array.isArray(scheduleArray)) {
-        if (typeof scheduleArray === 'object' && scheduleArray !== null) {
-            scheduleArray = Object.entries(scheduleArray).map(([day, subject]) => ({ day, subject }));
-        } else {
-            scheduleArray = [];
-        }
+        localStorage.removeItem(STORAGE_KEY);
     }
 
     const dayMap = {
@@ -46,12 +52,16 @@ document.addEventListener("DOMContentLoaded", () => {
         renderList();
     }
 
+    // === RENDER AN TOÀN TUYỆT ĐỐI CHỐNG XSS (Dùng textContent) ===
     function renderList() {
         if (!todoList) return;
         todoList.innerHTML = '';
 
         if (scheduleArray.length === 0) {
-            todoList.innerHTML = `<li style="color: #888; text-align: center; margin-top: 10px;">Chưa có dữ liệu thời khóa biểu. Hãy thêm mới nhé! ✨</li>`;
+            const emptyLi = document.createElement('li');
+            emptyLi.style.cssText = "color: #888; text-align: center; margin-top: 10px;";
+            emptyLi.textContent = "Chưa có dữ liệu thời khóa biểu. Hãy thêm mới nhé! ✨";
+            todoList.appendChild(emptyLi);
             return;
         }
 
@@ -66,21 +76,42 @@ document.addEventListener("DOMContentLoaded", () => {
             const li = document.createElement('li');
             li.style.cssText = "margin: 8px 0; padding: 10px; background: #f1f2f6; border-radius: 6px; display: flex; justify-content: space-between; align-items: center;";
             
-            li.innerHTML = `
-                <span><b>${dayMap[item.day] || 'Thứ ' + item.day}:</b> ${item.subject}</span>
-                <button onclick="deleteItem(${index})" style="background: #ff4757; color: white; border: none; padding: 4px 8px; border-radius: 4px; cursor: pointer;">Xóa</button>
-            `;
+            const span = document.createElement('span');
+            const boldDay = document.createElement('b');
+            boldDay.textContent = (dayMap[item.day] || 'Thứ ' + item.day) + ": ";
+            
+            const subjectText = document.createTextNode(item.subject); // Chống XSS chuẩn bài
+
+            span.appendChild(boldDay);
+            span.appendChild(subjectText);
+
+            const deleteBtn = document.createElement('button');
+            deleteBtn.textContent = "Xóa";
+            deleteBtn.style.cssText = "background: #ff4757; color: white; border: none; padding: 4px 8px; border-radius: 4px; cursor: pointer;";
+            deleteBtn.onclick = () => deleteItem(index);
+
+            li.appendChild(span);
+            li.appendChild(deleteBtn);
             todoList.appendChild(li);
         });
     }
 
+    // === VÁ 2: KIỂM TRA ĐIỀU KIỆN KHI BẤM THÊM ===
     if (addBtn) {
         addBtn.addEventListener('click', () => {
             const subject = scheduleInput.value.trim();
             const day = daySelect.value;
 
             if (!subject) {
-                alert("Nhập nội dung môn học đã nha!");
+                if (typeof showPopup === 'function') showPopup("Lỗi", "Nhập nội dung môn học đã nha!");
+                else alert("Nhập nội dung môn học đã nha!");
+                return;
+            }
+
+            // Chặn ký tự vượt quá 30
+            if (subject.length > 30) {
+                if (typeof showPopup === 'function') showPopup("Lỗi", "Tên môn học tối đa chỉ được 30 ký tự!");
+                else alert("Tên môn học tối đa chỉ được 30 ký tự!");
                 return;
             }
 
@@ -89,6 +120,12 @@ document.addEventListener("DOMContentLoaded", () => {
             if (existingIndex !== -1) {
                 scheduleArray[existingIndex].subject = subject;
             } else {
+                // Kiểm tra giới hạn 20 task khi thêm mới
+                if (scheduleArray.length >= 20) {
+                    if (typeof showPopup === 'function') showPopup("Lỗi", "Danh sách đã đạt giới hạn tối đa 20 mục!");
+                    else alert("Danh sách đã đạt giới hạn tối đa 20 mục!");
+                    return;
+                }
                 scheduleArray.push({ day, subject });
             }
 
@@ -104,17 +141,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (clearBtn) {
         clearBtn.addEventListener('click', () => {
-            if (confirm("Xóa sạch lịch học thiệt hả?")) {
-                scheduleArray = [];
-                localStorage.removeItem(STORAGE_KEY);
-                renderList();
-            }
+            // Thay confirm bằng hành động trực tiếp hoặc thông báo gọn gàng hơn
+            scheduleArray = [];
+            localStorage.removeItem(STORAGE_KEY);
+            renderList();
         });
     }
 
     if (exportBtn) {
         exportBtn.addEventListener('click', () => {
-            if (scheduleArray.length === 0) return alert("Chưa có lịch sao xuất được nè!");
+            if (scheduleArray.length === 0) {
+                if (typeof showPopup === 'function') showPopup("Thông báo", "Chưa có lịch sao xuất được nè!");
+                else alert("Chưa có lịch sao xuất được nè!");
+                return;
+            }
             
             const blob = new Blob([JSON.stringify(scheduleArray, null, 2)], { type: "application/json" });
             const url = URL.createObjectURL(blob);
@@ -126,6 +166,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
+    // === VÁ 3: KIỂM ĐỊNH NGHIÊM NGẶT KHI NHẬP FILE JSON ===
     if (importBtn && inputFile) {
         importBtn.addEventListener('click', () => inputFile.click());
 
@@ -137,11 +178,27 @@ document.addEventListener("DOMContentLoaded", () => {
             reader.onload = (event) => {
                 try {
                     const data = JSON.parse(event.target.result);
-                    scheduleArray = Array.isArray(data) ? data : Object.entries(data).map(([day, subject]) => ({ day, subject }));
+                    let parsedList = Array.isArray(data) ? data : Object.entries(data).map(([day, subject]) => ({ day, subject }));
+
+                    // Kiểm tra giới hạn số lượng tối đa 20 task
+                    if (parsedList.length > 20) {
+                        throw new Error("Tệp tin vượt quá giới hạn tối đa 20 mục cho phép!");
+                    }
+
+                    // Kiểm tra cấu trúc và độ dài từng item (<= 30 ký tự)
+                    for (let item of parsedList) {
+                        if (!item || typeof item !== "object" || typeof item.subject !== "string" || item.subject.length > 30) {
+                            throw new Error("Phát hiện dữ liệu sai cấu trúc hoặc môn học dài hơn 30 ký tự!");
+                        }
+                    }
+
+                    scheduleArray = parsedList;
                     saveData();
-                    alert("Nhập file thành công rùi nha! 🎉");
+                    if (typeof showPopup === 'function') showPopup("Thành công", "Nhập file thành công rùi nha! 🎉");
+                    else alert("Nhập file thành công rùi nha! 🎉");
                 } catch (err) {
-                    alert("File bị lỗi cấu trúc rùi: " + err.message);
+                    if (typeof showPopup === 'function') showPopup("Lỗi", err.message);
+                    else alert("File bị lỗi cấu trúc rùi: " + err.message);
                 }
             };
             reader.readAsText(file);

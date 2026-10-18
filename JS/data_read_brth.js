@@ -42,8 +42,10 @@ function exportLocalStorage(storageKey, defaultFileName, emptyAlertMessage) {
     URL.revokeObjectURL(url);
 }
 
-// 2. Hàm Import dùng chung
-function importLocalStorage(storageKey, compareKeys = []) {
+// ==========================================
+// 2. Hàm Import dùng chung (Đã bọc giáp bảo vệ)
+// ==========================================
+function importLocalStorage(storageKey, compareKeys = [], maxLimit = 20, validateFn = null) {
     const fileInput = document.createElement("input");
     fileInput.type = "file";
     fileInput.accept = ".json";
@@ -59,39 +61,52 @@ function importLocalStorage(storageKey, compareKeys = []) {
                 const fileContent = e.target.result;
                 let importedList = JSON.parse(fileContent);
                 
+                // 1. Kiểm tra có phải mảng không
                 if (!Array.isArray(importedList)) {
-                    throw new Error("Cấu trúc file JSON phải là một danh sách");
+                    return showPopup("Lỗi", "Cấu trúc file JSON phải là một danh sách hợp lệ!");
+                }
+
+                // 2. Validate cấu trúc từng phần tử bên trong (Nếu có truyền hàm check riêng)
+                if (validateFn) {
+                    for (let item of importedList) {
+                        if (!validateFn(item)) {
+                            return showPopup("Lỗi", "Phát hiện dữ liệu sai định dạng hoặc không hợp lệ trong file!");
+                        }
+                    }
                 }
 
                 let currentLocalData = localStorage.getItem(storageKey);
                 let currentList = currentLocalData ? JSON.parse(currentLocalData) : [];
 
-                // Chỉ lấy tối đa 20 phần tử đầu tiên từ file import
-                let slicedImportedList = importedList.slice(0, 20);
+                // 3. Kiểm tra tổng số lượng sau khi gộp có vượt giới hạn maxLimit không
                 let countAdded = 0;
+                let tempMergedList = [...currentList];
 
-                slicedImportedList.forEach(newItem => {
-                    // Check trùng dựa trên các trường truyền vào (ví dụ: name, date hoặc text)
-                    const isDuplicate = currentList.some(oldItem => {
+                importedList.forEach(newItem => {
+                    const isDuplicate = tempMergedList.some(oldItem => {
                         return compareKeys.every(key => oldItem[key] === newItem[key]);
                     });
 
                     if (!isDuplicate) {
-                        currentList.push(newItem);
+                        tempMergedList.push(newItem);
                         countAdded++;
                     }
                 });
 
+                if (tempMergedList.length > maxLimit) {
+                    return showPopup("Lỗi", `Danh sách sau khi nhập vượt quá giới hạn tối đa cho phép là ${maxLimit} mục!`);
+                }
+
                 if (countAdded > 0) {
-                    localStorage.setItem(storageKey, JSON.stringify(currentList));
-                    alert(`Nhập thành công!`);
-                    window.location.reload();
+                    localStorage.setItem(storageKey, JSON.stringify(tempMergedList));
+                    showPopup("Thành công", "Nhập dữ liệu thành công!");
+                    setTimeout(() => window.location.reload(), 1000);
                 } else {
-                    alert("Lỗi trùng lặp dữ liệu hoặc không có gì mới để thêm.");
+                    showPopup("Thông báo", "Dữ liệu bị trùng lặp hoặc không có gì mới để thêm.");
                 }
 
             } catch (error) {
-                alert("Vui lòng nhập đúng file hoặc thử lại file khác.");
+                showPopup("Lỗi", "Tệp tin JSON bị lỗi cú pháp hoặc không thể giải mã.");
             }
         };
 
@@ -108,19 +123,30 @@ function importLocalStorage(storageKey, compareKeys = []) {
 
 // --- MÔN SINH NHẬT ---
 
+// --- MÔN SINH NHẬT ---
 export_data_brth.addEventListener("click", () => {
     exportLocalStorage("myBirthdays", "birthdays_backup.json", "Không có dữ liệu sinh nhật");
 });
 
 import_data_brth.addEventListener("click", () => {
-    // Check trùng dựa trên cả 'name' và 'date'
-    importLocalStorage("myBirthdays", ["name", "date"]); 
+    // Truyền thêm hàm validate: bắt buộc có name (<=17 ký tự) và date
+    importLocalStorage("myBirthdays", ["name", "date"], 15, (item) => {
+        return item && typeof item === "object" && 
+               typeof item.name === "string" && item.name.length <= 17 && 
+               typeof item.date === "string";
+    }); 
 });
 
+// --- TO-DO LIST ---
 export_btn_todo.addEventListener("click", () => {
     exportLocalStorage("todos", "my_todos_backup.json", "To-do list trống");
 });
 
 import_btn_todo.addEventListener("click", () => {
-    importLocalStorage("todos", ["text"]); 
+    // Giả sử Todo giới hạn tối đa 50 task, check thuộc tính text
+    importLocalStorage("todos", ["text"], 50, (item) => {
+        return item && typeof item === "object" && 
+               typeof item.text === "string" && 
+               typeof item.completed === "boolean";
+    }); 
 });
