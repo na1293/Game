@@ -206,6 +206,7 @@ window.showPopup = function(title, text, btnText = "Đóng") {
 };
 
 // 2. Popup Nhập Text
+// Vá hàm showTextPrompt an toàn hơn
 window.showTextPrompt = function(title, placeholder, onConfirm) {
   initPopup();
 
@@ -213,20 +214,24 @@ window.showTextPrompt = function(title, placeholder, onConfirm) {
   document.getElementById('popup-text').textContent = '';
 
   const container = document.getElementById('popup-input-container');
-  container.innerHTML = `<input type="text" id="popup-text-input" class="popup-control" placeholder="${placeholder || ''}" autocomplete="off">`;
+  container.innerHTML = ''; // Xóa sạch nội dung cũ
+
+  const input = document.createElement('input');
+  input.type = 'text';
+  input.id = 'popup-text-input';
+  input.className = 'popup-control';
+  input.placeholder = placeholder || ''; // An toàn tuyệt đối khỏi Attribute Injection
+  input.autocomplete = 'off';
+  container.appendChild(input);
 
   setupButtons(true, "Xác nhận", "Hủy", () => {
-    const input = document.getElementById('popup-text-input');
-    const val = input ? input.value : '';
+    const val = input.value;
     if (typeof onConfirm === 'function') onConfirm(val);
   });
 
   document.getElementById('global-popup').classList.add('active');
 
-  setTimeout(() => {
-    const input = document.getElementById('popup-text-input');
-    if (input) input.focus();
-  }, 120);
+  setTimeout(() => input.focus(), 120);
 };
 
 // 3. Popup Dropdown List
