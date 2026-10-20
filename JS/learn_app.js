@@ -134,6 +134,23 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 });
 
+// === Hàm chứa cài đặt mở rộng === //
+
+function quote_setting() {
+    showDropdownPrompt("Chọn tùy chỉnh", ["1. Câu nói khác", "2. Tải lại", "3. Cập nhật"], function(setting_quote) {
+        if (setting_quote[0] == "1") {
+            Bat_dau_cau_noi();
+        }
+        else if (setting_quote[0] == "2") {
+            window.location.reload()
+        } else if (setting_quote[0] == "3") {
+            reloadAndClearCache();
+        }
+    });
+}
+
+// === === === //
+
 // 🔊 HÀM BÁO THỨC PHÁT NHẠC TỪ FILE + RUNG 5 GIÂY
 function playAlarmSound() {
     if (window.alarmAudio) {

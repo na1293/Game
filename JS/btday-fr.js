@@ -17,7 +17,7 @@ try {
         birthdayList = parsed;
     }
 } catch (e) {
-    showPopup("Lỗi", "Dữ liệu LocalStorage không hợp lệ hoặc vượt quá giới hạn!");
+    showPopup("Lỗi", "Dữ liệu sinh nhật không hợp lệ hoặc vượt quá giới hạn!");
     birthdayList = [];
 }
 

@@ -138,8 +138,8 @@
         <h2>
             <span>Danh Sách Gói Cước & Combos</span>
             <div class="btn-group-io">
-                <button class="btn-secondary" onclick="exportConfig()">📤 Xuất Cấu Hình</button>
-                <button class="btn-warning" onclick="importConfig()">📥 Nhập Cấu Hình</button>
+                <button class="btn-secondary" onclick="alert('Hãy chắc chắn rằng file bạn chọn từ nguồn chính thức'); exportConfig()">📤 Xuất Cấu Hình</button>
+                <button class="btn-warning" onclick="alert('Hãy chắc chắn rằng file bạn chọn từ nguồn chính thức'); importConfig()">📥 Nhập Cấu Hình</button>
                 <input type="file" id="import-file" style="display: none;" accept=".json" onchange="handleFileSelect(event)">
             </div>
         </h2>

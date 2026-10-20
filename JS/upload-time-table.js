@@ -32,7 +32,7 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         }
     } catch (e) {
-        console.warn("Dữ liệu LocalStorage bị lỗi hoặc vi phạm giới hạn, reset mảng mới:", e);
+        console.warn("Dữ liệu bị lỗi hoặc vượt giới hạn, reset mảng mới:", e);
         scheduleArray = [];
         localStorage.removeItem(STORAGE_KEY);
     }

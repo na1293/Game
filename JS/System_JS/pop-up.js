@@ -235,24 +235,35 @@ window.showTextPrompt = function(title, placeholder, onConfirm) {
 };
 
 // 3. Popup Dropdown List
+// 3. Popup Dropdown List (Đã vá lỗi XSS)
 window.showDropdownPrompt = function(title, optionsArray, onConfirm) {
   initPopup();
 
   document.getElementById('popup-title').textContent = title;
   document.getElementById('popup-text').textContent = '';
 
-  const optionsHTML = optionsArray.map(opt => {
+  const container = document.getElementById('popup-input-container');
+  container.innerHTML = ''; // Xóa sạch nội dung cũ
+
+  // Tạo thẻ select an toàn bằng DOM API
+  const select = document.createElement('select');
+  select.id = 'popup-select-input';
+  select.className = 'popup-control';
+
+  optionsArray.forEach(opt => {
     const val = typeof opt === 'object' ? opt.value : opt;
     const label = typeof opt === 'object' ? opt.label : opt;
-    return `<option value="${val}">${label}</option>`;
-  }).join('');
 
-  const container = document.getElementById('popup-input-container');
-  container.innerHTML = `<select id="popup-select-input" class="popup-control">${optionsHTML}</select>`;
+    const option = document.createElement('option');
+    option.value = val;
+    option.textContent = label; // Chống XSS
+    select.appendChild(option);
+  });
+
+  container.appendChild(select);
 
   setupButtons(true, "Chọn", "Hủy", () => {
-    const select = document.getElementById('popup-select-input');
-    const val = select ? select.value : '';
+    const val = select.value;
     if (typeof onConfirm === 'function') onConfirm(val);
   });
 
