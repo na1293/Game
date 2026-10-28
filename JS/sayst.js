@@ -58,5 +58,4 @@ let cau_noi_hay = [
     "Cậu là một trải nghiệm. Hãy chắc chắn rằng cậu là một trải nghiệm tốt. - Garnet (Bộ phim Steven Universe)",
     "Nếu cậu luôn thay đổi để người khác thích mình, cậu sẽ không bao giờ biết được mình thực sự là ai - Steven Universe",
     "Cậu không thể quay lại quá khứ và thay đổi cách nó bắt đầu, nhưng cậu có thể thay đổi cách nó kết thúc - Steven Universe",
-
 ];
