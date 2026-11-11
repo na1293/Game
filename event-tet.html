@@ -161,6 +161,8 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 10px;
         }
 
         .checklist-header h2 {
@@ -169,16 +171,23 @@
             color: var(--text-main);
         }
 
+        .checklist-actions-top {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
         .btn {
             font-family: 'Inter', sans-serif;
             background-color: var(--primary-red);
             color: #FFFFFF;
             border: 2px solid var(--text-main);
-            padding: 8px 16px;
+            padding: 6px 12px;
             border-radius: 8px;
             font-weight: 600;
             cursor: pointer;
             box-shadow: none;
+            font-size: 0.9rem;
         }
 
         .btn-secondary {
@@ -313,6 +322,9 @@
     <div class="petal-container" id="petalContainer"></div>
     <canvas id="fireworksCanvas"></canvas>
 
+    <!-- Thẻ input ẩn để nhập file JSON -->
+    <input type="file" id="importFile" accept=".json" style="display: none;" onchange="processImportFile(event)">
+
     <div class="container">
         <header>
             <h1>Tet Dinh Mui 2027</h1>
@@ -349,7 +361,11 @@
             <div id="checklistContent" style="display: none;">
                 <div class="checklist-header">
                     <h2>Danh Sach Viec Ngay Tet</h2>
-                    <button class="btn" onclick="handleAddTask()">Them viec</button>
+                    <div class="checklist-actions-top">
+                        <button class="btn" onclick="handleAddTask()">Them viec</button>
+                        <button class="btn btn-secondary" onclick="exportJSON()">Xuat JSON</button>
+                        <button class="btn btn-secondary" onclick="triggerImportJSON()">Nhap JSON</button>
+                    </div>
                 </div>
                 <div id="daySectionsContainer"></div>
             </div>
@@ -448,7 +464,7 @@
         animateFireworks();
         setInterval(launchFirework, 800);
 
-        // Trien khai cac ham Popup theo huong dan
+        // Triển khai các hàm Popup theo hướng dẫn
         function showPopup(title, message) {
             const overlay = document.getElementById('popupOverlay');
             document.getElementById('popupTitle').innerText = title;
@@ -514,17 +530,21 @@
             document.getElementById('popupOverlay').style.display = 'none';
         }
 
-        // Cau truc du lieu JSON chia theo ngay voi cac nhiem vu mac dinh theo yeu cau
-        let tetData = {
-            "Ngày 25 Tết": [
+        // Hàm chống XSS an toàn
+        function escapeHtml(str) {
+            if (typeof str !== 'string') return str;
+            return str.replace(/&/g, "&amp;")
+                      .replace(/</g, "&lt;")
+                      .replace(/>/g, "&gt;")
+                      .replace(/"/g, "&quot;")
+                      .replace(/'/g, "&#039;");
+        }
 
-            ],
-            "Ngày 26 Tết": [
-
-            ],
-            "Ngày 27 Tết": [
-
-            ],
+        // Cấu trúc dữ liệu mặc định
+        const defaultData = {
+            "Ngày 25 Tết": [],
+            "Ngày 26 Tết": [],
+            "Ngày 27 Tết": [],
             "Ngày 28 Tết": [
                 { text: "Dọn dẹp trang hoàng nhà cửa", completed: false },
                 { text: "Lau dọn bàn thờ", completed: false },
@@ -575,6 +595,21 @@
             ],
         };
 
+        // Lấy dữ liệu từ localStorage (nếu có), nếu không dùng mặc định
+        let tetData = defaultData;
+        const savedData = localStorage.getItem('tet_todo_data_2027');
+        if (savedData) {
+            try {
+                tetData = JSON.parse(savedData);
+            } catch (e) {
+                tetData = defaultData;
+            }
+        }
+
+        function saveToLocalStorage() {
+            localStorage.setItem('tet_todo_data_2027', JSON.stringify(tetData));
+        }
+
         function renderTasks() {
             const container = document.getElementById('daySectionsContainer');
             container.innerHTML = "";
@@ -584,23 +619,26 @@
                 section.className = 'day-section';
                 
                 let tasksHtml = '';
-                tasks.forEach((task, index) => {
-                    tasksHtml += `
-                        <li class="${task.completed ? 'completed' : ''}" data-day="${day}" data-index="${index}">
-                            <div class="task-left" onclick="toggleCheckboxByElement(this)">
-                                <input type="checkbox" ${task.completed ? 'checked' : ''} onchange="toggleTaskByElement(this)">
-                                <span>${task.text}</span>
-                            </div>
-                            <div class="task-actions">
-                                <button class="action-btn" onclick="handleEditTask('${day}', ${index})">Sua</button>
-                                <button class="action-btn" onclick="handleDeleteTask('${day}', ${index})">Xoa</button>
-                            </div>
-                        </li>
-                    `;
-                });
+                if (Array.isArray(tasks)) {
+                    tasks.forEach((task, index) => {
+                        const safeText = escapeHtml(task.text);
+                        tasksHtml += `
+                            <li class="${task.completed ? 'completed' : ''}" data-day="${day}" data-index="${index}">
+                                <div class="task-left" onclick="toggleCheckboxByElement(this)">
+                                    <input type="checkbox" ${task.completed ? 'checked' : ''} onchange="toggleTaskByElement(this)">
+                                    <span>${safeText}</span>
+                                </div>
+                                <div class="task-actions">
+                                    <button class="action-btn" onclick="handleEditTask('${day}', ${index})">Sua</button>
+                                    <button class="action-btn" onclick="handleDeleteTask('${day}', ${index})">Xoa</button>
+                                </div>
+                            </li>
+                        `;
+                    });
+                }
 
                 section.innerHTML = `
-                    <div class="day-title">${day}</div>
+                    <div class="day-title">${escapeHtml(day)}</div>
                     <ul class="task-list">
                         ${tasksHtml}
                     </ul>
@@ -610,7 +648,7 @@
         }
         renderTasks();
 
-        // Dem nguoc Tet 2027: 06/02/2027 (00:00:00)
+        // Đếm ngược Tết 2027: 06/02/2027 (00:00:00)
         const targetDate = new Date("February 6, 2027 00:00:00").getTime();
         let isUnlockedOverride = false;
 
@@ -649,7 +687,7 @@
         setInterval(updateCountdown, 1000);
         updateCountdown();
 
-        // Click vao man hinh khoa 3 lan de test
+        // // Click vào màn hình khóa 3 lần để test
         // let unlockClicks = 0;
         // document.getElementById('lockScreen').addEventListener('click', () => {
         //     unlockClicks++;
@@ -660,13 +698,17 @@
         //     }
         // });
 
-        // Them todo theo ngay su dung popup dropdown va text prompt
+        // Thêm công việc theo ngày
         function handleAddTask() {
             showDropdownPrompt("Chon ngay", Object.keys(tetData), function(selectedDay) {
                 if (selectedDay) {
                     showTextPrompt("Them cong viec cho " + selectedDay, "Nhap ten cong viec...", function(value) {
                         if (value) {
-                            tetData[selectedDay].push({ text: value, completed: false });
+                            const sanitizedText = escapeHtml(value.trim());
+                            if (!sanitizedText) return;
+                            if (!tetData[selectedDay]) tetData[selectedDay] = [];
+                            tetData[selectedDay].push({ text: sanitizedText, completed: false });
+                            saveToLocalStorage();
                             renderTasks();
                             showPopup("Thanh cong", "Du lieu da duoc luu thanh cong!");
                         } else {
@@ -677,11 +719,15 @@
             });
         }
 
+        // Sửa công việc
         function handleEditTask(day, index) {
             const currentText = tetData[day][index].text;
             showTextPrompt("Sua ten cong viec", currentText, function(value) {
                 if (value) {
-                    tetData[day][index].text = value;
+                    const sanitizedText = escapeHtml(value.trim());
+                    if (!sanitizedText) return;
+                    tetData[day][index].text = sanitizedText;
+                    saveToLocalStorage();
                     renderTasks();
                     showPopup("Thanh cong", "Da cap nhat du lieu thanh cong!");
                 } else {
@@ -695,6 +741,7 @@
             const day = li.getAttribute('data-day');
             const index = parseInt(li.getAttribute('data-index'));
             tetData[day][index].completed = checkbox.checked;
+            saveToLocalStorage();
             if (checkbox.checked) {
                 li.classList.add('completed');
             } else {
@@ -710,8 +757,65 @@
 
         function handleDeleteTask(day, index) {
             tetData[day].splice(index, 1);
+            saveToLocalStorage();
             renderTasks();
             showPopup("Thanh cong", "Da xoa cong viec!");
+        }
+
+        // Tính năng Xuất JSON (Export)
+        function exportJSON() {
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(tetData, null, 2));
+            const downloadAnchor = document.createElement('a');
+            downloadAnchor.setAttribute("href", dataStr);
+            downloadAnchor.setAttribute("download", "tet_checklist_2027.json");
+            document.body.appendChild(downloadAnchor);
+            downloadAnchor.click();
+            downloadAnchor.remove();
+            showPopup("Thanh cong", "Da xuat file JSON thanh cong!");
+        }
+
+        // Tính năng Nhập JSON (Import)
+        function triggerImportJSON() {
+            document.getElementById('importFile').click();
+        }
+
+        function processImportFile(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const parsed = JSON.parse(e.target.result);
+                    if (typeof parsed !== 'object' || parsed === null) {
+                        throw new Error("Dinh dang khong hop le");
+                    }
+
+                    // Lọc chống XSS toàn bộ dữ liệu đầu vào từ JSON
+                    const sanitizedData = {};
+                    for (const [day, tasks] of Object.entries(parsed)) {
+                        const cleanDay = escapeHtml(String(day));
+                        sanitizedData[cleanDay] = [];
+                        if (Array.isArray(tasks)) {
+                            tasks.forEach(t => {
+                                sanitizedData[cleanDay].push({
+                                    text: escapeHtml(String(t.text || '')),
+                                    completed: Boolean(t.completed)
+                                });
+                            });
+                        }
+                    }
+
+                    tetData = sanitizedData;
+                    saveToLocalStorage();
+                    renderTasks();
+                    showPopup("Thanh cong", "Da nhap du lieu JSON va chong XSS an toan!");
+                } catch (err) {
+                    showPopup("Loi", "File JSON khong hop le hoac bi loi cu phap!");
+                }
+                event.target.value = ''; // Reset file input
+            };
+            reader.readAsText(file);
         }
     </script>
 </body>
