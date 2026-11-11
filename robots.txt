@@ -1,0 +1,8 @@
+User-agent: ClaudeBot
+Disallow: /
+
+User-agent: Claude-Web
+Disallow: /
+
+User-agent: Anthropic-ai
+Disallow: /

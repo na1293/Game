@@ -206,6 +206,10 @@ async function reloadAndClearCache() {
 }
 </script>
 
+<!-- Các mục sự kiện -->
+<script src="Event/Main_event/js/main.js" defer></script>
+<link rel="stylesheet" href="Event/Main_event/css/main.css"></link>
+
 </head>
 <body>
 
@@ -364,6 +368,15 @@ async function reloadAndClearCache() {
                     Tải xuống
                 </button>
             </header>
+
+            <div class="pomodoro-timer">
+                <div class="event-popup" id="event-popup"> 
+                    <h1 id="event-name">Tên Sự Kiện</h1>
+                    <p id="event-content">Mô tả sự kiện</p>
+                    <hr>
+                    <button id="event-btn">Tìm hiểu thêm</button>
+                </div>
+            </div>
 
             <div class="pomodoro-timer tools-dashboard">
                 <h2>Công cụ thông minh</h2>

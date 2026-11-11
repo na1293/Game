@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dem Nguoc Tet 2027</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Patrick+Hand&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #FAF7F2;
+            --card-bg: #FFFFFF;
+            --primary-red: #D93830;
+            --petal-pink: #F2A2A2;
+            --text-main: #2C2C2C;
+            --text-muted: #7A7A7A;
+            --border-radius: 16px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        .petal-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .petal {
+            position: absolute;
+            background-color: var(--petal-pink);
+            border-radius: 150% 0 150% 0;
+            opacity: 0.6;
+            animation: fall linear infinite;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(-10vh) translateX(0) rotate(0deg);
+            }
+            100% {
+                transform: translateY(110vh) translateX(100px) rotate(360deg);
+            }
+        }
+
+        #fireworksCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 999;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 600px;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            z-index: 2;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--primary-red);
+            margin-bottom: 8px;
+        }
+
+        p.subtitle {
+            font-size: 1rem;
+            color: var(--text-muted);
+        }
+
+        .countdown-card {
+            background-color: var(--card-bg);
+            border: 2px solid var(--text-main);
+            border-radius: var(--border-radius);
+            padding: 30px;
+            text-align: center;
+            box-shadow: none;
+        }
+
+        .countdown-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+        }
+
+        .time-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .time-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .time-label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 4px;
+        }
+
+        .checklist-card {
+            background-color: var(--card-bg);
+            border: 2px solid var(--text-main);
+            border-radius: var(--border-radius);
+            padding: 30px;
+            box-shadow: none;
+        }
+
+        .checklist-card.locked {
+            filter: grayscale(80%);
+            opacity: 0.7;
+        }
+
+        .lock-notice {
+            text-align: center;
+            padding: 20px;
+            font-family: 'Patrick Hand', cursive;
+            font-size: 1.4rem;
+            color: var(--primary-red);
+            cursor: pointer;
+        }
+
+        .checklist-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .checklist-header h2 {
+            font-family: 'Patrick Hand', cursive;
+            font-size: 2rem;
+            color: var(--text-main);
+        }
+
+        .btn {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--primary-red);
+            color: #FFFFFF;
+            border: 2px solid var(--text-main);
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: none;
+        }
+
+        .btn-secondary {
+            background-color: #FFF;
+            color: var(--text-main);
+        }
+
+        .day-section {
+            margin-bottom: 20px;
+        }
+
+        .day-title {
+            font-family: 'Patrick Hand', cursive;
+            font-size: 1.5rem;
+            color: var(--primary-red);
+            margin-bottom: 8px;
+            border-bottom: 1px dashed var(--text-muted);
+            padding-bottom: 4px;
+        }
+
+        ul.task-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        ul.task-list li {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 14px;
+            border: 1.5px dashed var(--text-muted);
+            border-radius: 10px;
+            font-family: 'Patrick Hand', cursive;
+            font-size: 1.2rem;
+            background-color: #FFFDF9;
+        }
+
+        ul.task-list li.completed span {
+            text-decoration: line-through;
+            color: var(--text-muted);
+        }
+
+        .task-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+        }
+
+        .task-left input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--primary-red);
+            cursor: pointer;
+        }
+
+        .task-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .action-btn {
+            background: none;
+            border: 1px solid var(--text-main);
+            padding: 2px 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.8rem;
+        }
+
+        .custom-popup-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(0,0,0,0.3);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .custom-popup-box {
+            background-color: var(--card-bg);
+            border: 2px solid var(--text-main);
+            padding: 24px;
+            border-radius: var(--border-radius);
+            width: 90%;
+            max-width: 400px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            box-shadow: none;
+        }
+
+        .custom-popup-title {
+            font-family: 'Patrick Hand', cursive;
+            font-size: 1.6rem;
+            font-weight: bold;
+        }
+
+        .custom-popup-msg {
+            font-size: 1rem;
+            color: var(--text-main);
+        }
+
+        .custom-popup-input {
+            width: 100%;
+            padding: 10px 14px;
+            border: 2px solid var(--text-main);
+            border-radius: 8px;
+            font-size: 1rem;
+            outline: none;
+        }
+
+        .custom-popup-buttons {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        @media (max-width: 480px) {
+            .time-value { font-size: 1.8rem; }
+            h1 { font-size: 1.8rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="petal-container" id="petalContainer"></div>
+    <canvas id="fireworksCanvas"></canvas>
+
+    <div class="container">
+        <header>
+            <h1>Tet Dinh Mui 2027</h1>
+            <p class="subtitle">Dem nguoc tung khoanh khac giao mua</p>
+        </header>
+
+        <div class="countdown-card">
+            <div class="countdown-grid" id="countdown">
+                <div class="time-box">
+                    <span class="time-value" id="days">00</span>
+                    <span class="time-label">Ngay</span>
+                </div>
+                <div class="time-box">
+                    <span class="time-value" id="hours">00</span>
+                    <span class="time-label">Gio</span>
+                </div>
+                <div class="time-box">
+                    <span class="time-value" id="minutes">00</span>
+                    <span class="time-label">Phut</span>
+                </div>
+                <div class="time-box">
+                    <span class="time-value" id="seconds">00</span>
+                    <span class="time-label">Giay</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="checklist-card locked" id="checklistCard">
+            <div id="lockScreen" class="lock-notice">
+                Checklist se tu dong mo khoa khi dong ho dem nguoc ve 0!
+                <br><span style="font-size: 0.9rem; color: var(--text-muted);">(Click vao day 3 lan de mo khoa thu nghiem)</span>
+            </div>
+            
+            <div id="checklistContent" style="display: none;">
+                <div class="checklist-header">
+                    <h2>Danh Sach Viec Ngay Tet</h2>
+                    <button class="btn" onclick="handleAddTask()">Them viec</button>
+                </div>
+                <div id="daySectionsContainer"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="custom-popup-overlay" id="popupOverlay">
+        <div class="custom-popup-box" id="popupBox">
+            <div class="custom-popup-title" id="popupTitle">Tieu de</div>
+            <div id="popupBody"></div>
+            <div class="custom-popup-buttons" id="popupButtons"></div>
+        </div>
+    </div>
+
+    <script>
+        // Hieu ung canh hoa dao roi
+        const petalContainer = document.getElementById('petalContainer');
+        const petalCount = 20;
+        for (let i = 0; i < petalCount; i++) {
+            const petal = document.createElement('div');
+            petal.className = 'petal';
+            petal.style.left = Math.random() * 100 + 'vw';
+            petal.style.top = -Math.random() * 20 + 'vh';
+            const size = Math.random() * 8 + 8;
+            petal.style.width = size + 'px';
+            petal.style.height = size * 1.4 + 'px';
+            petal.style.animationDuration = (Math.random() * 5 + 5) + 's';
+            petal.style.animationDelay = (Math.random() * 5) + 's';
+            petalContainer.appendChild(petal);
+        }
+
+        // Hieu ung phao hoa canvas
+        const canvas = document.getElementById('fireworksCanvas');
+        const ctx = canvas.getContext('2d');
+        let fireworksActive = false;
+        let particles = [];
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        class Particle {
+            constructor(x, y, color) {
+                this.x = x;
+                this.y = y;
+                this.color = color;
+                const angle = Math.random() * Math.PI * 2;
+                const speed = Math.random() * 6 + 2;
+                this.vx = Math.cos(angle) * speed;
+                this.vy = Math.sin(angle) * speed;
+                this.alpha = 1;
+                this.decay = Math.random() * 0.015 + 0.015;
+            }
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+                this.vy += 0.08;
+                this.alpha -= this.decay;
+            }
+            draw() {
+                ctx.save();
+                ctx.globalAlpha = this.alpha;
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, 3, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.restore();
+            }
+        }
+
+        function launchFirework() {
+            if (!fireworksActive) return;
+            const x = Math.random() * canvas.width;
+            const y = Math.random() * (canvas.height / 2);
+            const colors = ['#D93830', '#D4A373', '#F2A2A2', '#2C2C2C', '#E07A5F'];
+            const color = colors[Math.floor(Math.random() * colors.length)];
+            for (let i = 0; i < 50; i++) {
+                particles.push(new Particle(x, y, color));
+            }
+        }
+
+        function animateFireworks() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach((p, index) => {
+                p.update();
+                p.draw();
+                if (p.alpha <= 0) {
+                    particles.splice(index, 1);
+                }
+            });
+            requestAnimationFrame(animateFireworks);
+        }
+        animateFireworks();
+        setInterval(launchFirework, 800);
+
+        // Trien khai cac ham Popup theo huong dan
+        function showPopup(title, message) {
+            const overlay = document.getElementById('popupOverlay');
+            document.getElementById('popupTitle').innerText = title;
+            document.getElementById('popupBody').innerHTML = `<div class="custom-popup-msg">${message}</div>`;
+            document.getElementById('popupButtons').innerHTML = `<button class="btn" onclick="closePopup()">Dong</button>`;
+            overlay.style.display = 'flex';
+        }
+
+        function showTextPrompt(title, placeholder, callback) {
+            const overlay = document.getElementById('popupOverlay');
+            document.getElementById('popupTitle').innerText = title;
+            document.getElementById('popupBody').innerHTML = `<input type="text" class="custom-popup-input" id="promptInput" placeholder="${placeholder}">`;
+            document.getElementById('popupButtons').innerHTML = `
+                <button class="btn btn-secondary" onclick="closePopup()">Huy</button>
+                <button class="btn" id="promptSubmitBtn">Xac nhan</button>
+            `;
+            overlay.style.display = 'flex';
+            
+            const input = document.getElementById('promptInput');
+            input.focus();
+
+            document.getElementById('promptSubmitBtn').onclick = function() {
+                const val = input.value;
+                closePopup();
+                if (callback) callback(val);
+            };
+
+            input.onkeydown = function(e) {
+                if (e.key === 'Enter') {
+                    document.getElementById('promptSubmitBtn').click();
+                }
+            };
+        }
+
+        function showDropdownPrompt(title, options, callback) {
+            const overlay = document.getElementById('popupOverlay');
+            document.getElementById('popupTitle').innerText = title;
+            
+            let optionsHtml = '<select class="custom-popup-input" id="promptDropdown">';
+            options.forEach(opt => {
+                optionsHtml += `<option value="${opt}">${opt}</option>`;
+            });
+            optionsHtml += '</select>';
+
+            document.getElementById('popupBody').innerHTML = optionsHtml;
+            document.getElementById('popupButtons').innerHTML = `
+                <button class="btn btn-secondary" onclick="closePopup()">Huy</button>
+                <button class="btn" id="promptSubmitBtn">Xac nhan</button>
+            `;
+            overlay.style.display = 'flex';
+            
+            const select = document.getElementById('promptDropdown');
+            select.focus();
+
+            document.getElementById('promptSubmitBtn').onclick = function() {
+                const val = select.value;
+                closePopup();
+                if (callback) callback(val);
+            };
+        }
+
+        function closePopup() {
+            document.getElementById('popupOverlay').style.display = 'none';
+        }
+
+        // Cau truc du lieu JSON chia theo ngay voi cac nhiem vu mac dinh theo yeu cau
+        let tetData = {
+            "Ngày 25 Tết": [
+
+            ],
+            "Ngày 26 Tết": [
+
+            ],
+            "Ngày 27 Tết": [
+
+            ],
+            "Ngày 28 Tết": [
+                { text: "Dọn dẹp trang hoàng nhà cửa", completed: false },
+                { text: "Lau dọn bàn thờ", completed: false },
+                { text: "Chuẩn bị hoa đào, mai, quất", completed: false },
+                { text: "Chuẩn bị bánh", completed: false },
+            ],
+            "Ngày 29 Tết": [
+                { text: "Cúng tất niên", completed: false },
+                { text: "Đoàn tụ cùng gia đình", completed: false },
+                { text: "Chuẩn bị mâm ngũ quả", completed: false },
+                { text: "Cúng giao thừa (Hoặc 30)", completed: false },
+                { text: "Chờ pháo hoa năm mới", completed: false },
+                { text: "Xem chương trình cuối năm", completed: false },
+                { text: "Ăn đêm", completed: false },
+                { text: "Chúc Tết bạn bè, người thân", completed: false },
+            ],
+            "Mùng 1": [
+                { text: "Sáng dọn nhà mùng 1", completed: false },
+                { text: "Ăn cơm cùng gia đình", completed: false },
+                { text: "Chúc Tết nhà nội (Hoặc chúc Tết)", completed: false },
+                { text: "Nhận lì xì (10 cái)", completed: false },
+                { text: "Đi chùa cầu may", completed: false },
+                { text: "Check-in 10 tấm ảnh", completed: false },
+            ],
+            "Mùng 2": [
+                { text: "Chúc Tết nhà ngoại (Hoặc chúc Tết)", completed: false },
+                { text: "Đi chơi cùng gia đình hoặc bạn thân", completed: false },
+                { text: "Ăn cơm cùng gia đình", completed: false },
+                { text: "Đi chùa cầu may", completed: false },
+                { text: "Check-in 3-5 tấm ảnh", completed: false },
+                { text: "Ngắm cảnh", completed: false },
+            ],
+            "Mùng 3": [
+                { text: "Tri ân thầy cô", completed: false },
+                { text: "Đi đâu đó mới mẻ", completed: false },
+                { text: "Check-in 10 tấm ảnh ở chỗ mới", completed: false },
+                { text: "Tìm mẫu đăng Capcut và Locket", completed: false },
+                { text: "Ngắm cảnh đẹp, viết câu đối", completed: false },
+            ],
+            "Mùng 4": [
+                { text: "Hóa vàng", completed: false },
+                { text: "Khai xuân mở hàng", completed: false },
+                { text: "Ăn cỗ, chúc Tết", completed: false },
+            ],
+            "Mùng 5": [
+                { text: "Recap lại Tết", completed: false },
+                { text: "Chuẩn bị quay lại học", completed: false },
+            ],
+        };
+
+        function renderTasks() {
+            const container = document.getElementById('daySectionsContainer');
+            container.innerHTML = "";
+
+            for (const [day, tasks] of Object.entries(tetData)) {
+                const section = document.createElement('div');
+                section.className = 'day-section';
+                
+                let tasksHtml = '';
+                tasks.forEach((task, index) => {
+                    tasksHtml += `
+                        <li class="${task.completed ? 'completed' : ''}" data-day="${day}" data-index="${index}">
+                            <div class="task-left" onclick="toggleCheckboxByElement(this)">
+                                <input type="checkbox" ${task.completed ? 'checked' : ''} onchange="toggleTaskByElement(this)">
+                                <span>${task.text}</span>
+                            </div>
+                            <div class="task-actions">
+                                <button class="action-btn" onclick="handleEditTask('${day}', ${index})">Sua</button>
+                                <button class="action-btn" onclick="handleDeleteTask('${day}', ${index})">Xoa</button>
+                            </div>
+                        </li>
+                    `;
+                });
+
+                section.innerHTML = `
+                    <div class="day-title">${day}</div>
+                    <ul class="task-list">
+                        ${tasksHtml}
+                    </ul>
+                `;
+                container.appendChild(section);
+            }
+        }
+        renderTasks();
+
+        // Dem nguoc Tet 2027: 06/02/2027 (00:00:00)
+        const targetDate = new Date("February 6, 2027 00:00:00").getTime();
+        let isUnlockedOverride = false;
+
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const difference = targetDate - now;
+
+            const checklistCard = document.getElementById('checklistCard');
+            const lockScreen = document.getElementById('lockScreen');
+            const checklistContent = document.getElementById('checklistContent');
+
+            if (difference <= 0 || isUnlockedOverride) {
+                document.getElementById('days').innerText = "00";
+                document.getElementById('hours').innerText = "00";
+                document.getElementById('minutes').innerText = "00";
+                document.getElementById('seconds').innerText = "00";
+
+                checklistCard.classList.remove('locked');
+                lockScreen.style.display = 'none';
+                checklistContent.style.display = 'block';
+                fireworksActive = true;
+                return;
+            }
+
+            const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+
+            document.getElementById('days').innerText = String(days).padStart(2, '0');
+            document.getElementById('hours').innerText = String(hours).padStart(2, '0');
+            document.getElementById('minutes').innerText = String(minutes).padStart(2, '0');
+            document.getElementById('seconds').innerText = String(seconds).padStart(2, '0');
+        }
+
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
+
+        // Click vao man hinh khoa 3 lan de test
+        // let unlockClicks = 0;
+        // document.getElementById('lockScreen').addEventListener('click', () => {
+        //     unlockClicks++;
+        //     if (unlockClicks >= 3) {
+        //         isUnlockedOverride = true;
+        //         updateCountdown();
+        //         showPopup("Thanh cong", "Da mo khoa thu nghiem thanh cong va bat phao hoa!");
+        //     }
+        // });
+
+        // Them todo theo ngay su dung popup dropdown va text prompt
+        function handleAddTask() {
+            showDropdownPrompt("Chon ngay", Object.keys(tetData), function(selectedDay) {
+                if (selectedDay) {
+                    showTextPrompt("Them cong viec cho " + selectedDay, "Nhap ten cong viec...", function(value) {
+                        if (value) {
+                            tetData[selectedDay].push({ text: value, completed: false });
+                            renderTasks();
+                            showPopup("Thanh cong", "Du lieu da duoc luu thanh cong!");
+                        } else {
+                            showPopup("Thong bao", "Nguoi dung khong nhap gi!");
+                        }
+                    });
+                }
+            });
+        }
+
+        function handleEditTask(day, index) {
+            const currentText = tetData[day][index].text;
+            showTextPrompt("Sua ten cong viec", currentText, function(value) {
+                if (value) {
+                    tetData[day][index].text = value;
+                    renderTasks();
+                    showPopup("Thanh cong", "Da cap nhat du lieu thanh cong!");
+                } else {
+                    showPopup("Thong bao", "Nguoi dung khong nhap gi!");
+                }
+            });
+        }
+
+        function toggleTaskByElement(checkbox) {
+            const li = checkbox.closest('li');
+            const day = li.getAttribute('data-day');
+            const index = parseInt(li.getAttribute('data-index'));
+            tetData[day][index].completed = checkbox.checked;
+            if (checkbox.checked) {
+                li.classList.add('completed');
+            } else {
+                li.classList.remove('completed');
+            }
+        }
+
+        function toggleCheckboxByElement(container) {
+            const checkbox = container.querySelector('input[type="checkbox"]');
+            checkbox.checked = !checkbox.checked;
+            toggleTaskByElement(checkbox);
+        }
+
+        function handleDeleteTask(day, index) {
+            tetData[day].splice(index, 1);
+            renderTasks();
+            showPopup("Thanh cong", "Da xoa cong viec!");
+        }
+    </script>
+</body>
+</html>

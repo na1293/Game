@@ -1,0 +1,47 @@
+/* Thêm điểm nhấn lấp lánh góc popup */
+.event-popup::before {
+    position: absolute;
+    top: 12px;
+    right: 16px;
+    font-size: 18px;
+}
+
+#event-name {
+    font-size: 22px;
+    font-weight: 800;
+    color: #9f1239;
+    margin-bottom: 8px;
+}
+
+#event-content {
+    font-size: 14px;
+    color: #713f12;
+    line-height: 1.5;
+    margin-bottom: 16px;
+}
+
+.event-popup hr {
+    border: none;
+    height: 2px;
+    background: linear-gradient(to right, transparent, #fbcfe8, transparent);
+    margin: 16px 0;
+}
+
+#event-btn {
+    background: linear-gradient(135deg, #f43f5e, #e11d48);
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.25s ease-in-out;
+    width: 100%;
+    box-shadow: 0 4px 15px rgba(225, 29, 72, 0.3);
+}
+
+#event-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(225, 29, 72, 0.4);
+    background: linear-gradient(135deg, #fb7185, #f43f5e);
+}
