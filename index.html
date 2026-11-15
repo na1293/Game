@@ -305,22 +305,29 @@ async function reloadAndClearCache() {
         });
     </script>
 
-
     <div id="pop-up-animation-full-screen" class="popup-overlay">
         <div class="popup-card">
             <button class="close-btn" id="closePopupBtn">&times;</button>
 
             <div class="glance-container">
-                <!-- Khung hiển thị môn học va đập thị giác -->
-                <div class="schedule-hero">
-                    <!-- Thêm class schedule-title-display -->
-                    <div class="schedule-text schedule-title-display">Đang tải...</div>
+                <!-- Khung chia Sáng / Chiều xếp trên dưới -->
+                <div class="schedule-split-container">
+                    <!-- Ca Sáng -->
+                    <div class="schedule-box morning-box">
+                        <div class="session-title">Sáng</div>
+                        <div class="schedule-text schedule-morning-display">Đang tải...</div>
+                    </div>
+
+                    <!-- Ca Chiều -->
+                    <div class="schedule-box afternoon-box">
+                        <div class="session-title">Chiều</div>
+                        <div class="schedule-text schedule-afternoon-display">Đang tải...</div>
+                    </div>
                 </div>
 
-                <!-- Cụm chuyển ngày mượt mà -->
+                <!-- Cụm chuyển ngày -->
                 <div class="day-switcher">
                     <button type="button" id="prev-day-btn" class="nav-btn">&lt;</button>
-                    <!-- Đổi ID thành Class day-select -->
                     <select class="day-select select_ui">
                         <option value="1">Thứ 2</option>
                         <option value="2">Thứ 3</option>
@@ -335,6 +342,7 @@ async function reloadAndClearCache() {
             </div>
         </div>
     </div>
+
 
     <div id="work-mode">
     
@@ -389,13 +397,14 @@ async function reloadAndClearCache() {
                     <div class="tool-group" id="music-tool-section-nav">
                         <h3><span class="group-icon">📚</span> Học tập bứt phá</h3>
                         <ul class="link-grid-ui">
-                            <li><a href="#pomodoro-timer-tool"><span class="icon">⏱️</span> Đồng hồ Pomodoro</a></li>    
                             <li><a href="#time-table">📆 Thời khóa biểu</a></li>
+                            <li><a href="#break-time-when"><span class="icon">⏰</span> Thời gian nghỉ</a></li>
+                            <li><a href="#pomodoro-timer-tool"><span class="icon">⏱️</span> Đồng hồ Pomodoro</a></li>    
                             <li><a href="#music-play">🎶 Âm nhạc</a></li>
                             <li><a href="#pomodoro-happy"><span class="icon">🍅</span>Trồng cà chua</a></li>
-                            <li><a href="#countdown-thptqg"><span class="icon">🎯</span> Đếm ngược THPTQG</a></li>
-                            <li><a href="#search-engine-tool"><span class="icon">🔍</span> Công cụ tìm kiếm</a></li>
-                            <li><a href="#learing-tool"><span class="icon">📖</span> Công cụ học tập</a></li>
+                            <!-- <li><a href="#countdown-thptqg"><span class="icon">🎯</span> Đếm ngược THPTQG</a></li> -->
+                            <!-- <li><a href="#search-engine-tool"><span class="icon">🔍</span> Công cụ tìm kiếm</a></li> -->
+                            <!-- <li><a href="#learing-tool"><span class="icon">📖</span> Công cụ học tập</a></li> -->
                              <li><a href="save-book-title.html"><span class="icon">📚</span> Lưu sách đọc dở</a></li>
                         </ul>
                     </div>
@@ -404,7 +413,7 @@ async function reloadAndClearCache() {
                 <div class="tool-group">
                     <h3><span class="group-icon">💪</span> Kỷ luật</h3>
                     <ul class="link-grid-ui">
-                        <li><a href="#cute-mess"><span class="icon">💬</span> Lời nhắc từ hệ thống</a></li>
+                        <!-- <li><a href="#cute-mess"><span class="icon">💬</span> Lời nhắc từ hệ thống</a></li> -->
                         <li><a href="#learing-tool"><span class="icon">☀ </span> Thời tiết</a></li>
                         <li><a href="#section-limit-tiktok"><span class="icon">🎵</span> Giới hạn TikTok</a></li>
                     </ul>
@@ -419,7 +428,6 @@ async function reloadAndClearCache() {
                         <!-- <li><a href="#class-user-section"><span class="icon">📆</span> Bạn học lớp mấy?</a></li> -->
                         <li><a href="#birthday-section"><span class="icon">😎</span> Chỉnh sinh nhật</a></li>
                         <li><a href="wifi.html"><span class="icon">♟</span> Tìm gói data mạng rẻ nhất</a></li>
-                        <li><a href="#break-time-when"><span class="icon">⏰</span> Thời gian nghỉ</a></li>
                         <li><a href="#todo-list"><span class="icon">📝</span> Danh sách việc cần làm</a></li>
                     </ul>
                 </div>
