@@ -24,8 +24,8 @@
     <!-- 1. Cấu hình & Dữ liệu TKB (Load trước) -->
     <script src="JS/API_call/api_call.js" defer></script>
     <script type="module" src="JS/FirstFile_schedule.js"></script>
-    <script src="JS/time-table.js" defer></script>
-    <script src="JS/u-read-json-time-table.js" defer></script>
+    <!-- <script src="JS/time-table.js" defer></script> -->
+    <!-- <script src="JS/u-read-json-time-table.js" defer></script> -->
 
     <script src="JS/time-table-pop-up-good-ui.js" defer></script>
 
@@ -54,7 +54,6 @@
 
     <script src="JS/UI_hide_wifi-check.js" defer></script>
 
-    <script src="JS/time-table-pop-up-good-ui.js"></script>
     <script src="JS/add-pwa-popup.js"></script>
 
     <script src="JS/limit-tiktok.js" defer></script>
@@ -213,14 +212,26 @@ async function reloadAndClearCache() {
 </head>
 <body>
 
+    
     <div class="container" id="container">
-        <div class="pomodoro-timer">
+        <header>
             <div class="avatar">
-                <img src="Emoji pet img/oh-face-removebg-preview.png" alt="User" id="avatar">
+                <img src="img/avatar.png" alt="User" id="avatar">
             </div>
 
-            <h2>Xin chào <span id="user-name">Người dùng</span></h2>
-        </div>
+            <h2 style="color: white">Xin chào <span id="user-name">Người dùng</span></h2>
+            <hr>
+
+            <strong id="say">Đang tải câu nói truyền cảm hứng...</strong>
+            <br>
+            <!-- <strong class="event_news event_news_style">Lịch học hôm nay</strong> -->
+
+            <!-- <button onclick="Bat_dau_cau_noi()">Câu nói khác</button> -->
+            <hr>
+            <button onclick="quote_setting()">Tùy chỉnh</button>
+            <button onclick="luu_cau_noi()" id="btn-save-quote">Lưu câu nói</button>
+
+        </header>
     </div>
     
     <!-- Input ẩn dùng để kích hoạt trình chọn tệp của hệ thống -->
@@ -343,7 +354,6 @@ async function reloadAndClearCache() {
         </div>
     </div>
 
-
     <div id="work-mode">
     
         <button onclick="nghi_ngoi()" id="btn-sleep" style="display: flex;">Chế độ tối giản</button>
@@ -357,34 +367,34 @@ async function reloadAndClearCache() {
         </div>
 
         <div class="container" id="container">
-            <header>
+            <!-- <header>
                 <h1>Hỗ trợ học tập</h1>
                 <h3 id="say">Đang tải câu nói truyền cảm hứng...</h3>
                 <hr>
                 <strong class="event_news event_news_style">Lịch học hôm nay</strong>
     
-                <!-- <button onclick="Bat_dau_cau_noi()">Câu nói khác</button> -->
+                <button onclick="Bat_dau_cau_noi()">Câu nói khác</button>
                 <hr>
                 <button onclick="quote_setting()">Tùy chỉnh</button>
                 <button onclick="luu_cau_noi()" id="btn-save-quote">Lưu câu nói</button>
-                <!-- <button onclick="window.location.reload()">Tải lại</button>
+                <button onclick="window.location.reload()">Tải lại</button>
                 <button onclick="reloadAndClearCache()" style="padding: 10px 15px; cursor: pointer;">
                     Cập nhật
-                </button> -->
-                <!-- Nút Tải xuống sẽ kích hoạt lại Pop-up khi click -->
+                </button>
+                Nút Tải xuống sẽ kích hoạt lại Pop-up khi click
                 <button id="btn-download-pwa" style="display: none;" onclick="openPwaPrompt(true)">
                     Tải xuống
                 </button>
-            </header>
+            </header> -->
 
-            <div class="pomodoro-timer">
+            <!-- <div class="pomodoro-timer">
                 <div class="event-popup" id="event-popup"> 
                     <h1 id="event-name">Chào xuân 2026</h1>
                     <p id="event-content">Tham gia thử thách theo danh sách việc cần làm trong Tết. Ghi lại kỷ niệm đẹp nhất của bạn!</p>
                     <hr>
                     <button id="event-btn">Tìm hiểu thêm</button>
                 </div>
-            </div>
+            </div> -->
 
             <div class="pomodoro-timer tools-dashboard">
                 <h2>Công cụ thông minh</h2>

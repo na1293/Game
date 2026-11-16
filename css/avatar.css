@@ -26,19 +26,19 @@ h2 {
 
 /* Điểm nhấn cho tên người dùng */
 #user-name {
-    color: #ff6b6b; /* Màu đỏ hồng cam tạo điểm nhấn */
+    color: white; /* Màu đỏ hồng cam tạo điểm nhấn */
     font-weight: 700;
 }
 
 #user-name {
     cursor: pointer; /* Biến con trỏ chuột thành hình bàn tay khi rà vào tên */
-    border-bottom: 1px dashed #ff6b6b; /* Tạo đường gạch chân đứt nét nhẹ dưới tên */
+    border-bottom: 1px dashed white; /* Tạo đường gạch chân đứt nét nhẹ dưới tên */
     padding-bottom: 2px;
     transition: color 0.2s ease;
 }
 
 #user-name:hover {
-    color: #ff4747; /* Đổi màu đậm hơn một chút khi rê chuột vào */
+    color: yellow; /* Đổi màu đậm hơn một chút khi rê chuột vào */
 }
 
 .avatar {
@@ -49,4 +49,23 @@ h2 {
 
 .avatar:hover {
     opacity: 0.8; /* Làm mờ nhẹ ảnh khi rê chuột vào để báo hiệu có thể click */
+}
+
+#say {
+  display: inline-block;
+  max-width: 100%;
+  padding: 12px 24px;
+  background: rgba(255, 255, 255, 0.16); /* Nền trắng mờ nhẹ xuyên thấu nền xanh */
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: #ffffff;
+  font-size: clamp(0.95rem, 2.2vw, 1.05rem);
+  font-weight: 600;
+  line-height: 1.5;
+  text-align: center;
+  border: 1px solid rgba(255, 255, 255, 0.35); /* Viền sáng mảnh tạo độ nổi */
+  border-radius: 20px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  box-sizing: border-box;
+  word-break: break-word;
 }
