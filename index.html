@@ -330,25 +330,37 @@ async function reloadAndClearCache() {
         <div class="popup-card">
             <button class="close-btn" id="closePopupBtn">&times;</button>
 
+            <!-- Tiêu đề & Bộ chọn mùa tích hợp gọn gàng -->
+            <div class="popup-header-bar">
+                <h2 class="popup-title"> Thời Khóa Biểu</h2>
+                <div id="season-select-container" class="season-wrapper">
+                    <label for="season-select-type">Ca Chiều:</label>
+                    <select id="season-select-type" class="season-dropdown">
+                        <option value="winter">❄️ Mùa Đông</option>
+                        <option value="summer">☀️ Mùa Hè</option>
+                    </select>
+                </div>
+            </div>
+
             <div class="glance-container">
-                <!-- Khung chia Sáng / Chiều xếp trên dưới -->
+                <!-- Khung chia Sáng / Chiều -->
                 <div class="schedule-split-container">
                     <!-- Ca Sáng -->
                     <div class="schedule-box morning-box">
-                        <div class="session-title">Sáng</div>
+                        <div class="session-title">Buổi Sáng</div>
                         <div class="schedule-text schedule-morning-display">Đang tải...</div>
                     </div>
 
                     <!-- Ca Chiều -->
                     <div class="schedule-box afternoon-box">
-                        <div class="session-title">Chiều</div>
+                        <div class="session-title">Buổi Chiều</div>
                         <div class="schedule-text schedule-afternoon-display">Đang tải...</div>
                     </div>
                 </div>
 
                 <!-- Cụm chuyển ngày -->
                 <div class="day-switcher">
-                    <button type="button" id="prev-day-btn" class="nav-btn">&lt;</button>
+                    <button type="button" id="prev-day-btn" class="nav-btn">❮</button>
                     <select class="day-select select_ui">
                         <option value="1">Thứ 2</option>
                         <option value="2">Thứ 3</option>
@@ -358,7 +370,7 @@ async function reloadAndClearCache() {
                         <option value="6">Thứ 7</option>
                         <option value="0">Chủ Nhật</option>
                     </select>
-                    <button type="button" id="next-day-btn" class="nav-btn">&gt;</button>
+                    <button type="button" id="next-day-btn" class="nav-btn">❯</button>
                 </div>
             </div>
         </div>

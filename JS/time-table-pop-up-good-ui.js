@@ -1,15 +1,26 @@
-/* 
-==== Overview ====
-Tối ưu UI dạng danh sách từng Tiết (vuốt dọc), fix nhảy +1 ngày và quản lý Bật/Tắt Pop-up
-- Không có "||": Hiện 1 khối mặc định (ẩn Ca Chiều, giữ nguyên Ca Sáng làm khối chính)
-- Có "||": Chia thành 2 khối Sáng (trước "||") và Chiều (sau "||")
-- Tự động tách dấu "," thành các hàng Tiết 1, Tiết 2, Tiết 3...
-*/
-
 document.addEventListener("DOMContentLoaded", () => {
     const triggerBtns = document.querySelectorAll("a[href='#time-table'], #time-table a");
     const popupOverlay = document.getElementById("pop-up-animation-full-screen");
     const closeBtn = document.getElementById("closePopupBtn");
+
+    // Tu tao khung chon mua cho ca chieu neu chua co (khong co emoji)
+    const popupContent = document.querySelector(".popup-content, .popup-card") || popupOverlay;
+    if (popupContent && !document.getElementById("season-select-container")) {
+        let headerBar = popupContent.querySelector(".popup-header-bar");
+        if (headerBar) {
+            const seasonDiv = document.createElement("div");
+            seasonDiv.id = "season-select-container";
+            seasonDiv.className = "season-wrapper";
+            seasonDiv.innerHTML = `
+                <label for="season-select-type">Ca Chieu:</label>
+                <select id="season-select-type" class="season-dropdown">
+                    <option value="winter">Mua Dong (13:00)</option>
+                    <option value="summer">Mua He (13:10)</option>
+                </select>
+            `;
+            headerBar.appendChild(seasonDiv);
+        }
+    }
 
     triggerBtns.forEach(btn => {
         btn.addEventListener("click", (e) => {
@@ -24,11 +35,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const prevBtn = document.getElementById("prev-day-btn");
     const nextBtn = document.getElementById("next-day-btn");
 
-    // Hàm biến chuỗi "Toán, Lý, Hóa" thành HTML từng hàng Tiết 1, Tiết 2...
-    function buildScheduleHTML(rawText) {
-        if (!rawText) return `<div class="off-day-text">Trống lịch 🎉</div>`;
+    function buildScheduleHTML(rawText, sessionType = 'morning') {
+        if (!rawText) return `<div class="off-day-text">Trong lich</div>`;
 
-        // Nhận diện câu thông báo ngày nghỉ để không bị tách nhầm dấu phẩy trong câu văn
         const lowerText = rawText.toLowerCase();
         const isOffMessage =
             lowerText.includes("không có lịch") ||
@@ -43,7 +52,6 @@ document.addEventListener("DOMContentLoaded", () => {
             };
         }
 
-        // Tách chuỗi theo dấu phẩy và loại bỏ khoảng trắng thừa
         const subjects = rawText
             .split(",")
             .map(item => item.trim())
@@ -51,8 +59,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const rowsHTML = subjects
             .map((subject, index) => `
-                <div class="period-row" onclick="checkPeriodStatus(${index + 1}, '${subject}')">
-                    <span class="period-badge">Tiết ${index + 1}</span>
+                <div class="period-row" onclick="checkPeriodStatus(${index + 1}, '${subject}', '${sessionType}')">
+                    <span class="period-badge">Tiet ${index + 1}</span>
                     <span class="subject-name">${subject}</span>
                 </div>
             `)
@@ -80,18 +88,16 @@ document.addEventListener("DOMContentLoaded", () => {
         const morningElements = document.querySelectorAll(".schedule-morning-display");
         const afternoonElements = document.querySelectorAll(".schedule-afternoon-display");
 
-        // Reset trạng thái ngày nghỉ trước khi render
         morningBoxes.forEach(box => box.classList.remove("is-off-day"));
         afternoonBoxes.forEach(box => box.classList.remove("is-off-day"));
 
         if (typeof dayData === "string" && dayData.includes("||")) {
-            // === TRƯỜNG HỢP 1: CÓ "||" -> CHIA 2 KHỐI SÁNG VÀ CHIỀU ===
             const parts = dayData.split("||");
-            const morningText = parts[0].trim() || "Trống lịch sáng 🎉";
-            const afternoonText = parts[1].trim() || "Trống lịch chiều 🏖️";
+            const morningText = parts[0].trim() || "Trong lich sang";
+            const afternoonText = parts[1].trim() || "Trong lich chieu";
 
-            const morningRendered = buildScheduleHTML(morningText);
-            const afternoonRendered = buildScheduleHTML(afternoonText);
+            const morningRendered = buildScheduleHTML(morningText, 'morning');
+            const afternoonRendered = buildScheduleHTML(afternoonText, 'afternoon');
 
             morningBoxes.forEach(box => {
                 const title = box.querySelector(".session-title");
@@ -112,20 +118,18 @@ document.addEventListener("DOMContentLoaded", () => {
             });
 
         } else {
-            // === TRƯỜNG HỢP 2: KHÔNG CÓ "||" -> HIỂN THỊ 1 KHỐI ===
-            let defaultText = "Chưa có dữ liệu lịch học";
+            let defaultText = "Chua co du lieu lich hoc";
 
             if (typeof dayData === "string" && dayData.trim() !== "") {
                 defaultText = dayData.trim();
             } else if (typeof dayData === "object" && dayData !== null) {
-                defaultText = dayData.morning || dayData.afternoon || "Chưa có dữ liệu lịch học";
+                defaultText = dayData.morning || dayData.afternoon || "Chua co du lieu lich hoc";
             }
 
-            const rendered = buildScheduleHTML(defaultText);
+            const rendered = buildScheduleHTML(defaultText, 'morning');
 
             morningBoxes.forEach(box => {
                 const title = box.querySelector(".session-title");
-                // Nếu là ngày nghỉ thì ẩn chữ "Sáng", còn ngày đi học 1 ca vẫn hiện "Sáng" cho rõ
                 if (title) {
                     title.style.display = rendered.isOff ? "none" : "inline-block";
                 }
