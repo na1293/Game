@@ -51,7 +51,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const rowsHTML = subjects
             .map((subject, index) => `
-                <div class="period-row">
+                <div class="period-row" onclick="checkPeriodStatus(${index + 1}, '${subject}')">
                     <span class="period-badge">Tiết ${index + 1}</span>
                     <span class="subject-name">${subject}</span>
                 </div>

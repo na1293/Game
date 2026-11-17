@@ -69,3 +69,45 @@ function send_time_id_break_time_when() {
 
     showPopup("Thông báo", status);
 }
+
+function checkPeriodStatus(tietNumber, subjectName) {
+    let element_time_id_break_time = document.getElementById("element-time-id-break-time");
+    let time_value = element_time_id_break_time ? element_time_id_break_time.value : "7:20";
+    if (!time_value) return alert("Vui lòng chọn giờ vào tiết 1 trước nhé!");
+
+    let [hourTime, minuteTime] = time_value.split(":").map(Number);
+    let startTime = new Date();
+    startTime.setHours(hourTime, minuteTime, 0, 0);
+
+    let now = new Date();
+    let totalMinutes = Math.floor((now - startTime) / (1000 * 60));
+
+    function getTargetTime(addMinutes) {
+        let target = new Date(startTime.getTime() + addMinutes * 60 * 1000);
+        let h = String(target.getHours()).padStart(2, '0');
+        let m = String(target.getMinutes()).padStart(2, '0');
+        return `${h}:${m}`;
+    }
+
+    const schedule = [
+        { tiet: 1, study: 45, break: 5 },
+        { tiet: 2, study: 45, break: 10 },
+        { tiet: 3, study: 45, break: 5 },
+        { tiet: 4, study: 45, break: 5 },
+        { tiet: 5, study: 45, break: 0 }
+    ];
+
+    if (totalMinutes < 0) {
+        alert(`Chưa tới giờ học! Tiết 1 bắt đầu lúc ${time_value}.`);
+        return;
+    }
+
+    // Tính thời gian kết thúc của tiết vừa bấm
+    let accumulatedTime = 0;
+    for (let i = 0; i < tietNumber; i++) {
+        accumulatedTime += schedule[i].study;
+    }
+    let endThisPeriodAt = getTargetTime(accumulatedTime);
+
+    showPopup(`Thông báo`, `Đây là Tiết ${tietNumber} (${subjectName}), tan lúc ${endThisPeriodAt}`);
+}
