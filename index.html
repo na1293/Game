@@ -240,7 +240,9 @@ async function reloadAndClearCache() {
             <hr>
             <button onclick="quote_setting()">Tùy chỉnh</button>
             <button onclick="luu_cau_noi()" id="btn-save-quote">Lưu câu nói</button>
-
+            <button id="btn-download-pwa" onclick="openPwaPrompt(true)">
+                Tải App
+            </button>
         </header>
     </div>
     
@@ -326,7 +328,7 @@ async function reloadAndClearCache() {
         });
     </script>
 
-    <div id="pop-up-animation-full-screen" class="popup-overlay">
+    <div id="pop-up-animation-full-screen" class="popup-overlay" style="display: none;">
         <div class="popup-card">
             <button class="close-btn" id="closePopupBtn">&times;</button>
 

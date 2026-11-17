@@ -1,12 +1,16 @@
 document.addEventListener("DOMContentLoaded", () => {
     const triggerBtns = document.querySelectorAll("a[href='#time-table'], #time-table a");
     const popupOverlay = document.getElementById("pop-up-animation-full-screen");
+    popupOverlay.style.display = "none";
+    
     const closeBtn = document.getElementById("closePopupBtn");
 
     // Tu tao khung chon mua cho ca chieu neu chua co (khong co emoji)
     const popupContent = document.querySelector(".popup-content, .popup-card") || popupOverlay;
+
     if (popupContent && !document.getElementById("season-select-container")) {
         let headerBar = popupContent.querySelector(".popup-header-bar");
+
         if (headerBar) {
             const seasonDiv = document.createElement("div");
             seasonDiv.id = "season-select-container";
@@ -60,7 +64,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const rowsHTML = subjects
             .map((subject, index) => `
                 <div class="period-row" onclick="checkPeriodStatus(${index + 1}, '${subject}', '${sessionType}')">
-                    <span class="period-badge">Tiet ${index + 1}</span>
+                    <span class="period-badge">Tiết ${index + 1}</span>
                     <span class="subject-name">${subject}</span>
                 </div>
             `)

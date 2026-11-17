@@ -187,6 +187,10 @@
   box-sizing: border-box;
   cursor: pointer;
   transition: all 0.15s ease;
+  
+  /* 🪄 Thêm 2 "vũ khí" này vào đây: */
+  -webkit-tap-highlight-color: transparent;
+  outline: none;
 }
 
 .period-row:hover {
