@@ -1,8 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
     const triggerBtns = document.querySelectorAll("a[href='#time-table'], #time-table a");
     const popupOverlay = document.getElementById("pop-up-animation-full-screen");
-    popupOverlay.style.display = "none";
-    
+
     const closeBtn = document.getElementById("closePopupBtn");
 
     // Tu tao khung chon mua cho ca chieu neu chua co (khong co emoji)

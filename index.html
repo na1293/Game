@@ -432,9 +432,9 @@ async function reloadAndClearCache() {
                         <h3><span class="group-icon">📚</span> Học tập bứt phá</h3>
                         <ul class="link-grid-ui">
                             <li><a href="#time-table">📆 Thời khóa biểu</a></li>
-                            <li><a href="#break-time-when"><span class="icon">⏰</span> Thời gian nghỉ</a></li>
+                            
                             <li><a href="#pomodoro-timer-tool"><span class="icon">⏱️</span> Đồng hồ Pomodoro</a></li>    
-                            <li><a href="#music-play">🎶 Âm nhạc</a></li>
+                            <li><a href="#music-play">🎶 Âm thanh nền</a></li>
                             <li><a href="#pomodoro-happy"><span class="icon">🍅</span>Trồng cà chua</a></li>
                             <!-- <li><a href="#countdown-thptqg"><span class="icon">🎯</span> Đếm ngược THPTQG</a></li> -->
                             <!-- <li><a href="#search-engine-tool"><span class="icon">🔍</span> Công cụ tìm kiếm</a></li> -->
@@ -462,7 +462,7 @@ async function reloadAndClearCache() {
                         <!-- <li><a href="#class-user-section"><span class="icon">📆</span> Bạn học lớp mấy?</a></li> -->
                         <li><a href="#birthday-section"><span class="icon">😎</span> Chỉnh sinh nhật</a></li>
                         <li><a href="wifi.html"><span class="icon">♟</span> Tìm gói data mạng rẻ nhất</a></li>
-                        <li><a href="#todo-list"><span class="icon">📝</span> Danh sách việc cần làm</a></li>
+                        <!-- <li><a href="#todo-list"><span class="icon">📝</span> Danh sách việc cần làm</a></li> -->
                     </ul>
                 </div>
             </div>
@@ -534,35 +534,6 @@ async function reloadAndClearCache() {
                         <p id="talk" style="color: var(--text-muted); font-size: 1rem;"></p>
                         <br>
                         <h3 id="say-now" style="font-weight: 500; font-size: 1.1rem;"></h3>
-                    </div>
-
-                    <div class="pomodoro-timer" id="to-do-list-tool">
-                        <h2>📝 Nhiệm Vụ Trong Tuần</h2>
-                        <div class="todo-container">
-                            <input type="text" id="todo-input" placeholder="Thêm việc cần hoàn thành...">
-                            <button id="add-todo-btn">Thêm</button>
-                        </div>
-
-                        <div class="todo-container" style="margin-top: 10px;">
-                            <button id="export-btn-todo">Xuất dữ liệu</button>
-                            <button id="import-btn-todo" onclick="alert('Hãy chắc chắn rằng file bạn chọn từ nguồn chính thức')">Nhập dữ liệu</button>
-                            <input type="file" id="import-file-input" accept=".json" style="display: none;">
-                        </div>
-
-                        <ul id="todo-list" style="list-style-type: none; text-align: left; padding: 0; margin-top: 15px;"></ul>
-                    </div>
-
-                    <div class="pomodoro-timer" id="break-time-when">
-                        <h2>Thời gian nghỉ</h2>
-                        <label for="time">Mấy giờ vào tiết? (Tiết 1)</label>
-
-                        <select class="select_ui" id="element-time-id-break-time">
-                            <option value="7:20">Sáng (7:15 truy bài)</option>
-                            <option value="13:10">Chiều (13:05 truy bài)</option>
-                            <option value="13:00">Chiều (12:55 vào lớp)</option>
-                        </select>
-
-                        <button onclick="send_time_id_break_time_when()">Gửi</button>
                     </div>
 
                 </section>
