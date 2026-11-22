@@ -756,33 +756,6 @@ async function reloadAndClearCache() {
         .show-then .pomodoro-timer {
             position: relative !important;
         }
-
-        /* Nút đóng (✕) góc trên bên phải mỗi ô */
-        .btn-close-tool {
-            position: absolute;
-            top: 10px;
-            right: 12px;
-            background: rgba(0, 0, 0, 0.06);
-            border: none;
-            color: #718096;
-            width: 28px;
-            height: 28px;
-            border-radius: 50%;
-            font-size: 14px;
-            font-weight: bold;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.2s ease;
-            z-index: 10;
-        }
-
-        .btn-close-tool:hover {
-            background: #e53e3e;
-            color: white;
-            transform: scale(1.1);
-        }
     </style>
 
     <style>
@@ -877,10 +850,10 @@ async function reloadAndClearCache() {
 
         // BƯỚC 3: Gắn nút Đóng (✕) vào từng ô công cụ
         allTools.forEach(tool => {
-            if (!tool.querySelector('.btn-close-tool')) {
+            if (!tool.querySelector('.close-btn')) {
                 const closeBtn = document.createElement('button');
-                closeBtn.className = 'btn-close-tool';
-                closeBtn.innerHTML = '✕';
+                closeBtn.className = 'close-btn';
+                closeBtn.innerHTML = '×';
                 closeBtn.title = 'Ẩn ô này';
                 
                 closeBtn.addEventListener('click', (e) => {

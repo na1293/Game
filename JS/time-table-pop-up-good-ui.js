@@ -15,10 +15,10 @@ document.addEventListener("DOMContentLoaded", () => {
             seasonDiv.id = "season-select-container";
             seasonDiv.className = "season-wrapper";
             seasonDiv.innerHTML = `
-                <label for="season-select-type">Ca Chieu:</label>
+                <label for="season-select-type">Ca Chiều:</label>
                 <select id="season-select-type" class="season-dropdown">
-                    <option value="winter">Mua Dong (13:00)</option>
-                    <option value="summer">Mua He (13:10)</option>
+                    <option value="winter">Mùa Đông (13:00)</option>
+                    <option value="summer">Mùa Hè (13:10)</option>
                 </select>
             `;
             headerBar.appendChild(seasonDiv);
@@ -121,12 +121,12 @@ document.addEventListener("DOMContentLoaded", () => {
             });
 
         } else {
-            let defaultText = "Chua co du lieu lich hoc";
+            let defaultText = "Không có dữ liệu. Hãy thử tải lại.";
 
             if (typeof dayData === "string" && dayData.trim() !== "") {
                 defaultText = dayData.trim();
             } else if (typeof dayData === "object" && dayData !== null) {
-                defaultText = dayData.morning || dayData.afternoon || "Chua co du lieu lich hoc";
+                defaultText = dayData.morning || dayData.afternoon || "Không có dữ liệu. Hãy thử tải lại.";
             }
 
             const rendered = buildScheduleHTML(defaultText, 'morning');

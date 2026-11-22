@@ -12,20 +12,75 @@ const isInAppBrowser = /FBAN|FBAV|Instagram|Line|TikTok|Zalo|FB_IAB|FB4A|Messeng
 
 // Nội dung giới thiệu ban đầu
 const pwaDetailsHTML = `
-  <div style="text-align: left; font-size: 0.95rem; line-height: 1.6; color: #2d3748;">
-    <div style="margin-bottom: 12px; background: #f7fafc; padding: 12px 14px; border-radius: 8px; border-left: 4px solid #4f46e5;">
-      <strong style="color: #4f46e5; display: block; margin-bottom: 4px;">Ưu điểm nổi bật</strong>
-      • Cài 1 lần dùng trọn năm, tự đồng bộ Thời khóa biểu.<br>
-      • Xem mượt mà ngay cả khi <b>không có mạng (Offline)</b>.
+  <div style="text-align: left; font-family: system-ui, -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif; color: #1e293b;">
+    
+    <!-- Header App: Khối chữ đại diện + Tên + Mô tả ngắn -->
+    <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 16px;">
+      <img src="img/icon-192x192.png" alt="Thời Khóa Biểu" style="width: 72px; height: 72px; border-radius: 18px; object-fit: cover; flex-shrink: 0; box-shadow: 0 8px 20px -4px rgba(15, 23, 42, 0.12); border: 1px solid #f1f5f9;">
+      
+      <div style="flex: 1; min-width: 0;">
+        <div style="font-size: 1.15rem; font-weight: 700; color: #0f172a; line-height: 1.25; margin-bottom: 3px;">
+          Thời Khóa Biểu
+        </div>
+        <div style="font-size: 0.85rem; font-weight: 600; color: #2563eb; margin-bottom: 2px;">
+          Ứng dụng web
+        </div>
+        <div style="font-size: 0.75rem; color: #64748b;">
+          Ứng dụng học tập
+        </div>
+      </div>
+    </div>
+
+    <!-- Thanh thông số 3 cột tối giản -->
+    <div style="display: flex; gap: 10px; overflow-x: auto; padding: 2px 2px 10px; margin-bottom: 16px; scroll-snap-type: x mandatory; scrollbar-width: none; -ms-overflow-style: none;">
+      
+      <!-- Ô 1: Siêu nhẹ -->
+      <div style="flex: 0 0 135px; background: #f0f9ff; border: 1px solid #bae6fd; border-radius: 14px; padding: 12px 14px; scroll-snap-align: start;">
+        <div style="font-size: 0.95rem; font-weight: 700; color: #0284c7; white-space: nowrap;">Siêu nhẹ &lt; 1 MB</div>
+        <div style="font-size: 0.75rem; color: #0369a1; margin-top: 4px; line-height: 1.3;">Nhẹ hơn 1 tấm ảnh</div>
+      </div>
+
+      <!-- Ô 2: Offline -->
+      <div style="flex: 0 0 135px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 14px; padding: 12px 14px; scroll-snap-align: start;">
+        <div style="font-size: 0.95rem; font-weight: 700; color: #0f172a; white-space: nowrap;">Xem Offline</div>
+        <div style="font-size: 0.75rem; color: #64748b; margin-top: 4px; line-height: 1.3;">Mở được khi mất mạng</div>
+      </div>
+
+      <!-- Ô 3: Tự động cập nhật -->
+      <div style="flex: 0 0 155px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 14px; padding: 12px 14px; scroll-snap-align: start;">
+        <div style="font-size: 0.95rem; font-weight: 700; color: #0f172a; white-space: nowrap;">Tự động cập nhật</div>
+        <div style="font-size: 0.75rem; color: #64748b; margin-top: 4px; line-height: 1.3;">Không cần thao tác thêm</div>
+      </div>
+
+    </div>
+
+    <!-- Khu vực Ảnh xem trước (Screenshots) cuộn ngang -->
+    <div style="font-size: 0.8rem; font-weight: 600; color: #475569; margin-bottom: 8px;">
+      Xem trước giao diện
     </div>
     
-    <div style="background: #f7fafc; padding: 12px 14px; border-radius: 8px; border-left: 4px solid #10b981;">
-      <strong style="color: #10b981; display: block; margin-bottom: 4px;">Tối ưu dung lượng</strong>
-      • Dung lượng <b>chưa tới 1MB</b> (nhẹ hơn 1 tấm ảnh).<br>
-      • Không qua App Store, không tốn bộ nhớ máy.
+    <div style="display: flex; gap: 10px; overflow-x: auto; padding-bottom: 6px; margin-bottom: 12px; scroll-snap-type: x mandatory;">
+      
+      <!-- Ảnh mẫu 1 -->
+      <div style="flex: 0 0 130px; height: 210px; border-radius: 10px; overflow: hidden; border: 1px solid #cbd5e1; background: #f1f5f9; scroll-snap-align: start;">
+        <img src="img/1.jpg" alt="Xem trước 1" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+      </div>
+
+      <!-- Ảnh mẫu 2 -->
+      <div style="flex: 0 0 130px; height: 210px; border-radius: 10px; overflow: hidden; border: 1px solid #cbd5e1; background: #f1f5f9; scroll-snap-align: start;">
+        <img src="img/2.jpg" alt="Xem trước 2" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+      </div>
+
+      <!-- Ảnh mẫu 3 -->
+      <div style="flex: 0 0 130px; height: 210px; border-radius: 10px; overflow: hidden; border: 1px solid #cbd5e1; background: #f1f5f9; scroll-snap-align: start;">
+        <img src="img/3.jpg" alt="Xem trước 3" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+      </div>
+
     </div>
+
   </div>
 `;
+
 
 // Hướng dẫn chung cực kỳ ngắn gọn và bao quát cho In-App Browser (Zalo, Facebook...)
 const inAppBrowserGuideHTML = `
@@ -118,7 +173,7 @@ function openPwaPrompt(isUserAction = true) {
 
   const confirmBtnLabel = (isInAppBrowser || isIOS) ? "Xem cách cài" : "Tải xuống ngay";
 
-  showPwaModal("Cài đặt Trạm Tập Trung Học Tập", pwaDetailsHTML, confirmBtnLabel, "Để sau", function(isConfirm) {
+  showPwaModal("Tải xuống ứng dụng", pwaDetailsHTML, confirmBtnLabel, "Để sau", function(isConfirm) {
     if (isConfirm) {
       executeInstallProcess();
     }
