@@ -1,4 +1,4 @@
-const CACHE_NAME = 'my-app-cache-v2';
+const CACHE_NAME = 'my-app-cache-v3';
 
 // Danh sách toàn bộ file local cần lưu để chạy Offline
 const STATIC_ASSETS = [

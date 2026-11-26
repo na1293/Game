@@ -9,6 +9,7 @@
     <!-- Các CSS chính -->
     <link rel="stylesheet" href="css/app.css">
     <link rel="stylesheet" href="css/main_app.css">
+    <link rel="stylesheet" href="css/update.css">
 
     <!-- CSS lịch âm -->
     <link rel="stylesheet" href="css/moon.css">
@@ -35,6 +36,7 @@
     <!-- <script src="JS/u-read-json-time-table.js" defer></script> -->
 
     <script src="JS/time-table-pop-up-good-ui.js" defer></script>
+    <script src="JS/update.js" defer></script>
 
     <!-- Hệ thống pop-up thay cho alert -->
     <script src="JS/System_JS/pop-up.js" defer></script>
@@ -221,9 +223,52 @@ async function reloadAndClearCache() {
 <link rel="stylesheet" href="Event/Main_event/css/main.css"></link>
 
 </head>
+
 <body>
 
-    
+    <div class="update-overlay" id="update-overlay" style="display: none;">
+        <div class="update-popup">
+            <div class="update-header">
+                <div class="update-title-group">
+                    <div>
+                        <h2 id="title-update-popup">Cập nhật mới</h2>
+                        <p id="date-update-popup">26/11/2026</p>
+                    </div>
+                </div>
+            <p id="ver-update">v0.1.0</p>
+            </div>
+
+            <div id="ver-content"></div>
+
+            <div class="update-actions">
+            <!-- Nút 1: Hành động chính -->
+            <button id="btn-update-now" onclick="reloadAndClearCache()">Cập nhật</button>
+
+            <!-- Khu vực Tùy chọn mở rộng -->
+            <div class="update-more-wrapper" id="update-more-wrapper">
+                <button id="btn-toggle-more" type="button" class="btn-more-toggle">
+                <span>Tùy chọn mở rộng</span>
+                <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                </svg>
+                </button>
+
+                <div class="update-more-menu" id="update-more-menu" style="display: none;">
+                <!-- Nút 2: Nhắc sau 24h -->
+                <button id="btn-remind-later" type="button" class="btn-more-item">
+                    Nhắc tôi sau 24 giờ
+                </button>
+                <!-- Nút 3: Bỏ qua vĩnh viễn bản này -->
+                <a href="#" id="btn-skip-forever" class="btn-more-item btn-danger">
+                    Bỏ qua bản cập nhật này
+                </a>
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+
+
     <div class="container" id="container">
         <header>
             <div class="avatar">
